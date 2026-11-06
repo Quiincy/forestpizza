@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌲 Forest Pizza — Офіційний сайт та панель керування
 
-## Getting Started
+Сучасний, швидкий та адаптивний веб-сайт піцерії **Forest Pizza** у Києві (Лісовий проспект, 11).
 
-First, run the development server:
+Побудовано на стеку:
+- **Next.js 16** (App Router, Turbopack, React 19)
+- **Tailwind CSS v4** (Фірмова темна лісова стилістика з бурштиновими акцентами)
+- **PostgreSQL** (Prisma ORM)
+- **Telegram Bot API** (Миттєве сповіщення про кожне бронювання столика та замовлення)
+- **Admin Dashboard** (`/admin`) (Повний контроль над бронюваннями, замовленнями, меню та налаштуваннями ресторану)
 
+---
+
+## 🍕 Справжнє меню Forest Pizza (з фото Google Maps)
+
+Меню повністю розпізнано та завантажено в базу даних згідно з актуальним меню закладу:
+
+1. **Пепероні** — 30 см: 240 ₴ | 40 см: 420 ₴
+2. **Прошутто** — 30 см: 350 ₴ | 40 см: 600 ₴
+3. **4 М'яса** — 30 см: 320 ₴ | 40 см: 540 ₴
+4. **Від Шефа** — 30 см: 320 ₴ | 40 см: 540 ₴
+5. **4 Сири** — 30 см: 320 ₴ | 40 см: 540 ₴
+6. **Сезон** — 30 см: 340 ₴ | 40 см: 540 ₴
+7. **Піца Бургер** — 30 см: 320 ₴ | 40 см: 540 ₴
+8. **Мексиканська 🔥** — 30 см: 300 ₴ | 40 см: 500 ₴
+9. **Італійська** — 30 см: 350 ₴ | 40 см: 560 ₴
+10. **Чіназес** — 30 см: 320 ₴ | 40 см: 540 ₴
+
+### Додаткові бортики та соуси:
+- **Бортик сирний** — 30 см: +65 ₴ | 40 см: +95 ₴
+- **Бортик ковбасний** — 30 см: +65 ₴ | 40 см: +95 ₴
+- Фірмові соуси (томатний з травами, сирний чеддер, ранч)
+- Гарячі закуски (картопля фрі, сирні палички, крильця BBQ, нагетси)
+- Крафтове пиво Forest Light/Dark та домашні лимонади
+
+---
+
+## 🚀 Швидкий запуск
+
+### 1. Встановлення залежностей
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Налаштування бази даних PostgreSQL
+У файлі `.env`:
+```env
+DATABASE_URL="postgresql://quincy@localhost:5432/forestpizza?schema=public"
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Синхронізація схеми та наповнення автентичним меню:
+```bash
+npx prisma db push
+npm run seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Запуск у режимі розробки
+```bash
+npm run dev
+```
+Сайт відкривається за адресою: [http://localhost:3000](http://localhost:3000)
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🔐 Панель адміністратора (`/admin`)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Панель доступна за посиланням: [http://localhost:3000/admin](http://localhost:3000/admin)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Пароль за замовчуванням**: `forest2026`
+*(Пароль можна змінити в будь-який момент у вкладці «Налаштування»)*
 
-## Deploy on Vercel
+### Можливості адмінки:
+1. **Огляд (Dashboard)**: лічильники свіжих бронювань, статус підключення Telegram-бота.
+2. **Бронювання**: перегляд списку гостей, швидкий дзвінок клієнту, зміна статусів (Нове / Підтверджено / Завершено / Скасовано).
+3. **Замовлення**: список онлайн-замовлень з кошика з деталями доставки/самовивозу.
+4. **Меню**: додавання нових страв, зміна цін на 30 та 40 см, редагування інгредієнтів, увімкнення/вимкнення наявності.
+5. **Налаштування**:
+   - Токен та Chat ID Telegram-бота з кнопкою перевірки **«🚀 Надіслати тестове повідомлення»**
+   - Контакти (адреса, телефон, години роботи, посилання на Google Maps та Instagram)
+   - Повідомлення гостю після бронювання
+   - Зміна пароля входу
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🤖 Як налаштувати Telegram для бронювань
+
+1. Відкрийте Telegram та напишіть боту **@BotFather**.
+2. Введіть `/newbot`, оберіть назву (наприклад, `Forest Pizza Bot`) та отримайте **API Token** вигляду `7123456789:AAHq...`.
+3. Знайдіть створеного бота в Telegram і натисніть кнопку **Start** (`/start`).
+4. Щоб отримати ваш **Chat ID**:
+   - Для особистого чату: відкрийте бота **@userinfobot** або **@myidbot** і скопіюйте `Id`.
+   - Для групи персоналу: додайте вашого бота в групу та скопіюйте Chat ID (зазвичай починається з мінуса, наприклад `-1001987654321`).
+5. Перейдіть в адмін-панель [http://localhost:3000/admin](http://localhost:3000/admin) → вкладка **«Налаштування»** → введіть Token та Chat ID → натисніть **«🚀 Надіслати тестове повідомлення»**!
