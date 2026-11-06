@@ -52,3 +52,4 @@ export async function DELETE(
     return NextResponse.json({ error: "Не вдалося видалити бронювання" }, { status: 500 });
   }
 }
+

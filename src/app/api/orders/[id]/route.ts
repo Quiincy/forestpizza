@@ -48,3 +48,4 @@ export async function DELETE(
     return NextResponse.json({ error: "Не вдалося видалити замовлення" }, { status: 500 });
   }
 }
+

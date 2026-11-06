@@ -32,3 +32,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Помилка сервера при авторизації" }, { status: 500 });
   }
 }
+

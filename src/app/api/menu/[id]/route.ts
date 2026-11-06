@@ -72,3 +72,4 @@ export async function DELETE(
     return NextResponse.json({ error: "Не вдалося видалити страву" }, { status: 500 });
   }
 }
+

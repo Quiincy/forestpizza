@@ -342,3 +342,4 @@ export function CartDrawer() {
     </div>
   );
 }
+

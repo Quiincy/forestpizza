@@ -7,3 +7,4 @@ export async function POST() {
   cookieStore.delete(COOKIE_NAME);
   return NextResponse.json({ success: true, message: "Ви успішно вийшли з системи" });
 }
+

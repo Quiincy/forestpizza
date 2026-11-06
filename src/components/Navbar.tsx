@@ -179,3 +179,4 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
     </header>
   );
 }
+

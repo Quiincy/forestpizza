@@ -5,3 +5,4 @@ export async function GET() {
   const isAuth = await checkAdminAuth();
   return NextResponse.json({ authenticated: isAuth });
 }
+

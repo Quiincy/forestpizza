@@ -306,3 +306,4 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
     </div>
   );
 }
+
