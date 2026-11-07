@@ -40,7 +40,7 @@ export function Footer({
               </span>
             </div>
             <p className="text-xs text-stone-400 leading-relaxed">
-              Крафтова піца <b>виключно на винос та доставку</b> на Лісовому масиві.
+              Крафтова піца <b>виключно на винос (самовивіз)</b> на Лісовому масиві.
               22 автентичні рецепти, соковиті сирні та ковбасні бортики, готовність за 15-20 хвилин.
             </p>
             <div className="pt-2">
@@ -147,7 +147,7 @@ export function Footer({
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
-          <p>© {new Date().getFullYear()} Forest Pizza (Київ, Лісовий проспект, 11). Тільки на винос та доставка.</p>
+          <p>© {new Date().getFullYear()} Forest Pizza (Київ, Лісовий проспект, 11). Тільки на винос (самовивіз).</p>
           <p className="flex items-center gap-1">
             Зроблено з <Heart className="w-3 h-3 text-orange-500 fill-orange-500 inline" /> для поціновувачів справжньої піци
           </p>

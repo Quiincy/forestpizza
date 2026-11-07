@@ -26,156 +26,156 @@ export function Navbar({
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#0d0f11]/95 backdrop-blur-md border-b border-[#242830] transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-18 sm:h-20">
-          {/* Logo with Orange Flame Emblem */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-950/50 border border-orange-400/40 group-hover:scale-105 transition-transform">
-              <Flame className="w-6 h-6 text-white" />
+    <header className="sticky top-0 z-40 bg-[#0c0e12]/95 backdrop-blur-xl border-b border-[#232832] shadow-lg shadow-black/30">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
+          {/* Brand Logo */}
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-950/60 border border-orange-400/40 group-hover:scale-105 transition-transform shrink-0">
+              <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white/20" />
             </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-xl sm:text-2xl tracking-wider text-white">
+            <div className="leading-tight">
+              <div className="flex items-center gap-1.5 whitespace-nowrap">
+                <span className="font-black text-lg sm:text-2xl tracking-wider text-white">
                   FOREST
                 </span>
-                <span className="font-extrabold text-xl sm:text-2xl tracking-wider text-orange-500">
+                <span className="font-black text-lg sm:text-2xl tracking-wider text-orange-500">
                   PIZZA
                 </span>
               </div>
-              <p className="text-[10px] sm:text-[11px] font-bold text-orange-400/90 uppercase tracking-widest flex items-center gap-1">
-                <MapPin className="w-3 h-3 inline text-orange-500" /> Лісовий просп., 11 • Тільки на винос
+              <p className="text-[10px] sm:text-[11px] font-bold text-stone-400 whitespace-nowrap flex items-center gap-1 mt-0.5">
+                <MapPin className="w-3 h-3 text-orange-500 shrink-0" />
+                <span>Лісовий просп., 11</span>
+                <span className="hidden xs:inline text-orange-400">• На винос</span>
               </p>
             </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation (lg+) */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-[#14171f] border border-[#242936] rounded-2xl p-1.5">
             <button
               onClick={() => scrollTo("menu")}
-              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
-              Меню піци (22 види)
+              🍕 Меню піци (22)
             </button>
             <button
               onClick={() => scrollTo("takeaway")}
-              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
-              Замовлення на винос
+              🛍️ Замовити на час
             </button>
             <button
               onClick={() => scrollTo("about")}
-              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
-              Про пекарню
+              🔥 Про піцерію
             </button>
             <button
               onClick={() => scrollTo("location")}
-              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
-              Точка самовивозу
+              📍 Локація
             </button>
           </nav>
 
-          {/* Desktop Actions */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Right Actions */}
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+            {/* Phone Call Button */}
             <a
               href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
-              className="flex items-center gap-2 text-xs font-bold text-neutral-200 hover:text-orange-300 bg-[#171a1f] border border-[#2b303a] px-3.5 py-2 rounded-xl transition-all"
+              className="hidden sm:flex items-center gap-2 text-xs font-bold text-stone-200 hover:text-orange-400 bg-[#151820] hover:bg-[#1d222d] border border-[#282e3b] px-3 py-2.5 rounded-xl transition-all whitespace-nowrap"
+              title={`Зателефонувати: ${restaurantPhone}`}
             >
-              <Phone className="w-3.5 h-3.5 text-orange-400" />
-              <span>{restaurantPhone}</span>
+              <Phone className="w-4 h-4 text-orange-400 shrink-0" />
+              <span className="hidden xl:inline">{restaurantPhone}</span>
             </a>
 
             {/* Cart Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-xl bg-[#171a1f] hover:bg-[#22272f] text-white border border-[#2b303a] transition-all hover:scale-105 cursor-pointer"
+              className="relative flex items-center gap-2 px-3 py-2.5 rounded-xl bg-[#151820] hover:bg-[#1d222d] text-white border border-[#282e3b] transition-all cursor-pointer whitespace-nowrap"
               aria-label="Кошик замовлень"
             >
-              <ShoppingBag className="w-5 h-5 text-orange-400" />
+              <ShoppingBag className="w-5 h-5 text-orange-400 shrink-0" />
+              {totalCount > 0 ? (
+                <span className="text-xs font-black text-orange-400 hidden sm:inline">
+                  {totalPrice} ₴
+                </span>
+              ) : null}
               {totalCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-orange-500 text-white font-black text-[11px] w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-md shadow-orange-950">
+                <span className="bg-orange-500 text-white font-black text-[11px] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center shadow-md shadow-orange-950">
                   {totalCount}
                 </span>
               )}
             </button>
 
-            {/* Order Takeaway Button */}
+            {/* Primary Takeaway CTA (Desktop/Tablet) */}
             <button
               onClick={() => scrollTo("takeaway")}
-              className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-md shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer"
+              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer whitespace-nowrap"
             >
-              <Store className="w-4 h-4 text-white" />
-              <span>Замовити на винос</span>
-            </button>
-          </div>
-
-          {/* Mobile hamburger & cart */}
-          <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-xl bg-[#171a1f] text-white border border-[#2b303a]"
-              aria-label="Відкрити кошик"
-            >
-              <ShoppingBag className="w-5 h-5 text-orange-400" />
-              {totalCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-orange-500 text-white font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
-                  {totalCount}
-                </span>
-              )}
+              <Store className="w-4 h-4 text-white shrink-0" />
+              <span>На винос</span>
             </button>
 
+            {/* Mobile/Tablet Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-[#171a1f] text-neutral-200 border border-[#2b303a]"
+              className="lg:hidden p-2.5 rounded-xl bg-[#151820] text-stone-200 hover:text-white border border-[#282e3b]"
               aria-label="Меню навігації"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile menu dropdown */}
+        {/* Mobile / Tablet Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#242830] flex flex-col gap-2.5 animate-fadeIn">
+          <div className="lg:hidden py-4 border-t border-[#232832] flex flex-col gap-2 animate-fadeIn">
+            <div className="px-3 py-2 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-between text-xs">
+              <span className="font-bold text-orange-300">🛍️ Працюємо тільки на винос</span>
+              <span className="text-stone-300 font-semibold">{workingHours}</span>
+            </div>
+
             <button
               onClick={() => scrollTo("menu")}
-              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors"
             >
-              🍕 Меню (22 фірмові піци)
+              🍕 Меню піци (усі 22 види)
             </button>
             <button
               onClick={() => scrollTo("takeaway")}
-              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors"
             >
-              🛍️ Замовлення на винос (самовивіз)
+              ⏰ Замовити на винос на точний час
             </button>
             <button
               onClick={() => scrollTo("about")}
-              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors"
             >
               🔥 Про нашу випічку та бортики
             </button>
             <button
               onClick={() => scrollTo("location")}
-              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors"
             >
-              📍 Точка видачі на карті
+              📍 Як нас знайти (Лісовий просп., 11)
             </button>
-            <div className="pt-2 border-t border-[#242830] flex flex-col gap-2">
+
+            <div className="pt-2 border-t border-[#232832] grid grid-cols-1 sm:grid-cols-2 gap-2">
               <a
                 href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
-                className="flex items-center justify-center gap-2 text-sm font-bold text-orange-400 bg-[#171a1f] py-2.5 rounded-xl border border-[#2b303a]"
+                className="flex items-center justify-center gap-2 text-sm font-bold text-orange-400 bg-[#151820] py-2.5 rounded-xl border border-[#282e3b]"
               >
                 <Phone className="w-4 h-4 text-orange-500" />
                 <span>{restaurantPhone}</span>
               </a>
               <button
                 onClick={() => scrollTo("takeaway")}
-                className="w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black py-2.5 rounded-xl shadow-md"
+                className="w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black py-2.5 rounded-xl shadow-md text-sm"
               >
-                Замовити на винос онлайн
+                Замовити на винос
               </button>
             </div>
           </div>

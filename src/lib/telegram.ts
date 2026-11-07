@@ -136,20 +136,13 @@ export function formatOrderMessage(order: {
     quantity: number;
   }>;
 }) {
-  const isTakeaway = order.orderType === "TAKEAWAY";
-  const typeText = isTakeaway
-    ? "🏃 <b>Самовивіз (на винос)</b>"
-    : "🚚 <b>Доставка кур'єром</b>";
+  const typeText = "🏃 <b>Самовивіз (на винос)</b>";
 
   const timeLine = order.pickupTime
     ? `\n⏰ <b>Час готовності:</b> <b>${escapeHtml(order.pickupTime)}</b>`
     : "";
 
-  const addressLine = !isTakeaway && order.address
-    ? `\n🏠 <b>Адреса доставки:</b> ${escapeHtml(order.address)}`
-    : isTakeaway
-    ? `\n📍 <b>Точка видачі:</b> Лісовий проспект, 11`
-    : "";
+  const addressLine = `\n📍 <b>Точка видачі:</b> Лісовий проспект, 11`;
 
   const commentLine = order.comment
     ? `\n💬 <b>Коментар:</b> <i>${escapeHtml(order.comment)}</i>`

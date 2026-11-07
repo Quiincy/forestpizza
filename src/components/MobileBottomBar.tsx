@@ -63,3 +63,4 @@ export function MobileBottomBar({ restaurantPhone = "+380 (97) 845-12-34" }: Mob
     </div>
   );
 }
+

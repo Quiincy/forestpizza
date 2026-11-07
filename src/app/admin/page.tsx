@@ -411,7 +411,7 @@ export default function AdminPage() {
             </div>
             <h1 className="text-2xl font-black text-white">Панель керування</h1>
             <p className="text-xs text-stone-400">
-              Forest Pizza • Тільки на винос та доставка • Лісовий просп., 11
+              Forest Pizza • Тільки на винос (самовивіз) • Лісовий просп., 11
             </p>
           </div>
 
@@ -617,7 +617,7 @@ export default function AdminPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-black text-white">Огляд піцерії на винос</h2>
-                  <p className="text-xs text-stone-400">Формат: тільки самовивіз та доставка</p>
+                  <p className="text-xs text-stone-400">Формат: тільки самовивіз (на винос)</p>
                 </div>
               </div>
 
@@ -993,7 +993,7 @@ export default function AdminPage() {
                         <div>
                           <p className="text-stone-400 font-semibold mb-1">Отримання:</p>
                           <p className="text-white">
-                            {o.orderType === "DELIVERY" ? "🚚 Доставка" : "🏃 Самовивіз на винос"}
+                            🏃 Самовивіз на винос
                           </p>
                           {o.pickupTime && (
                             <p className="text-orange-400 mt-1">⏰ Час видачі: {o.pickupTime}</p>
