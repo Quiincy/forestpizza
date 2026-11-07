@@ -6,7 +6,7 @@ import { formatOrderMessage, sendTelegramNotification } from "@/lib/telegram";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { customerName, phone, orderType, address, items, comment } = body;
+    const { customerName, phone, orderType, address, pickupTime, items, comment } = body;
 
     if (!customerName || !phone || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json(
@@ -27,7 +27,8 @@ export async function POST(req: Request) {
         customerName: customerName.trim(),
         phone: phone.trim(),
         orderType: orderType || "TAKEAWAY",
-        address: address ? address.trim() : null,
+        address: orderType === "DELIVERY" && address ? address.trim() : "Самовивіз: Лісовий просп., 11",
+        pickupTime: pickupTime ? pickupTime.trim() : "Якомога швидше (15-20 хв)",
         itemsJson: JSON.stringify(items),
         totalPrice: calculatedTotal,
         comment: comment ? comment.trim() : null,
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
         phone: order.phone,
         orderType: order.orderType,
         address: order.address,
+        pickupTime: order.pickupTime,
         totalPrice: order.totalPrice,
         comment: order.comment,
         items,
@@ -64,11 +66,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Замовлення успішно створено!",
+      message: "Замовлення на винос успішно прийнято!",
       order: {
         id: order.id,
         orderNumber: order.orderNumber,
         totalPrice: order.totalPrice,
+        pickupTime: order.pickupTime,
         status: order.status,
       },
     });

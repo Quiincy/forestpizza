@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { ShoppingBag, Calendar, Phone, Menu, X, TreePine, MapPin } from "lucide-react";
+import { ShoppingBag, Phone, Menu, X, TreePine, MapPin, Store } from "lucide-react";
 
 interface NavbarProps {
   restaurantPhone?: string;
@@ -41,7 +41,7 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
                 </span>
               </div>
               <p className="text-[11px] font-medium text-emerald-400/80 uppercase tracking-widest flex items-center gap-1">
-                <MapPin className="w-3 h-3 inline text-amber-400" /> Лісовий просп., 11
+                <MapPin className="w-3 h-3 inline text-amber-400" /> Лісовий просп., 11 • Тільки на винос
               </p>
             </div>
           </Link>
@@ -55,22 +55,22 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
               Меню
             </button>
             <button
-              onClick={() => scrollTo("booking")}
+              onClick={() => scrollTo("takeaway")}
               className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
             >
-              Бронювання
+              Замовлення на винос
             </button>
             <button
               onClick={() => scrollTo("about")}
               className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
             >
-              Про заклад
+              Про пекарню
             </button>
             <button
               onClick={() => scrollTo("location")}
               className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
             >
-              Контакти та карта
+              Точка самовивозу
             </button>
           </nav>
 
@@ -98,13 +98,13 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
               )}
             </button>
 
-            {/* Reservation button */}
+            {/* Order Takeaway Button */}
             <button
-              onClick={() => scrollTo("booking")}
+              onClick={() => scrollTo("takeaway")}
               className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-emerald-900/50 transition-all hover:shadow-emerald-700/40"
             >
-              <Calendar className="w-4 h-4 text-emerald-100" />
-              <span>Забронювати стіл</span>
+              <Store className="w-4 h-4 text-emerald-100" />
+              <span>Замовити на винос</span>
             </button>
           </div>
 
@@ -138,25 +138,25 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
               onClick={() => scrollTo("menu")}
               className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
             >
-              🍕 Меню страв
+              🍕 Меню піци
             </button>
             <button
-              onClick={() => scrollTo("booking")}
+              onClick={() => scrollTo("takeaway")}
               className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
             >
-              📅 Бронювання столика
+              🛍️ Замовлення на винос (самовивіз)
             </button>
             <button
               onClick={() => scrollTo("about")}
               className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
             >
-              🌲 Про заклад
+              🌲 Про пекарню
             </button>
             <button
               onClick={() => scrollTo("location")}
               className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
             >
-              📍 Контакти та карта
+              📍 Точка видачі на карті
             </button>
             <div className="pt-2 border-t border-[#183e30] flex flex-col gap-2">
               <a
@@ -167,10 +167,10 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
                 <span>{restaurantPhone}</span>
               </a>
               <button
-                onClick={() => scrollTo("booking")}
+                onClick={() => scrollTo("takeaway")}
                 className="w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow"
               >
-                Забронювати стіл онлайн
+                Замовити на винос онлайн
               </button>
             </div>
           </div>
@@ -179,4 +179,3 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
     </header>
   );
 }
-

@@ -15,6 +15,7 @@ import {
   MapPin,
   Phone,
   User,
+  Clock,
   AlertCircle,
 } from "lucide-react";
 
@@ -34,11 +35,13 @@ export function CartDrawer() {
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
+  const [pickupTime, setPickupTime] = useState("Якомога швидше (~15-20 хв)");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<{
     orderNumber: string;
     totalPrice: number;
+    pickupTime?: string;
   } | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -69,6 +72,7 @@ export function CartDrawer() {
           phone: phone.trim(),
           orderType,
           address: orderType === "DELIVERY" ? address.trim() : "Самовивіз: Лісовий просп., 11",
+          pickupTime,
           comment: comment.trim(),
           items,
         }),
@@ -107,7 +111,7 @@ export function CartDrawer() {
               </div>
               <div>
                 <h3 className="font-extrabold text-white text-lg">Кошик замовлення</h3>
-                <p className="text-xs text-emerald-400">{totalCount} позицій на {totalPrice} ₴</p>
+                <p className="text-xs text-emerald-400">{totalCount} позицій на {totalPrice} ₴ • На винос</p>
               </div>
             </div>
             <button
@@ -126,11 +130,14 @@ export function CartDrawer() {
                   <CheckCircle2 className="w-10 h-10" />
                 </div>
                 <h4 className="text-2xl font-black text-white">Замовлення прийнято!</h4>
-                <div className="bg-[#0e221a] p-4 rounded-xl border border-[#1b5243] text-sm text-emerald-200">
+                <div className="bg-[#0e221a] p-4 rounded-xl border border-[#1b5243] text-sm text-emerald-200 text-left space-y-2">
                   <p>Номер замовлення: <b className="text-amber-400">{orderSuccess.orderNumber}</b></p>
-                  <p>Сума: <b>{orderSuccess.totalPrice} ₴</b></p>
-                  <p className="text-xs text-emerald-400 mt-2">
-                    Всі деталі надіслано в наш Telegram. Ми вже починаємо розігрівати піч!
+                  <p>Сума до оплати: <b>{orderSuccess.totalPrice} ₴</b></p>
+                  {orderSuccess.pickupTime && (
+                    <p>Час готовності: <b>{orderSuccess.pickupTime}</b></p>
+                  )}
+                  <p className="text-xs text-emerald-400 pt-2 border-t border-[#183e30]">
+                    📍 Точка видачі: <b>Лісовий проспект, 11</b>. Сповіщення вже надіслано в наш Telegram!
                   </p>
                 </div>
                 <button
@@ -140,7 +147,7 @@ export function CartDrawer() {
                   }}
                   className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl"
                 >
-                  Чудово, дякую!
+                  Зрозуміло, дякую!
                 </button>
               </div>
             ) : items.length === 0 ? (
@@ -148,7 +155,7 @@ export function CartDrawer() {
                 <ShoppingBag className="w-12 h-12 mx-auto text-emerald-600 opacity-60" />
                 <p className="font-bold text-white text-base">Ваш кошик поки що порожній</p>
                 <p className="text-xs text-emerald-300/70 max-w-xs mx-auto">
-                  Оберіть улюблену піцу з меню, додайте соковитий бортик чи соус і повертайтесь сюди!
+                  Оберіть улюблену піцу з меню, додайте соковитий сирний або ковбасний бортик та заберіть з собою!
                 </p>
               </div>
             ) : (
@@ -218,7 +225,7 @@ export function CartDrawer() {
                       }`}
                     >
                       <Store className="w-4 h-4" />
-                      <span>Самовивіз</span>
+                      <span>Самовивіз (на винос)</span>
                     </button>
                     <button
                       type="button"
@@ -235,10 +242,10 @@ export function CartDrawer() {
                   </div>
 
                   {orderType === "TAKEAWAY" && (
-                    <p className="text-xs text-amber-400/90 bg-[#0e221a] p-2.5 rounded-lg border border-[#1b5243] flex items-center gap-2">
+                    <div className="text-xs text-amber-400/90 bg-[#0e221a] p-2.5 rounded-lg border border-[#1b5243] flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                      <span>Забрати за адресою: <b>м. Київ, Лісовий проспект, 11</b></span>
-                    </p>
+                      <span>Точка видачі: <b>м. Київ, Лісовий проспект, 11</b></span>
+                    </div>
                   )}
 
                   {errorMessage && (
@@ -279,6 +286,32 @@ export function CartDrawer() {
                       </div>
                     </div>
 
+                    <div>
+                      <label className="block text-[11px] text-emerald-400 mb-1">
+                        {orderType === "TAKEAWAY" ? "Час видачі на винос" : "Час доставки"}
+                      </label>
+                      <div className="relative">
+                        <Clock className="w-3.5 h-3.5 text-emerald-500 absolute left-3 top-1/2 -translate-y-1/2" />
+                        <select
+                          value={pickupTime}
+                          onChange={(e) => setPickupTime(e.target.value)}
+                          className="w-full bg-[#07130f] border border-[#1b5243] rounded-lg pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400"
+                        >
+                          <option value="Якомога швидше (~15-20 хв)">Якомога швидше (~15-20 хв)</option>
+                          <option value="через 30 хвилин">через 30 хвилин</option>
+                          <option value="через 45 хвилин">через 45 хвилин</option>
+                          <option value="через 1 годину">через 1 годину</option>
+                          <option value="на 18:00">на 18:00</option>
+                          <option value="на 18:30">на 18:30</option>
+                          <option value="на 19:00">на 19:00</option>
+                          <option value="на 19:30">на 19:30</option>
+                          <option value="на 20:00">на 20:00</option>
+                          <option value="на 20:30">на 20:30</option>
+                          <option value="на 21:00">на 21:00</option>
+                        </select>
+                      </div>
+                    </div>
+
                     {orderType === "DELIVERY" && (
                       <div>
                         <label className="block text-[11px] text-emerald-400 mb-1">Адреса доставки *</label>
@@ -297,12 +330,12 @@ export function CartDrawer() {
                     )}
 
                     <div>
-                      <label className="block text-[11px] text-emerald-400 mb-1">Коментар до замовлення</label>
+                      <label className="block text-[11px] text-emerald-400 mb-1">Побажання до замовлення</label>
                       <input
                         type="text"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
-                        placeholder="Напр., не дзвонити у двері, дитина спить"
+                        placeholder="Напр., порізати на 8 шматочків, додати соус"
                         className="w-full bg-[#07130f] border border-[#1b5243] rounded-lg px-3 py-2 text-xs text-white placeholder-emerald-600/50 focus:outline-none focus:border-emerald-400"
                       />
                     </div>
@@ -331,7 +364,11 @@ export function CartDrawer() {
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>Підтвердити замовлення • {totalPrice} ₴</span>
+                    <span>
+                      {orderType === "TAKEAWAY"
+                        ? `Замовити на винос • ${totalPrice} ₴`
+                        : `Замовити доставку • ${totalPrice} ₴`}
+                    </span>
                   </>
                 )}
               </button>
@@ -342,4 +379,3 @@ export function CartDrawer() {
     </div>
   );
 }
-

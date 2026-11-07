@@ -89,32 +89,30 @@ export async function sendTelegramNotification(htmlMessage: string, customConfig
 }
 
 /**
- * Formats a reservation message for Telegram
+ * Formats a takeaway pre-order message for Telegram
  */
 export function formatReservationMessage(data: {
   customerName: string;
   phone: string;
   date: string;
   time: string;
-  guestsCount: number;
   comment?: string | null;
   id?: string;
 }) {
   const commentLine = data.comment && data.comment.trim()
-    ? `\n💬 <b>Побажання:</b> <i>${escapeHtml(data.comment.trim())}</i>`
+    ? `\n💬 <b>Коментар / побажання:</b> <i>${escapeHtml(data.comment.trim())}</i>`
     : "";
 
   return (
-`🌲 <b>НОВЕ БРОНЮВАННЯ СТОЛИКА!</b>
+`🛍️ <b>НОВЕ ЗАМОВЛЕННЯ НА ВИНОС (САМОВИВІЗ)!</b>
 ───────────────
-👤 <b>Гість:</b> <b>${escapeHtml(data.customerName)}</b>
+👤 <b>Клієнт:</b> <b>${escapeHtml(data.customerName)}</b>
 📞 <b>Телефон:</b> <a href="tel:${escapeHtml(data.phone)}">${escapeHtml(data.phone)}</a>
 📅 <b>Дата:</b> <b>${escapeHtml(data.date)}</b>
-⏰ <b>Час:</b> <b>${escapeHtml(data.time)}</b>
-👥 <b>Гостей:</b> <b>${data.guestsCount} осіб</b>${commentLine}
+⏰ <b>Час готовності:</b> <b>${escapeHtml(data.time)}</b>${commentLine}
 ───────────────
-📍 <b>Заклад:</b> Forest Pizza (Лісовий просп., 11)
-ℹ️ <i>Перевірте та підтвердіть у панелі керування сайтом.</i>`
+📍 <b>Точка видачі:</b> Forest Pizza (Лісовий просп., 11)
+ℹ️ <i>Формат: Тільки на винос / Самовивіз</i>`
   );
 }
 
@@ -127,6 +125,7 @@ export function formatOrderMessage(order: {
   phone: string;
   orderType: string;
   address?: string | null;
+  pickupTime?: string | null;
   totalPrice: number;
   comment?: string | null;
   items: Array<{
@@ -137,15 +136,19 @@ export function formatOrderMessage(order: {
     quantity: number;
   }>;
 }) {
-  const typeText =
-    order.orderType === "DELIVERY"
-      ? "🚚 <b>Доставка за адресою</b>"
-      : order.orderType === "TAKEAWAY"
-      ? "🏃 <b>Самовивіз</b>"
-      : "🍽️ <b>У закладі</b>";
+  const isTakeaway = order.orderType === "TAKEAWAY";
+  const typeText = isTakeaway
+    ? "🏃 <b>Самовивіз (на винос)</b>"
+    : "🚚 <b>Доставка кур'єром</b>";
 
-  const addressLine = order.address
+  const timeLine = order.pickupTime
+    ? `\n⏰ <b>Час готовності:</b> <b>${escapeHtml(order.pickupTime)}</b>`
+    : "";
+
+  const addressLine = !isTakeaway && order.address
     ? `\n🏠 <b>Адреса доставки:</b> ${escapeHtml(order.address)}`
+    : isTakeaway
+    ? `\n📍 <b>Точка видачі:</b> Лісовий проспект, 11`
     : "";
 
   const commentLine = order.comment
@@ -161,11 +164,11 @@ export function formatOrderMessage(order: {
     .join("\n");
 
   return (
-`🍕 <b>НОВЕ ЗАМОВЛЕННЯ #${escapeHtml(order.orderNumber)}!</b>
+`🍕 <b>ЗАМОВЛЕННЯ #${escapeHtml(order.orderNumber)} (НА ВИНОС)!</b>
 ───────────────
 👤 <b>Клієнт:</b> ${escapeHtml(order.customerName)}
 📞 <b>Телефон:</b> <a href="tel:${escapeHtml(order.phone)}">${escapeHtml(order.phone)}</a>
-${typeText}${addressLine}${commentLine}
+${typeText}${timeLine}${addressLine}${commentLine}
 
 📋 <b>Склад замовлення:</b>
 ${itemsList}
@@ -182,4 +185,3 @@ function escapeHtml(text: string): string {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;");
 }
-

@@ -13,21 +13,21 @@ export async function PATCH(
     }
 
     const { id } = await params;
-    const { status, comment, guestsCount } = await req.json();
+    const { status, comment, time } = await req.json();
 
     const updated = await prisma.reservation.update({
       where: { id },
       data: {
         ...(status ? { status } : {}),
         ...(comment !== undefined ? { comment } : {}),
-        ...(guestsCount ? { guestsCount: parseInt(guestsCount, 10) } : {}),
+        ...(time ? { time } : {}),
       },
     });
 
     return NextResponse.json({ success: true, reservation: updated });
   } catch (error) {
-    console.error("Update reservation error:", error);
-    return NextResponse.json({ error: "Не вдалося оновити бронювання" }, { status: 500 });
+    console.error("Update takeaway order error:", error);
+    return NextResponse.json({ error: "Не вдалося оновити замовлення" }, { status: 500 });
   }
 }
 
@@ -46,10 +46,9 @@ export async function DELETE(
       where: { id },
     });
 
-    return NextResponse.json({ success: true, message: "Бронювання видалено" });
+    return NextResponse.json({ success: true, message: "Замовлення видалено" });
   } catch (error) {
-    console.error("Delete reservation error:", error);
-    return NextResponse.json({ error: "Не вдалося видалити бронювання" }, { status: 500 });
+    console.error("Delete takeaway order error:", error);
+    return NextResponse.json({ error: "Не вдалося видалити замовлення" }, { status: 500 });
   }
 }
-

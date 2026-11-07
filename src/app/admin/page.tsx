@@ -5,7 +5,6 @@ import Link from "next/link";
 import {
   Lock,
   LogOut,
-  Calendar,
   ShoppingBag,
   UtensilsCrossed,
   Settings,
@@ -17,22 +16,23 @@ import {
   Edit,
   Plus,
   TreePine,
-  ExternalLink,
   RefreshCw,
   Search,
   Check,
   X,
   HelpCircle,
   Eye,
+  Store,
+  Clock,
+  Download,
 } from "lucide-react";
 
-interface ReservationItem {
+interface TakeawayOrderItem {
   id: string;
   customerName: string;
   phone: string;
   date: string;
   time: string;
-  guestsCount: number;
   comment?: string | null;
   status: string;
   telegramSent: boolean;
@@ -47,6 +47,7 @@ interface OrderItem {
   phone: string;
   orderType: string;
   address?: string | null;
+  pickupTime?: string | null;
   items: Array<{
     name: string;
     size?: string;
@@ -86,19 +87,20 @@ export default function AdminPage() {
   const [loginPassword, setLoginPassword] = useState("");
   const [loginError, setLoginError] = useState("");
   const [activeTab, setActiveTab] = useState<
-    "dashboard" | "reservations" | "orders" | "menu" | "settings"
+    "dashboard" | "takeaways" | "orders" | "menu" | "settings"
   >("dashboard");
 
   // Data states
-  const [reservations, setReservations] = useState<ReservationItem[]>([]);
+  const [takeaways, setTakeaways] = useState<TakeawayOrderItem[]>([]);
   const [orders, setOrders] = useState<OrderItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [autoRefresh, setAutoRefresh] = useState(true);
 
   // Filters
-  const [reservationFilter, setReservationFilter] = useState<string>("ALL");
-  const [reservationSearch, setReservationSearch] = useState<string>("");
+  const [takeawayFilter, setTakeawayFilter] = useState<string>("ALL");
+  const [takeawaySearch, setTakeawaySearch] = useState<string>("");
 
   // Edit / Add Menu Item Modal
   const [editingItem, setEditingItem] = useState<Partial<MenuItem> | null>(null);
@@ -115,6 +117,15 @@ export default function AdminPage() {
   useEffect(() => {
     checkAuth();
   }, []);
+
+  // Auto-refresh interval (every 30 seconds)
+  useEffect(() => {
+    if (!isAuthenticated || !autoRefresh) return;
+    const interval = setInterval(() => {
+      fetchAllData(false);
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [isAuthenticated, autoRefresh]);
 
   const checkAuth = async () => {
     try {
@@ -156,19 +167,19 @@ export default function AdminPage() {
     setIsAuthenticated(false);
   };
 
-  const fetchAllData = async () => {
-    setLoading(true);
+  const fetchAllData = async (showLoading = true) => {
+    if (showLoading) setLoading(true);
     try {
-      const [resRes, ordRes, menuRes, setRes] = await Promise.all([
+      const [takeawayRes, ordRes, menuRes, setRes] = await Promise.all([
         fetch("/api/reservations"),
         fetch("/api/orders"),
         fetch("/api/menu"),
         fetch("/api/settings"),
       ]);
 
-      if (resRes.ok) {
-        const d = await resRes.json();
-        setReservations(d.reservations || []);
+      if (takeawayRes.ok) {
+        const d = await takeawayRes.json();
+        setTakeaways(d.reservations || []);
       }
       if (ordRes.ok) {
         const d = await ordRes.json();
@@ -185,12 +196,12 @@ export default function AdminPage() {
     } catch (e) {
       console.error("Failed to load admin data", e);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 
-  // Reservation Status Update
-  const updateReservationStatus = async (id: string, status: string) => {
+  // Takeaway Status Update
+  const updateTakeawayStatus = async (id: string, status: string) => {
     try {
       const res = await fetch(`/api/reservations/${id}`, {
         method: "PATCH",
@@ -198,7 +209,7 @@ export default function AdminPage() {
         body: JSON.stringify({ status }),
       });
       if (res.ok) {
-        setReservations((prev) =>
+        setTakeaways((prev) =>
           prev.map((r) => (r.id === id ? { ...r, status } : r))
         );
       }
@@ -207,13 +218,13 @@ export default function AdminPage() {
     }
   };
 
-  // Delete Reservation
-  const deleteReservation = async (id: string) => {
-    if (!confirm("Ви впевнені, що хочете видалити це бронювання?")) return;
+  // Delete Takeaway Order
+  const deleteTakeaway = async (id: string) => {
+    if (!confirm("Видалити це замовлення на винос?")) return;
     try {
       const res = await fetch(`/api/reservations/${id}`, { method: "DELETE" });
       if (res.ok) {
-        setReservations((prev) => prev.filter((r) => r.id !== id));
+        setTakeaways((prev) => prev.filter((r) => r.id !== id));
       }
     } catch (e) {
       console.error(e);
@@ -356,6 +367,30 @@ export default function AdminPage() {
     }
   };
 
+  // Export to CSV
+  const exportTakeawaysToCSV = () => {
+    const headers = ["ID", "Дата", "Час видачі", "Клієнт", "Телефон", "Побажання", "Статус", "Створено"];
+    const rows = takeaways.map((r) => [
+      r.id,
+      r.date,
+      `"${r.time}"`,
+      `"${r.customerName}"`,
+      `"${r.phone}"`,
+      `"${(r.comment || "").replace(/"/g, '""')}"`,
+      r.status,
+      r.createdAt,
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(","), ...rows.map((e) => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `forest_pizza_takeaway_${new Date().toISOString().split("T")[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   // Loading screen during auth check
   if (isAuthenticated === null) {
     return (
@@ -376,7 +411,7 @@ export default function AdminPage() {
             </div>
             <h1 className="text-2xl font-black text-white">Панель керування</h1>
             <p className="text-xs text-emerald-400">
-              Forest Pizza • Лісовий проспект, 11
+              Forest Pizza • Тільки на винос та доставка • Лісовий просп., 11
             </p>
           </div>
 
@@ -418,7 +453,7 @@ export default function AdminPage() {
               href="/"
               className="text-xs text-emerald-400 hover:text-white underline transition-colors"
             >
-              ← Повернутися на головну сайту
+              ← Повернутися на сайт
             </Link>
           </div>
         </div>
@@ -428,8 +463,8 @@ export default function AdminPage() {
 
   // Calculate quick stats
   const todayStr = new Date().toISOString().split("T")[0];
-  const todayReservations = reservations.filter((r) => r.date === todayStr);
-  const pendingReservations = reservations.filter((r) => r.status === "NEW");
+  const todayTakeaways = takeaways.filter((r) => r.date === todayStr);
+  const pendingTakeaways = takeaways.filter((r) => r.status === "NEW");
   const isTelegramConfigured =
     Boolean(settings.telegram_bot_token?.trim()) &&
     Boolean(settings.telegram_chat_id?.trim());
@@ -452,12 +487,20 @@ export default function AdminPage() {
                 FOREST <span className="text-amber-400">ADMIN</span>
               </span>
               <span className="text-[10px] text-emerald-400 ml-2 bg-[#07130f] px-2 py-0.5 rounded border border-[#183e30]">
-                Лісовий просп., 11
+                Тільки на винос • Лісовий просп., 11
               </span>
             </div>
           </div>
 
           <div className="flex items-center gap-3">
+            <button
+              onClick={() => fetchAllData(true)}
+              className="p-1.5 rounded-lg text-emerald-300 hover:text-white bg-[#07130f] border border-[#1b5243]"
+              title="Оновити дані"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            </button>
+
             <Link
               href="/"
               target="_blank"
@@ -495,26 +538,26 @@ export default function AdminPage() {
                 <RefreshCw className="w-4 h-4" />
                 <span>Огляд</span>
               </span>
-              {pendingReservations.length > 0 && (
+              {pendingTakeaways.length > 0 && (
                 <span className="bg-red-500 text-white text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">
-                  {pendingReservations.length}
+                  {pendingTakeaways.length}
                 </span>
               )}
             </button>
 
             <button
-              onClick={() => setActiveTab("reservations")}
+              onClick={() => setActiveTab("takeaways")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
-                activeTab === "reservations"
+                activeTab === "takeaways"
                   ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
                   : "text-emerald-200 hover:bg-[#143427]"
               }`}
             >
               <span className="flex items-center gap-2.5">
-                <Calendar className="w-4 h-4" />
-                <span>Бронювання</span>
+                <Store className="w-4 h-4" />
+                <span>Замовлення на винос</span>
               </span>
-              <span className="text-xs opacity-70">{reservations.length}</span>
+              <span className="text-xs opacity-70">{takeaways.length}</span>
             </button>
 
             <button
@@ -527,7 +570,7 @@ export default function AdminPage() {
             >
               <span className="flex items-center gap-2.5">
                 <ShoppingBag className="w-4 h-4" />
-                <span>Замовлення</span>
+                <span>Онлайн-кошик</span>
               </span>
               <span className="text-xs opacity-70">{orders.length}</span>
             </button>
@@ -571,32 +614,37 @@ export default function AdminPage() {
           {/* TAB 1: DASHBOARD */}
           {activeTab === "dashboard" && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-black text-white">Огляд роботи ресторану</h2>
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-black text-white">Огляд піцерії на винос</h2>
+                  <p className="text-xs text-emerald-400">Формат: тільки самовивіз та доставка</p>
+                </div>
+              </div>
 
               {/* KPI Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-emerald-400">Сьогодні на броні</p>
+                  <p className="text-xs text-emerald-400">Самовивіз сьогодні</p>
                   <p className="text-3xl font-black text-white mt-1">
-                    {todayReservations.length}
+                    {todayTakeaways.length}
                   </p>
                   <p className="text-[11px] text-emerald-500 mt-1">
-                    {todayReservations.reduce((sum, r) => sum + r.guestsCount, 0)} гостей
+                    Замовлень на винос
                   </p>
                 </div>
 
                 <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-amber-400">Очікують підтвердження</p>
+                  <p className="text-xs text-amber-400">Очікують видачі</p>
                   <p className="text-3xl font-black text-amber-400 mt-1">
-                    {pendingReservations.length}
+                    {pendingTakeaways.length}
                   </p>
-                  <p className="text-[11px] text-emerald-500 mt-1">Нових заявок</p>
+                  <p className="text-[11px] text-emerald-500 mt-1">Нових замовлень</p>
                 </div>
 
                 <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-emerald-400">Всього замовлень</p>
+                  <p className="text-xs text-emerald-400">Замовлень з кошика</p>
                   <p className="text-3xl font-black text-white mt-1">{orders.length}</p>
-                  <p className="text-[11px] text-emerald-500 mt-1">Онлайн замовлень</p>
+                  <p className="text-[11px] text-emerald-500 mt-1">Оформлено онлайн</p>
                 </div>
 
                 <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
@@ -612,26 +660,26 @@ export default function AdminPage() {
                     </p>
                   </div>
                   <p className="text-[11px] text-emerald-500 mt-1">
-                    {isTelegramConfigured ? "Бот підключений" : "Вкажіть токен у налаштуваннях"}
+                    {isTelegramConfigured ? "Бот на кухні підключено" : "Вкажіть токен у налаштуваннях"}
                   </p>
                 </div>
               </div>
 
-              {/* Fresh incoming reservations */}
+              {/* Fresh incoming takeaway orders */}
               <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-white text-lg">
-                    Останні бронювання столиків
+                    Останні замовлення на винос (самовивіз)
                   </h3>
                   <button
-                    onClick={() => setActiveTab("reservations")}
+                    onClick={() => setActiveTab("takeaways")}
                     className="text-xs font-bold text-amber-400 hover:underline"
                   >
-                    Переглянути всі ({reservations.length}) →
+                    Переглянути всі ({takeaways.length}) →
                   </button>
                 </div>
 
-                {reservations.slice(0, 5).map((r) => (
+                {takeaways.slice(0, 5).map((r) => (
                   <div
                     key={r.id}
                     className="bg-[#07130f] p-4 rounded-xl border border-[#1b5243] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
@@ -647,31 +695,36 @@ export default function AdminPage() {
                               ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
                               : r.status === "CONFIRMED"
                               ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
+                              : r.status === "COMPLETED"
+                              ? "bg-blue-500/20 text-blue-300 border border-blue-500/40"
                               : "bg-neutral-800 text-neutral-300"
                           }`}
                         >
                           {r.status === "NEW"
                             ? "НОВЕ"
                             : r.status === "CONFIRMED"
-                            ? "ПІДТВЕРДЖЕНО"
+                            ? "ПРИЙНЯТО В РОБОТУ"
+                            : r.status === "COMPLETED"
+                            ? "ВИДАНО КЛІЄНТУ"
                             : r.status}
                         </span>
                       </div>
-                      <p className="text-xs text-emerald-300 mt-1 flex items-center gap-2">
-                        <span>📅 {r.date} о {r.time}</span>
+                      <p className="text-xs text-emerald-300 mt-1 flex flex-wrap items-center gap-2">
+                        <span className="font-bold text-amber-400">⏰ Час видачі: {r.time}</span>
                         <span>•</span>
-                        <span>👥 {r.guestsCount} гостей</span>
+                        <span>📅 {r.date}</span>
                         <span>•</span>
                         <a
                           href={`tel:${r.phone}`}
-                          className="text-amber-400 font-bold hover:underline"
+                          className="text-emerald-200 font-bold hover:underline flex items-center gap-1"
                         >
-                          {r.phone}
+                          <Phone className="w-3 h-3 text-amber-400" />
+                          <span>{r.phone}</span>
                         </a>
                       </p>
                       {r.comment && (
-                        <p className="text-xs text-emerald-400/80 italic mt-1">
-                          «{r.comment}»
+                        <p className="text-xs text-emerald-400/80 italic mt-1 bg-[#0e221a] px-2 py-1 rounded border border-[#183e30]">
+                          Побажання: «{r.comment}»
                         </p>
                       )}
                     </div>
@@ -679,18 +732,18 @@ export default function AdminPage() {
                     <div className="flex items-center gap-2">
                       {r.status !== "CONFIRMED" && (
                         <button
-                          onClick={() => updateReservationStatus(r.id, "CONFIRMED")}
+                          onClick={() => updateTakeawayStatus(r.id, "CONFIRMED")}
                           className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg"
                         >
-                          Підтвердити
+                          В роботу (піч)
                         </button>
                       )}
                       {r.status !== "COMPLETED" && (
                         <button
-                          onClick={() => updateReservationStatus(r.id, "COMPLETED")}
+                          onClick={() => updateTakeawayStatus(r.id, "COMPLETED")}
                           className="bg-[#0e221a] hover:bg-[#16382b] text-emerald-200 border border-[#1b5243] text-xs font-bold px-3 py-1.5 rounded-lg"
                         >
-                          Завершити
+                          Видано
                         </button>
                       )}
                     </div>
@@ -700,37 +753,50 @@ export default function AdminPage() {
             </div>
           )}
 
-          {/* TAB 2: RESERVATIONS */}
-          {activeTab === "reservations" && (
+          {/* TAB 2: TAKEAWAYS (RESERVATIONS TABLE) */}
+          {activeTab === "takeaways" && (
             <div className="space-y-6">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <h2 className="text-2xl font-black text-white">Бронювання столиків</h2>
+                <div>
+                  <h2 className="text-2xl font-black text-white">Замовлення на винос (самовивіз)</h2>
+                  <p className="text-xs text-emerald-400">Видача замовлень клієнтам на Лісовому просп., 11</p>
+                </div>
 
-                {/* Filter tabs */}
-                <div className="flex items-center gap-1.5 bg-[#0e221a] p-1 rounded-xl border border-[#183e30] overflow-x-auto">
-                  {["ALL", "NEW", "CONFIRMED", "COMPLETED", "CANCELLED"].map(
-                    (st) => (
-                      <button
-                        key={st}
-                        onClick={() => setReservationFilter(st)}
-                        className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                          reservationFilter === st
-                            ? "bg-amber-500 text-black"
-                            : "text-emerald-300 hover:text-white"
-                        }`}
-                      >
-                        {st === "ALL"
-                          ? "Всі"
-                          : st === "NEW"
-                          ? "Нові"
-                          : st === "CONFIRMED"
-                          ? "Підтверджені"
-                          : st === "COMPLETED"
-                          ? "Завершені"
-                          : "Скасовані"}
-                      </button>
-                    )
-                  )}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={exportTakeawaysToCSV}
+                    className="flex items-center gap-1.5 bg-[#0e221a] hover:bg-[#153428] text-emerald-300 border border-[#1b5243] text-xs font-bold px-3 py-2 rounded-xl"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Експорт CSV</span>
+                  </button>
+
+                  {/* Filter tabs */}
+                  <div className="flex items-center gap-1 bg-[#0e221a] p-1 rounded-xl border border-[#183e30] overflow-x-auto">
+                    {["ALL", "NEW", "CONFIRMED", "COMPLETED", "CANCELLED"].map(
+                      (st) => (
+                        <button
+                          key={st}
+                          onClick={() => setTakeawayFilter(st)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                            takeawayFilter === st
+                              ? "bg-amber-500 text-black"
+                              : "text-emerald-300 hover:text-white"
+                          }`}
+                        >
+                          {st === "ALL"
+                            ? "Всі"
+                            : st === "NEW"
+                            ? "Нові"
+                            : st === "CONFIRMED"
+                            ? "В роботі"
+                            : st === "COMPLETED"
+                            ? "Видані"
+                            : "Скасовані"}
+                        </button>
+                      )
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -739,25 +805,25 @@ export default function AdminPage() {
                 <Search className="w-4 h-4 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Пошук за ім'ям або телефоном..."
-                  value={reservationSearch}
-                  onChange={(e) => setReservationSearch(e.target.value)}
+                  placeholder="Пошук за ім'ям або телефоном клієнта..."
+                  value={takeawaySearch}
+                  onChange={(e) => setTakeawaySearch(e.target.value)}
                   className="w-full bg-[#0e221a] border border-[#183e30] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-emerald-600/50 focus:outline-none focus:border-emerald-400"
                 />
               </div>
 
-              {/* Reservations list */}
+              {/* Takeaway orders list */}
               <div className="space-y-3">
-                {reservations
+                {takeaways
                   .filter((r) => {
                     const matchesStatus =
-                      reservationFilter === "ALL" || r.status === reservationFilter;
+                      takeawayFilter === "ALL" || r.status === takeawayFilter;
                     const matchesQuery =
-                      reservationSearch === "" ||
+                      takeawaySearch === "" ||
                       r.customerName
                         .toLowerCase()
-                        .includes(reservationSearch.toLowerCase()) ||
-                      r.phone.includes(reservationSearch);
+                        .includes(takeawaySearch.toLowerCase()) ||
+                      r.phone.includes(takeawaySearch);
                     return matchesStatus && matchesQuery;
                   })
                   .map((r) => (
@@ -784,9 +850,9 @@ export default function AdminPage() {
                             {r.status === "NEW"
                               ? "Нове"
                               : r.status === "CONFIRMED"
-                              ? "Підтверджено"
+                              ? "Прийнято в роботу"
                               : r.status === "COMPLETED"
-                              ? "Завершено"
+                              ? "Видано клієнту"
                               : "Скасовано"}
                           </span>
 
@@ -809,9 +875,8 @@ export default function AdminPage() {
                         </div>
 
                         <div className="text-xs text-emerald-300 flex flex-wrap items-center gap-3">
-                          <span className="font-bold text-white">📅 {r.date}</span>
-                          <span className="font-bold text-amber-400">⏰ {r.time}</span>
-                          <span>👥 {r.guestsCount} гостей</span>
+                          <span className="font-bold text-amber-400">⏰ Час видачі: {r.time}</span>
+                          <span>📅 {r.date}</span>
                           <a
                             href={`tel:${r.phone}`}
                             className="text-emerald-200 hover:text-white font-bold flex items-center gap-1 bg-[#07130f] px-2 py-0.5 rounded border border-[#1b5243]"
@@ -833,20 +898,20 @@ export default function AdminPage() {
                         <select
                           value={r.status}
                           onChange={(e) =>
-                            updateReservationStatus(r.id, e.target.value)
+                            updateTakeawayStatus(r.id, e.target.value)
                           }
                           className="bg-[#07130f] border border-[#1b5243] rounded-xl px-3 py-1.5 text-xs text-emerald-200 focus:outline-none focus:border-amber-400"
                         >
                           <option value="NEW">Нове</option>
-                          <option value="CONFIRMED">Підтверджено</option>
-                          <option value="COMPLETED">Завершено</option>
+                          <option value="CONFIRMED">Прийнято в роботу</option>
+                          <option value="COMPLETED">Видано клієнту</option>
                           <option value="CANCELLED">Скасовано</option>
                         </select>
 
                         <button
-                          onClick={() => deleteReservation(r.id)}
+                          onClick={() => deleteTakeaway(r.id)}
                           className="p-2 text-red-400 hover:text-red-300 bg-[#07130f] hover:bg-red-950/40 rounded-xl border border-red-900/50 transition-colors"
-                          title="Видалити бронювання"
+                          title="Видалити"
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
@@ -860,7 +925,10 @@ export default function AdminPage() {
           {/* TAB 3: ORDERS */}
           {activeTab === "orders" && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-black text-white">Замовлення піци онлайн</h2>
+              <div>
+                <h2 className="text-2xl font-black text-white">Замовлення піци з онлайн-кошика</h2>
+                <p className="text-xs text-emerald-400">Детальний список обраних піц з бортиками та додатками</p>
+              </div>
 
               {orders.length === 0 ? (
                 <div className="bg-[#0e221a] p-12 text-center rounded-2xl border border-[#183e30]">
@@ -898,8 +966,8 @@ export default function AdminPage() {
                           >
                             <option value="NEW">Нове</option>
                             <option value="PREPARING">Готується в печі</option>
-                            <option value="DELIVERING">В дорозі</option>
-                            <option value="COMPLETED">Виконано</option>
+                            <option value="READY">Готово до видачі</option>
+                            <option value="COMPLETED">Видано</option>
                             <option value="CANCELLED">Скасовано</option>
                           </select>
                           <button
@@ -925,10 +993,13 @@ export default function AdminPage() {
                         <div>
                           <p className="text-emerald-400 font-semibold mb-1">Отримання:</p>
                           <p className="text-white">
-                            {o.orderType === "DELIVERY" ? "🚚 Доставка" : "🏃 Самовивіз"}
+                            {o.orderType === "DELIVERY" ? "🚚 Доставка" : "🏃 Самовивіз на винос"}
                           </p>
+                          {o.pickupTime && (
+                            <p className="text-amber-400 mt-1">⏰ Час видачі: {o.pickupTime}</p>
+                          )}
                           {o.address && (
-                            <p className="text-emerald-300 mt-1">Адреса: {o.address}</p>
+                            <p className="text-emerald-300 mt-1">Адреса / точка: {o.address}</p>
                           )}
                           {o.comment && (
                             <p className="text-emerald-400/80 italic mt-1">
@@ -982,7 +1053,7 @@ export default function AdminPage() {
                 </button>
               </div>
 
-              {/* Menu Categories Accordion / Sections */}
+              {/* Menu Categories Sections */}
               <div className="space-y-6">
                 {categories.map((cat) => (
                   <div
@@ -1065,10 +1136,10 @@ export default function AdminPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-black text-white">
-                  Налаштування системи
+                  Налаштування піцерії
                 </h2>
                 <p className="text-xs text-emerald-400">
-                  Telegram-сповіщення, контакти закладу, пароль адміна
+                  Telegram-сповіщення, точка видачі на Лісовому, час приготування, пароль
                 </p>
               </div>
 
@@ -1096,10 +1167,10 @@ export default function AdminPage() {
                     <Send className="w-5 h-5 text-amber-400" />
                     <div>
                       <h3 className="font-extrabold text-white text-base">
-                        Сповіщення в Telegram
+                        Сповіщення в Telegram на кухню
                       </h3>
                       <p className="text-xs text-emerald-400">
-                        Миттєве надсилання кожного бронювання та замовлення на ваш телефон
+                        Миттєве надсилання кожного замовлення на винос піцайоло у месенджер
                       </p>
                     </div>
                   </div>
@@ -1107,13 +1178,13 @@ export default function AdminPage() {
                   <div className="bg-[#07130f] p-4 rounded-xl border border-[#1b5243] text-xs text-emerald-300 space-y-2">
                     <p className="font-bold text-amber-400 flex items-center gap-1.5">
                       <HelpCircle className="w-4 h-4" />
-                      <span>Як отримати токен та Chat ID за 2 хвилини:</span>
+                      <span>Як підключити Telegram-бота за 2 хвилини:</span>
                     </p>
                     <ol className="list-decimal list-inside space-y-1 text-emerald-300/90">
-                      <li>Відкрийте Telegram та знайдіть бота <b>@BotFather</b>. Надішліть команду <code>/newbot</code>.</li>
+                      <li>Відкрийте Telegram та знайдіть <b>@BotFather</b>. Надішліть команду <code>/newbot</code>.</li>
                       <li>Скопіюйте згенерований <b>HTTP API Token</b> і вставте в поле нижче.</li>
-                      <li>Знайдіть свого створеного бота в пошуку Telegram і натисніть кнопку <b>Start</b>.</li>
-                      <li>Щоб дізнатися свій Chat ID: відкрийте бота <b>@userinfobot</b> (для особистого чату) або додайте свого бота до робочої групи та перевірте ID через <b>@myidbot</b>.</li>
+                      <li>Знайдіть свого створеного бота в Telegram і натисніть кнопку <b>Start</b>.</li>
+                      <li>Дізнайтеся ваш Chat ID через <b>@userinfobot</b> (для особистого чату) або додайте бота у робочу групу персоналу та перевірте ID через <b>@myidbot</b>.</li>
                     </ol>
                   </div>
 
@@ -1166,21 +1237,21 @@ export default function AdminPage() {
                       )}
                     </button>
                     <span className="text-[11px] text-emerald-500">
-                      Тестове повідомлення перевірить валідність токена та ID безпосередньо через Telegram API.
+                      Тестове повідомлення миттєво підтвердить роботу сповіщень.
                     </span>
                   </div>
                 </div>
 
-                {/* 2. Restaurant Info */}
+                {/* 2. Restaurant & Takeaway Point Info */}
                 <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
                   <h3 className="font-extrabold text-white text-base border-b border-[#183e30] pb-3">
-                    Інформація про заклад
+                    Точка самовивозу та контакти
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Назва ресторану
+                        Назва піцерії
                       </label>
                       <input
                         type="text"
@@ -1194,7 +1265,7 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Адреса
+                        Адреса точки видачі (самовивозу)
                       </label>
                       <input
                         type="text"
@@ -1208,7 +1279,7 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Контактний телефон
+                        Контактний телефон для замовлень
                       </label>
                       <input
                         type="text"
@@ -1236,13 +1307,13 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Посилання на Instagram
+                        Середній час приготування
                       </label>
                       <input
                         type="text"
-                        value={settings.instagram_url || ""}
+                        value={settings.pickup_time_default || "15-20 хвилин"}
                         onChange={(e) =>
-                          setSettings({ ...settings, instagram_url: e.target.value })
+                          setSettings({ ...settings, pickup_time_default: e.target.value })
                         }
                         className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
                       />
@@ -1250,30 +1321,7 @@ export default function AdminPage() {
 
                     <div>
                       <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Посилання на Google Maps
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.maps_url || ""}
-                        onChange={(e) =>
-                          setSettings({ ...settings, maps_url: e.target.value })
-                        }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3. Booking Settings & Admin Security */}
-                <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
-                  <h3 className="font-extrabold text-white text-base border-b border-[#183e30] pb-3">
-                    Бронювання та безпека
-                  </h3>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Повідомлення для гостя після бронювання
+                        Повідомлення клієнту після замовлення
                       </label>
                       <input
                         type="text"
@@ -1284,23 +1332,30 @@ export default function AdminPage() {
                         className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
                       />
                     </div>
+                  </div>
+                </div>
 
-                    <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
-                        Пароль до адмін-панелі
-                      </label>
-                      <input
-                        type="text"
-                        value={settings.admin_password || ""}
-                        onChange={(e) =>
-                          setSettings({ ...settings, admin_password: e.target.value })
-                        }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-amber-400"
-                      />
-                      <p className="text-[11px] text-emerald-500 mt-1">
-                        Збережіть форму, щоб оновити пароль доступу.
-                      </p>
-                    </div>
+                {/* 3. Admin Security */}
+                <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
+                  <h3 className="font-extrabold text-white text-base border-b border-[#183e30] pb-3">
+                    Безпека входу
+                  </h3>
+
+                  <div className="max-w-md">
+                    <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      Пароль до адмін-панелі
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.admin_password || ""}
+                      onChange={(e) =>
+                        setSettings({ ...settings, admin_password: e.target.value })
+                      }
+                      className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-amber-400"
+                    />
+                    <p className="text-[11px] text-emerald-500 mt-1">
+                      Збережіть форму, щоб оновити пароль адміністратора.
+                    </p>
                   </div>
                 </div>
 
@@ -1498,4 +1553,3 @@ export default function AdminPage() {
     </div>
   );
 }
-

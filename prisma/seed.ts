@@ -3,22 +3,21 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding Forest Pizza database...");
+  console.log("Seeding Forest Pizza database (Takeaway format)...");
 
   // 1. Settings
   const defaultSettings = [
     { key: "restaurant_name", value: "Forest Pizza", description: "Назва закладу" },
-    { key: "restaurant_address", value: "м. Київ, Лісовий проспект, 11 (Лісовий масив)", description: "Адреса закладу" },
-    { key: "restaurant_phone", value: "+380 (97) 845-12-34", description: "Телефон для довідок та замовлень" },
+    { key: "restaurant_address", value: "м. Київ, Лісовий проспект, 11 (Лісовий масив)", description: "Адреса точки видачі / самовивозу" },
+    { key: "restaurant_phone", value: "+380 (97) 845-12-34", description: "Телефон для замовлень на винос" },
     { key: "restaurant_email", value: "forestpizza.kyiv@gmail.com", description: "Контактний email" },
-    { key: "working_hours", value: "Щодня з 10:00 до 22:00", description: "Графік роботи" },
+    { key: "working_hours", value: "Щодня з 10:00 до 22:00 (тільки на винос та доставка)", description: "Графік роботи" },
     { key: "instagram_url", value: "https://www.instagram.com/forestpizza.kyiv", description: "Посилання на Instagram" },
     { key: "maps_url", value: "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z", description: "Посилання на Google Maps" },
     { key: "telegram_bot_token", value: "", description: "Токен Telegram-бота для сповіщень" },
     { key: "telegram_chat_id", value: "", description: "Chat ID адміністратора/групи для сповіщень" },
-    { key: "reservation_notice", value: "Ми обов'язково підтвердимо ваше бронювання телефоном або в месенджері за 10-15 хвилин.", description: "Повідомлення для гостя при бронюванні" },
-    { key: "min_guests", value: "1", description: "Мінімальна кількість гостей" },
-    { key: "max_guests", value: "20", description: "Максимальна кількість гостей онлайн" },
+    { key: "reservation_notice", value: "Замовлення на винос прийнято! Піца буде гарячою та чекатиме вас за 15-20 хв за адресою: Лісовий проспект, 11.", description: "Повідомлення клієнту після замовлення на винос" },
+    { key: "pickup_time_default", value: "15-20 хвилин", description: "Середній час приготування" },
     { key: "admin_password", value: "forest2026", description: "Пароль до панелі керування" }
   ];
 
@@ -277,7 +276,7 @@ async function main() {
     });
   }
 
-  // 4. Sample demo reservations to make the admin panel lively immediately
+  // 4. Sample takeaway pre-orders
   await prisma.reservation.deleteMany({});
   await prisma.reservation.createMany({
     data: [
@@ -286,8 +285,7 @@ async function main() {
         phone: "+380 98 765 43 21",
         date: new Date().toISOString().split("T")[0],
         time: "19:00",
-        guestsCount: 4,
-        comment: "Святкуємо день народження, якщо можливо біля вікна",
+        comment: "Заберу сам з машини біля входу, піцу порізати на 8 шматочків",
         status: "NEW",
         telegramSent: false,
       },
@@ -295,26 +293,15 @@ async function main() {
         customerName: "Олена Петренко",
         phone: "+380 50 123 99 88",
         date: new Date().toISOString().split("T")[0],
-        time: "20:30",
-        guestsCount: 2,
-        comment: "Романтична вечеря",
+        time: "Якомога швидше (15-20 хв)",
+        comment: "Самовивіз на винос",
         status: "CONFIRMED",
         telegramSent: true,
-      },
-      {
-        customerName: "Дмитро Грищенко",
-        phone: "+380 93 456 78 90",
-        date: new Date(Date.now() + 86400000).toISOString().split("T")[0],
-        time: "18:00",
-        guestsCount: 6,
-        comment: "Потрібен великий стіл для компанії",
-        status: "NEW",
-        telegramSent: false,
       },
     ],
   });
 
-  console.log("Database seeded successfully!");
+  console.log("Database seeded successfully for takeaway!");
 }
 
 main()
@@ -325,4 +312,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
