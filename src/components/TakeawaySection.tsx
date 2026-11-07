@@ -9,7 +9,7 @@ interface TakeawaySectionProps {
 }
 
 export function TakeawaySection({
-  takeawayNotice = "Замовлення на винос прийнято! Піца буде готова за 15-20 хвилин (або на обраний час) за адресою: Лісовий проспект, 11.",
+  takeawayNotice = "Замовлення на винос прийнято! Піца буде готова за 15-20 хвилин за адресою: Лісовий проспект, 11.",
   restaurantPhone = "+380 (97) 845-12-34",
 }: TakeawaySectionProps) {
   const todayStr = new Date().toISOString().split("T")[0];
@@ -81,117 +81,117 @@ export function TakeawaySection({
   };
 
   return (
-    <section id="takeaway" className="py-16 lg:py-24 bg-gradient-to-b from-[#07130f] to-[#091b14] border-t border-b border-[#183e30]">
+    <section id="takeaway" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-[#0d0f11] via-[#121417] to-[#0d0f11] border-t border-b border-[#242830]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-10 space-y-3">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-wider">
-            <Store className="w-3.5 h-3.5 text-amber-400" />
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-3">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider">
+            <Store className="w-3.5 h-3.5 text-orange-500" />
             <span>Формат: Тільки на винос (Takeaway)</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-            Замовлення з собою на час
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+            Швидке замовлення з собою на час
           </h2>
-          <p className="text-emerald-200/80 text-sm sm:text-base leading-relaxed">
-            У нас заклад працює <b>виключно на винос та самовивіз</b>. Оформіть попереднє замовлення —
-            заявка миттєво летить піцайоло в Telegram, і гаряча піца чекатиме вас у призначений час без жодних черг!
+          <p className="text-neutral-300 text-xs sm:text-sm lg:text-base leading-relaxed">
+            Ми працюємо <b>виключно на винос та доставку</b>. Вкажіть бажаний час або забирайте через 15 хвилин —
+            заявка миттєво летить у Telegram на кухню піцерії!
           </p>
         </div>
 
         {/* Success Modal / Card */}
         {successData ? (
-          <div className="bg-[#0e221a] border-2 border-emerald-500/50 rounded-3xl p-8 sm:p-12 text-center max-w-xl mx-auto shadow-2xl space-y-6 animate-fadeIn">
-            <div className="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto text-emerald-400 border border-emerald-500/40">
-              <CheckCircle2 className="w-10 h-10" />
+          <div className="bg-[#15181c] border-2 border-orange-500/50 rounded-3xl p-6 sm:p-10 text-center max-w-xl mx-auto shadow-2xl space-y-5 animate-fadeIn">
+            <div className="w-16 h-16 bg-orange-500/20 rounded-full flex items-center justify-center mx-auto text-orange-400 border border-orange-500/40">
+              <CheckCircle2 className="w-9 h-9" />
             </div>
 
-            <div className="space-y-2">
-              <h3 className="text-2xl sm:text-3xl font-black text-white">
+            <div className="space-y-1.5">
+              <h3 className="text-xl sm:text-2xl font-black text-white">
                 Замовлення на винос прийнято!
               </h3>
-              <p className="text-emerald-300 text-sm">
-                Дякуємо, <b>{successData.customerName}</b>! Піцайоло у Forest Pizza вже отримав сповіщення в Telegram.
+              <p className="text-neutral-300 text-xs sm:text-sm">
+                Дякуємо, <b>{successData.customerName}</b>! Повідомлення вже надіслано в Telegram піцайоло Forest Pizza.
               </p>
             </div>
 
-            <div className="bg-[#07130f] p-5 rounded-2xl border border-[#1b5243] text-left text-xs sm:text-sm space-y-2.5">
-              <div className="flex justify-between items-center text-emerald-300">
+            <div className="bg-[#0e1013] p-4 sm:p-5 rounded-2xl border border-[#2b303a] text-left text-xs sm:text-sm space-y-2">
+              <div className="flex justify-between items-center text-neutral-300">
                 <span>⏰ Час видачі:</span>
-                <span className="font-bold text-amber-400">{successData.time}</span>
+                <span className="font-black text-orange-400">{successData.time}</span>
               </div>
-              <div className="flex justify-between items-center text-emerald-300">
+              <div className="flex justify-between items-center text-neutral-300">
                 <span>📍 Точка видачі:</span>
-                <span className="font-bold text-white">Лісовий проспект, 11 (м. Київ)</span>
+                <span className="font-bold text-white">м. Київ, Лісовий проспект, 11</span>
               </div>
-              <div className="flex justify-between items-center text-emerald-300">
+              <div className="flex justify-between items-center text-neutral-300">
                 <span>📦 Формат:</span>
-                <span className="font-bold text-emerald-400">Самовивіз на винос (Takeaway)</span>
+                <span className="font-bold text-orange-400">Самовивіз на винос</span>
               </div>
             </div>
 
-            <p className="text-xs text-emerald-400/80 leading-relaxed">
+            <p className="text-xs text-orange-300/80 leading-relaxed">
               {takeawayNotice}
             </p>
 
             <button
               onClick={() => setSuccessData(null)}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm px-6 py-2.5 rounded-xl transition-all"
+              className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-6 py-2.5 rounded-xl transition-all"
             >
               Зробити ще одне замовлення
             </button>
           </div>
         ) : (
           /* Form Container */
-          <div className="bg-[#0e221a] border border-[#183e30] rounded-3xl p-6 sm:p-10 shadow-2xl relative">
-            <form onSubmit={handleSubmit} className="space-y-7">
+          <div className="bg-[#15181c] border border-[#262b34] rounded-3xl p-5 sm:p-8 shadow-2xl relative">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {errorMessage && (
-                <div className="p-4 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-sm flex items-center gap-3">
-                  <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-400" />
+                <div className="p-3.5 rounded-xl bg-red-950/80 border border-red-800 text-red-200 text-xs flex items-center gap-2.5">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0 text-red-400" />
                   <span>{errorMessage}</span>
                 </div>
               )}
 
               {/* Step 1: Ready time selection */}
               <div className="space-y-3">
-                <label className="block text-sm font-bold text-emerald-300 flex items-center gap-2">
-                  <Clock className="w-4 h-4 text-amber-400" />
-                  <span>1. Коли приготувати піцу на винос?</span>
+                <label className="block text-xs sm:text-sm font-black text-white flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-orange-500" />
+                  <span>1. Коли приготувати піцу?</span>
                 </label>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setTimeOption("asap")}
-                    className={`p-3.5 rounded-2xl border text-left flex items-start gap-3 transition-all ${
+                    className={`p-3.5 rounded-2xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
                       timeOption === "asap"
-                        ? "bg-emerald-950/60 border-amber-400 shadow-md shadow-amber-400/10"
-                        : "bg-[#07130f] border-[#1b5243] hover:bg-[#122e22]"
+                        ? "bg-orange-950/40 border-orange-500 shadow-md shadow-orange-950/30"
+                        : "bg-[#0e1013] border-[#2b303a] hover:bg-[#1a1e24]"
                     }`}
                   >
-                    <div className={`p-2 rounded-xl ${timeOption === "asap" ? "bg-amber-500 text-black" : "bg-[#0e221a] text-emerald-400"}`}>
+                    <div className={`p-2 rounded-xl ${timeOption === "asap" ? "bg-orange-500 text-white" : "bg-[#171a1f] text-orange-400"}`}>
                       <Sparkles className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-extrabold text-white text-sm">Якомога швидше</p>
-                      <p className="text-xs text-emerald-400/80 mt-0.5">Готовність через 15–20 хвилин</p>
+                      <p className="font-black text-white text-sm">Якомога швидше</p>
+                      <p className="text-xs text-orange-400 mt-0.5 font-bold">Готовність через 15–20 хвилин</p>
                     </div>
                   </button>
 
                   <button
                     type="button"
                     onClick={() => setTimeOption("custom")}
-                    className={`p-3.5 rounded-2xl border text-left flex items-start gap-3 transition-all ${
+                    className={`p-3.5 rounded-2xl border text-left flex items-start gap-3 transition-all cursor-pointer ${
                       timeOption === "custom"
-                        ? "bg-emerald-950/60 border-amber-400 shadow-md shadow-amber-400/10"
-                        : "bg-[#07130f] border-[#1b5243] hover:bg-[#122e22]"
+                        ? "bg-orange-950/40 border-orange-500 shadow-md shadow-orange-950/30"
+                        : "bg-[#0e1013] border-[#2b303a] hover:bg-[#1a1e24]"
                     }`}
                   >
-                    <div className={`p-2 rounded-xl ${timeOption === "custom" ? "bg-amber-500 text-black" : "bg-[#0e221a] text-emerald-400"}`}>
+                    <div className={`p-2 rounded-xl ${timeOption === "custom" ? "bg-orange-500 text-white" : "bg-[#171a1f] text-orange-400"}`}>
                       <Clock className="w-4 h-4" />
                     </div>
                     <div>
-                      <p className="font-extrabold text-white text-sm">На точний час</p>
-                      <p className="text-xs text-emerald-400/80 mt-0.5">Оберіть зручний час сьогодні</p>
+                      <p className="font-black text-white text-sm">На точний час</p>
+                      <p className="text-xs text-neutral-400 mt-0.5">Оберіть зручний час сьогодні</p>
                     </div>
                   </button>
                 </div>
@@ -199,17 +199,17 @@ export function TakeawaySection({
                 {/* Custom Time Slots if chosen */}
                 {timeOption === "custom" && (
                   <div className="pt-2 animate-fadeIn space-y-2">
-                    <p className="text-xs text-emerald-400">Оберіть час самовивозу:</p>
+                    <p className="text-xs text-neutral-400">Оберіть час самовивозу на винос:</p>
                     <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
                       {timeSlots.map((slot) => (
                         <button
                           key={slot}
                           type="button"
                           onClick={() => setCustomTime(slot)}
-                          className={`py-2 rounded-xl text-xs font-bold transition-all ${
+                          className={`py-2 rounded-xl text-xs font-black transition-all cursor-pointer ${
                             customTime === slot
-                              ? "bg-emerald-600 text-white shadow-md shadow-emerald-700/30 scale-105"
-                              : "bg-[#07130f] text-emerald-300 border border-[#183e30] hover:bg-[#132c21]"
+                              ? "bg-orange-500 text-white shadow-md shadow-orange-900/50 scale-105"
+                              : "bg-[#0e1013] text-neutral-300 border border-[#2b303a] hover:bg-[#1c1f24]"
                           }`}
                         >
                           {slot}
@@ -221,15 +221,15 @@ export function TakeawaySection({
               </div>
 
               {/* Step 2: Contact info */}
-              <div className="space-y-4 pt-3 border-t border-[#183e30]">
-                <label className="block text-sm font-bold text-emerald-300 flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-amber-400" />
-                  <span>2. Ваші контакти для видачі</span>
+              <div className="space-y-3.5 pt-3 border-t border-[#242830]">
+                <label className="block text-xs sm:text-sm font-black text-white flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-orange-500" />
+                  <span>2. Ваші контакти для отримання</span>
                 </label>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs text-emerald-400 mb-1">
+                    <label className="block text-xs text-neutral-400 mb-1">
                       Ваше ім&apos;я *
                     </label>
                     <input
@@ -238,12 +238,12 @@ export function TakeawaySection({
                       placeholder="Олександр"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-white placeholder-emerald-600/50 text-sm focus:outline-none focus:border-amber-400"
+                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs text-emerald-400 mb-1">
+                    <label className="block text-xs text-neutral-400 mb-1">
                       Номер телефону *
                     </label>
                     <input
@@ -252,40 +252,40 @@ export function TakeawaySection({
                       placeholder="+380 (97) 123-45-67"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-white placeholder-emerald-600/50 text-sm focus:outline-none focus:border-amber-400"
+                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs text-emerald-400 mb-1 flex items-center gap-1.5">
-                    <MessageSquare className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Побажання до піци або самовивозу (необов&apos;язково)</span>
+                  <label className="block text-xs text-neutral-400 mb-1 flex items-center gap-1.5">
+                    <MessageSquare className="w-3.5 h-3.5 text-orange-500" />
+                    <span>Побажання до піци (необов&apos;язково)</span>
                   </label>
                   <input
                     type="text"
-                    placeholder="Наприклад: порізати на 8 шматочків, додати серветки, заберу з авто біля входу"
+                    placeholder="Напр., порізати на 8 частин, покласти серветки, заберу з авто"
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-white placeholder-emerald-600/50 text-sm focus:outline-none focus:border-amber-400"
+                    className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
                   />
                 </div>
               </div>
 
-              {/* Notice & Submit */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="text-xs text-emerald-400/80 text-center sm:text-left">
-                  <p className="flex items-center gap-1.5 font-medium">
-                    <MapPin className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />
-                    <span>Видача за адресою: <b>м. Київ, Лісовий проспект, 11</b></span>
+              {/* Submit Button */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="text-xs text-neutral-400 text-center sm:text-left">
+                  <p className="flex items-center gap-1.5 text-orange-300 font-bold">
+                    <MapPin className="w-3.5 h-3.5 text-orange-500 flex-shrink-0" />
+                    <span>Точка видачі: <b>м. Київ, Лісовий проспект, 11</b></span>
                   </p>
-                  <p className="mt-0.5">🔔 Замовлення миттєво летить у Telegram на кухню піцерії.</p>
+                  <p className="mt-0.5">🔔 Замовлення миттєво надходить у Telegram піцайоло.</p>
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-base px-8 py-3.5 rounded-xl shadow-lg shadow-amber-600/20 transition-all disabled:opacity-50"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-sm sm:text-base px-8 py-3.5 rounded-xl shadow-lg shadow-orange-950/60 transition-all disabled:opacity-50 cursor-pointer"
                 >
                   {loading ? (
                     <span>Надсилаємо на кухню...</span>
@@ -304,4 +304,3 @@ export function TakeawaySection({
     </section>
   );
 }
-

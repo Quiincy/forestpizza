@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { Plus, Check, Search, Sparkles, Flame, Info } from "lucide-react";
+import { Plus, Check, Search, Sparkles, Flame, Info, Pizza, X } from "lucide-react";
 
 export interface MenuItemData {
   id: string;
@@ -28,91 +28,222 @@ interface MenuSectionProps {
   categories: CategoryData[];
 }
 
+type PizzaSubfilter = "all" | "meat" | "seafood" | "cheese" | "spicy";
+
 export function MenuSection({ categories }: MenuSectionProps) {
   const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [pizzaSubfilter, setPizzaSubfilter] = useState<PizzaSubfilter>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  // Filter items
+  // Flatten all items with category slug
   const allItems = categories.flatMap((c) =>
     c.items.map((item) => ({ ...item, categorySlug: c.slug, categoryName: c.name }))
   );
 
   const filteredItems = allItems.filter((item) => {
+    // Category match
     const matchesCategory =
       activeCategory === "all" || item.categorySlug === activeCategory;
+
+    // Search query match
+    const q = searchQuery.toLowerCase().trim();
     const matchesSearch =
-      searchQuery === "" ||
-      item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchQuery.toLowerCase());
+      q === "" ||
+      item.name.toLowerCase().includes(q) ||
+      item.description.toLowerCase().includes(q);
+
+    // Pizza subfilter match
+    if (activeCategory === "pizza" || activeCategory === "all") {
+      if (item.categorySlug === "pizza" && pizzaSubfilter !== "all") {
+        const desc = (item.name + " " + item.description + " " + (item.badge || "")).toLowerCase();
+        if (pizzaSubfilter === "meat") {
+          const isMeat =
+            desc.includes("бекон") ||
+            desc.includes("балик") ||
+            desc.includes("пепероні") ||
+            desc.includes("курка") ||
+            desc.includes("куряч") ||
+            desc.includes("салямі") ||
+            desc.includes("ковбас");
+          if (!isMeat) return false;
+        } else if (pizzaSubfilter === "seafood") {
+          const isSeafood =
+            desc.includes("лосось") ||
+            desc.includes("морськ") ||
+            desc.includes("тунець") ||
+            desc.includes("морепродукт");
+          if (!isSeafood) return false;
+        } else if (pizzaSubfilter === "cheese") {
+          const isCheese =
+            desc.includes("4 сири") ||
+            desc.includes("горгонзол") ||
+            desc.includes("прошут") ||
+            desc.includes("італійськ") ||
+            desc.includes("цезар");
+          if (!isCheese) return false;
+        } else if (pizzaSubfilter === "spicy") {
+          const isSpicy =
+            desc.includes("гостр") ||
+            desc.includes("халапень") ||
+            desc.includes("д'ябло") ||
+            desc.includes("мексиканськ");
+          if (!isSpicy) return false;
+        }
+      }
+    }
+
     return matchesCategory && matchesSearch;
   });
 
+  const pizzaCount = allItems.filter((i) => i.categorySlug === "pizza").length;
+
   return (
-    <section id="menu" className="py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="menu" className="py-12 sm:py-16 lg:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-10 space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider">
-          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-          <span>Свіже щодня</span>
+      <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12 space-y-3">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider">
+          <Flame className="w-3.5 h-3.5 text-orange-500" />
+          <span>Справжнє меню з печі</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-          Наше фірмове меню
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+          Наше повне меню піци на винос
         </h2>
-        <p className="text-emerald-200/80 text-sm sm:text-base">
-          10 авторських рецептів піци, пухкі сирні й ковбасні бортики, гарячі закуски та свіже крафтове пиво.
+        <p className="text-neutral-300 text-xs sm:text-sm lg:text-base leading-relaxed">
+          Усі 22 види піци за оригінальними рецептами, соковиті сирні й ковбасні бортики, хрусткі закуски та напої.
         </p>
 
-        {/* Search bar */}
+        {/* Mobile-Friendly Search bar */}
         <div className="relative max-w-md mx-auto pt-2">
-          <Search className="w-4 h-4 text-emerald-400 absolute left-4 top-1/2 -translate-y-1/2" />
+          <Search className="w-4 h-4 text-orange-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Пошук піци або інгредієнтів (напр. пепероні, прошуто)..."
-            className="w-full pl-11 pr-4 py-2.5 rounded-xl bg-[#0e221a] border border-[#1b5243] text-white placeholder-emerald-500/60 text-sm focus:outline-none focus:border-emerald-400 transition-colors"
+            placeholder="Пошук (пепероні, лосось, 4 м'яса, бортик)..."
+            className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#15181c] border border-[#2b303a] text-white placeholder-neutral-500 text-xs sm:text-sm focus:outline-none focus:border-orange-500 transition-colors"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-white p-1"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Category Tabs */}
-      <div className="flex items-center justify-center gap-2 overflow-x-auto pb-6 scrollbar-none">
+      {/* Main Category Tabs - Horizontal Touch Scroll for Mobile */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-3 sm:pb-4 scrollbar-none snap-x touch-pan-x justify-start sm:justify-center">
         <button
-          onClick={() => setActiveCategory("all")}
-          className={`px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${
+          onClick={() => {
+            setActiveCategory("all");
+            setPizzaSubfilter("all");
+          }}
+          className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer ${
             activeCategory === "all"
-              ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20"
-              : "bg-[#0e221a] text-emerald-200 hover:bg-[#16382b] border border-[#1b5243]"
+              ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-950/60 scale-[1.02]"
+              : "bg-[#15181c] text-neutral-300 hover:bg-[#20242b] border border-[#2b303a]"
           }`}
         >
           Усе меню
         </button>
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.slug)}
-            className={`px-5 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition-all ${
-              activeCategory === cat.slug
-                ? "bg-amber-500 text-black shadow-lg shadow-amber-500/20"
-                : "bg-[#0e221a] text-emerald-200 hover:bg-[#16382b] border border-[#1b5243]"
-            }`}
-          >
-            {cat.name}
-          </button>
-        ))}
+
+        <button
+          onClick={() => setActiveCategory("pizza")}
+          className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer flex items-center gap-1.5 ${
+            activeCategory === "pizza"
+              ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-950/60 scale-[1.02]"
+              : "bg-[#15181c] text-neutral-300 hover:bg-[#20242b] border border-[#2b303a]"
+          }`}
+        >
+          <span>🍕 Піца ({pizzaCount})</span>
+        </button>
+
+        {categories
+          .filter((c) => c.slug !== "pizza")
+          .map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.slug)}
+              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer ${
+                activeCategory === cat.slug
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-950/60 scale-[1.02]"
+                  : "bg-[#15181c] text-neutral-300 hover:bg-[#20242b] border border-[#2b303a]"
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
       </div>
 
-      {/* Menu Grid */}
+      {/* Pizza Subcategories (Only visible when "all" or "pizza" is selected) */}
+      {(activeCategory === "all" || activeCategory === "pizza") && (
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-6 scrollbar-none snap-x justify-start sm:justify-center">
+          <button
+            onClick={() => setPizzaSubfilter("all")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              pizzaSubfilter === "all"
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
+                : "bg-[#101216] text-neutral-400 border border-[#22262e] hover:text-white"
+            }`}
+          >
+            Всі 22 піци
+          </button>
+          <button
+            onClick={() => setPizzaSubfilter("meat")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              pizzaSubfilter === "meat"
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
+                : "bg-[#101216] text-neutral-400 border border-[#22262e] hover:text-white"
+            }`}
+          >
+            🍖 М&apos;ясні
+          </button>
+          <button
+            onClick={() => setPizzaSubfilter("seafood")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              pizzaSubfilter === "seafood"
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
+                : "bg-[#101216] text-neutral-400 border border-[#22262e] hover:text-white"
+            }`}
+          >
+            🦐 З морепродуктами
+          </button>
+          <button
+            onClick={() => setPizzaSubfilter("cheese")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              pizzaSubfilter === "cheese"
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
+                : "bg-[#101216] text-neutral-400 border border-[#22262e] hover:text-white"
+            }`}
+          >
+            🧀 Сирні та вишукані
+          </button>
+          <button
+            onClick={() => setPizzaSubfilter("spicy")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              pizzaSubfilter === "spicy"
+                ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
+                : "bg-[#101216] text-neutral-400 border border-[#22262e] hover:text-white"
+            }`}
+          >
+            🔥 Гострі
+          </button>
+        </div>
+      )}
+
+      {/* Menu Items Grid */}
       {filteredItems.length === 0 ? (
-        <div className="text-center py-16 bg-[#0e221a]/50 rounded-2xl border border-[#1b5243] max-w-md mx-auto">
-          <Info className="w-10 h-10 text-emerald-400 mx-auto mb-3" />
-          <p className="text-white font-bold text-lg">Нічого не знайдено</p>
-          <p className="text-emerald-300 text-sm mt-1">
-            Спробуйте змінити пошуковий запит або обрати іншу категорію.
+        <div className="text-center py-16 bg-[#15181c]/50 rounded-2xl border border-[#2b303a] max-w-md mx-auto">
+          <Info className="w-10 h-10 text-orange-400 mx-auto mb-3" />
+          <p className="text-white font-black text-lg">Нічого не знайдено</p>
+          <p className="text-neutral-400 text-xs sm:text-sm mt-1">
+            Спробуйте інший пошуковий запит або скиньте фільтри.
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredItems.map((item) => (
             <MenuItemCard key={item.id} item={item} />
           ))}
@@ -130,8 +261,9 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
   const [selectedSize, setSelectedSize] = useState<"30 см" | "40 см">("30 см");
   const [selectedCrust, setSelectedCrust] = useState<string>("none");
   const [justAdded, setJustAdded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
-  // Prices calculation
+  // Price calculations
   const basePrice = isPizza
     ? selectedSize === "30 см"
       ? item.price30 || 240
@@ -167,100 +299,98 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
     });
 
     setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1500);
+    setTimeout(() => setJustAdded(false), 1400);
   };
 
   return (
-    <div className="bg-[#0e221a] rounded-2xl border border-[#183e30] hover:border-emerald-500/40 transition-all flex flex-col justify-between overflow-hidden group shadow-xl">
+    <div className="bg-[#15181c] rounded-2xl border border-[#262b34] hover:border-orange-500/50 transition-all flex flex-col justify-between overflow-hidden group shadow-lg">
       <div>
-        {/* Item Image */}
-        <div className="relative h-48 sm:h-52 w-full overflow-hidden bg-[#07130f]">
-          <img
-            src={
-              item.imageUrl ||
-              "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
-            }
-            alt={item.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            loading="lazy"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0e221a] via-transparent to-transparent opacity-90" />
+        {/* Item Image with Fallback */}
+        <div className="relative h-44 sm:h-52 w-full overflow-hidden bg-[#0d0f11]">
+          {!imgError && item.imageUrl ? (
+            <img
+              src={item.imageUrl}
+              alt={item.name}
+              onError={() => setImgError(true)}
+              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1e24] to-[#121417] text-orange-500">
+              <Pizza className="w-12 h-12 mb-1 opacity-70" />
+              <span className="text-[11px] font-bold text-neutral-400">Forest Pizza</span>
+            </div>
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#15181c] via-transparent to-transparent opacity-90" />
 
           {/* Badge */}
           {item.badge && (
-            <div className="absolute top-3 left-3 bg-amber-500 text-black text-xs font-black px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1">
-              {item.badge.includes("Гостре") ? (
-                <Flame className="w-3.5 h-3.5 text-black" />
-              ) : null}
+            <div className="absolute top-2.5 left-2.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[11px] font-black px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1">
               <span>{item.badge}</span>
             </div>
           )}
 
           {!item.isAvailable && (
-            <div className="absolute inset-0 bg-black/70 flex items-center justify-center backdrop-blur-xs">
-              <span className="bg-red-900/90 text-red-200 text-xs font-bold px-3 py-1.5 rounded-lg border border-red-700">
-                Тимчасово закінчилось
+            <div className="absolute inset-0 bg-black/75 flex items-center justify-center backdrop-blur-xs">
+              <span className="bg-red-950 text-red-200 text-xs font-bold px-3 py-1.5 rounded-lg border border-red-800">
+                Закінчилось на сьогодні
               </span>
             </div>
           )}
         </div>
 
-        {/* Content */}
-        <div className="p-5 space-y-3">
+        {/* Card Content */}
+        <div className="p-4 sm:p-5 space-y-2.5 sm:space-y-3">
           <div className="flex items-start justify-between gap-2">
-            <h3 className="text-xl font-extrabold text-white group-hover:text-amber-400 transition-colors">
+            <h3 className="text-base sm:text-lg font-black text-white group-hover:text-orange-400 transition-colors">
               {item.name}
             </h3>
-            <span className="text-lg font-black text-amber-400 whitespace-nowrap">
+            <span className="text-base sm:text-lg font-black text-orange-400 whitespace-nowrap">
               {currentPrice} ₴
             </span>
           </div>
 
-          <p className="text-xs sm:text-sm text-emerald-200/70 leading-relaxed min-h-[3rem]">
+          <p className="text-xs text-neutral-300 leading-relaxed min-h-[2.5rem]">
             {item.description}
           </p>
 
-          {/* Pizza controls: Size & Crust */}
+          {/* Pizza Controls: 30 / 40 cm & Crust */}
           {isPizza && (
-            <div className="space-y-3 pt-2 border-t border-[#183e30]/80">
-              {/* Size switch */}
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-emerald-400 font-medium">Розмір:</span>
-                <div className="grid grid-cols-2 gap-1.5 bg-[#07130f] p-1 rounded-xl border border-[#1b5243]">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedSize("30 см")}
-                    className={`px-3 py-1 rounded-lg font-bold text-xs transition-colors ${
-                      selectedSize === "30 см"
-                        ? "bg-emerald-600 text-white"
-                        : "text-emerald-300 hover:text-white"
-                    }`}
-                  >
-                    30 см ({item.price30} ₴)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setSelectedSize("40 см")}
-                    className={`px-3 py-1 rounded-lg font-bold text-xs transition-colors ${
-                      selectedSize === "40 см"
-                        ? "bg-emerald-600 text-white"
-                        : "text-emerald-300 hover:text-white"
-                    }`}
-                  >
-                    40 см ({item.price40} ₴)
-                  </button>
-                </div>
+            <div className="space-y-2.5 pt-2 border-t border-[#242830]">
+              {/* Size switch - Large touch buttons for mobile */}
+              <div className="grid grid-cols-2 gap-1.5 bg-[#0d0f11] p-1 rounded-xl border border-[#2b303a]">
+                <button
+                  type="button"
+                  onClick={() => setSelectedSize("30 см")}
+                  className={`py-1.5 px-2 rounded-lg font-black text-xs transition-colors cursor-pointer text-center ${
+                    selectedSize === "30 см"
+                      ? "bg-orange-500 text-white shadow-sm"
+                      : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  30 см ({item.price30} ₴)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSelectedSize("40 см")}
+                  className={`py-1.5 px-2 rounded-lg font-black text-xs transition-colors cursor-pointer text-center ${
+                    selectedSize === "40 см"
+                      ? "bg-orange-500 text-white shadow-sm"
+                      : "text-neutral-400 hover:text-white"
+                  }`}
+                >
+                  40 см ({item.price40} ₴)
+                </button>
               </div>
 
               {/* Crust selector */}
-              <div className="space-y-1 text-xs">
-                <span className="text-emerald-400 font-medium">Бортик на вибір:</span>
+              <div className="space-y-1">
                 <select
                   value={selectedCrust}
                   onChange={(e) => setSelectedCrust(e.target.value)}
-                  className="w-full bg-[#07130f] border border-[#1b5243] rounded-lg px-2.5 py-1.5 text-emerald-200 text-xs focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-[#0d0f11] border border-[#2b303a] rounded-xl px-2.5 py-1.5 text-neutral-300 text-xs focus:outline-none focus:border-orange-500"
                 >
-                  <option value="none">Класичний бортик (без доплати)</option>
+                  <option value="none">Бортик: Класичний (без доплати)</option>
                   <option value="cheese">
                     🧀 Сирний бортик (+{selectedSize === "30 см" ? 65 : 95} ₴)
                   </option>
@@ -274,18 +404,18 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
         </div>
       </div>
 
-      {/* Footer Add button */}
-      <div className="p-5 pt-0">
+      {/* Footer Add button - Large touch target */}
+      <div className="p-4 sm:p-5 pt-0">
         <button
           type="button"
           disabled={!item.isAvailable}
           onClick={handleAddToCart}
-          className={`w-full py-2.5 px-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition-all ${
+          className={`w-full py-2.5 sm:py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
             !item.isAvailable
               ? "bg-neutral-800 text-neutral-500 cursor-not-allowed"
               : justAdded
-              ? "bg-green-600 text-white"
-              : "bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-950/40 hover:shadow-emerald-700/30"
+              ? "bg-green-600 text-white scale-[1.02]"
+              : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-md shadow-orange-950/50 hover:shadow-orange-900/40"
           }`}
         >
           {justAdded ? (
@@ -296,9 +426,7 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
           ) : (
             <>
               <Plus className="w-4 h-4" />
-              <span>
-                {isPizza ? `В кошик • ${currentPrice} ₴` : `В кошик • ${currentPrice} ₴`}
-              </span>
+              <span>В кошик • {currentPrice} ₴</span>
             </>
           )}
         </button>
@@ -306,4 +434,3 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
     </div>
   );
 }
-

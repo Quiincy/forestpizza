@@ -15,7 +15,7 @@ import {
   Trash2,
   Edit,
   Plus,
-  TreePine,
+  Flame,
   RefreshCw,
   Search,
   Check,
@@ -394,8 +394,8 @@ export default function AdminPage() {
   // Loading screen during auth check
   if (isAuthenticated === null) {
     return (
-      <div className="min-h-screen bg-[#07130f] flex items-center justify-center text-emerald-300">
-        <RefreshCw className="w-8 h-8 animate-spin text-amber-400" />
+      <div className="min-h-screen bg-[#0c0e12] flex items-center justify-center text-stone-300">
+        <RefreshCw className="w-8 h-8 animate-spin text-orange-400" />
       </div>
     );
   }
@@ -403,14 +403,14 @@ export default function AdminPage() {
   // Login Screen if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#07130f] flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-[#0e221a] border border-[#183e30] rounded-3xl p-8 shadow-2xl space-y-6">
+      <div className="min-h-screen bg-[#0c0e12] flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-[#13161c] border border-[#222733] rounded-3xl p-8 shadow-2xl space-y-6">
           <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-2xl bg-[#07130f] border border-[#1b5243] flex items-center justify-center text-amber-400 mx-auto">
+            <div className="w-16 h-16 rounded-2xl bg-[#0c0e12] border border-[#2d3444] flex items-center justify-center text-orange-400 mx-auto">
               <Lock className="w-8 h-8" />
             </div>
             <h1 className="text-2xl font-black text-white">Панель керування</h1>
-            <p className="text-xs text-emerald-400">
+            <p className="text-xs text-stone-400">
               Forest Pizza • Тільки на винос та доставка • Лісовий просп., 11
             </p>
           </div>
@@ -424,7 +424,7 @@ export default function AdminPage() {
             )}
 
             <div>
-              <label className="block text-xs font-semibold text-emerald-300 mb-1">
+              <label className="block text-xs font-semibold text-stone-300 mb-1">
                 Пароль адміністратора
               </label>
               <input
@@ -433,10 +433,10 @@ export default function AdminPage() {
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 placeholder="Введіть пароль..."
-                className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-3 text-sm text-white placeholder-emerald-600/50 focus:outline-none focus:border-amber-400"
+                className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-3 text-sm text-white placeholder-stone-600 focus:outline-none focus:border-orange-500"
               />
-              <p className="text-[11px] text-emerald-500/70 mt-1.5">
-                За замовчуванням пароль: <code className="text-amber-400 font-mono">forest2026</code>
+              <p className="text-[11px] text-stone-500/70 mt-1.5">
+                За замовчуванням пароль: <code className="text-orange-400 font-mono">forest2026</code>
               </p>
             </div>
 
@@ -451,7 +451,7 @@ export default function AdminPage() {
           <div className="text-center pt-2">
             <Link
               href="/"
-              className="text-xs text-emerald-400 hover:text-white underline transition-colors"
+              className="text-xs text-stone-400 hover:text-white underline transition-colors"
             >
               ← Повернутися на сайт
             </Link>
@@ -474,19 +474,19 @@ export default function AdminPage() {
   );
 
   return (
-    <div className="min-h-screen bg-[#07130f] text-emerald-100 flex flex-col">
+    <div className="min-h-screen bg-[#0c0e12] text-stone-100 flex flex-col">
       {/* Top Bar */}
-      <header className="bg-[#0e221a] border-b border-[#183e30] sticky top-0 z-30">
+      <header className="bg-[#13161c] border-b border-[#222733] sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-600 to-green-900 flex items-center justify-center text-amber-400 border border-emerald-500/30">
-              <TreePine className="w-5 h-5 text-emerald-200" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-orange-400 border border-emerald-500/30">
+              <Flame className="w-5 h-5 fill-white text-white" />
             </div>
             <div>
               <span className="font-extrabold text-lg text-white">
-                FOREST <span className="text-amber-400">ADMIN</span>
+                FOREST <span className="text-orange-400">ADMIN</span>
               </span>
-              <span className="text-[10px] text-emerald-400 ml-2 bg-[#07130f] px-2 py-0.5 rounded border border-[#183e30]">
+              <span className="text-[10px] text-stone-400 ml-2 bg-[#0c0e12] px-2 py-0.5 rounded border border-[#222733]">
                 Тільки на винос • Лісовий просп., 11
               </span>
             </div>
@@ -495,7 +495,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => fetchAllData(true)}
-              className="p-1.5 rounded-lg text-emerald-300 hover:text-white bg-[#07130f] border border-[#1b5243]"
+              className="p-1.5 rounded-lg text-stone-300 hover:text-white bg-[#0c0e12] border border-[#2d3444]"
               title="Оновити дані"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
@@ -504,7 +504,7 @@ export default function AdminPage() {
             <Link
               href="/"
               target="_blank"
-              className="flex items-center gap-1.5 text-xs text-emerald-300 hover:text-white bg-[#07130f] px-3 py-1.5 rounded-lg border border-[#1b5243]"
+              className="flex items-center gap-1.5 text-xs text-stone-300 hover:text-white bg-[#0c0e12] px-3 py-1.5 rounded-lg border border-[#2d3444]"
             >
               <Eye className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Переглянути сайт</span>
@@ -525,13 +525,13 @@ export default function AdminPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1 flex flex-col md:flex-row gap-6">
         {/* Sidebar Nav */}
         <aside className="w-full md:w-64 flex-shrink-0">
-          <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-3 space-y-1 sticky top-24">
+          <div className="bg-[#13161c] border border-[#222733] rounded-2xl p-3 space-y-1 sticky top-24">
             <button
               onClick={() => setActiveTab("dashboard")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 activeTab === "dashboard"
-                  ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
-                  : "text-emerald-200 hover:bg-[#143427]"
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-extrabold shadow-md shadow-orange-950/40"
+                  : "text-stone-300 hover:bg-[#1e232e]"
               }`}
             >
               <span className="flex items-center gap-2.5">
@@ -549,8 +549,8 @@ export default function AdminPage() {
               onClick={() => setActiveTab("takeaways")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 activeTab === "takeaways"
-                  ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
-                  : "text-emerald-200 hover:bg-[#143427]"
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-extrabold shadow-md shadow-orange-950/40"
+                  : "text-stone-300 hover:bg-[#1e232e]"
               }`}
             >
               <span className="flex items-center gap-2.5">
@@ -564,8 +564,8 @@ export default function AdminPage() {
               onClick={() => setActiveTab("orders")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 activeTab === "orders"
-                  ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
-                  : "text-emerald-200 hover:bg-[#143427]"
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-extrabold shadow-md shadow-orange-950/40"
+                  : "text-stone-300 hover:bg-[#1e232e]"
               }`}
             >
               <span className="flex items-center gap-2.5">
@@ -579,8 +579,8 @@ export default function AdminPage() {
               onClick={() => setActiveTab("menu")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 activeTab === "menu"
-                  ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
-                  : "text-emerald-200 hover:bg-[#143427]"
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-extrabold shadow-md shadow-orange-950/40"
+                  : "text-stone-300 hover:bg-[#1e232e]"
               }`}
             >
               <span className="flex items-center gap-2.5">
@@ -594,8 +594,8 @@ export default function AdminPage() {
               onClick={() => setActiveTab("settings")}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all ${
                 activeTab === "settings"
-                  ? "bg-amber-500 text-black shadow-md shadow-amber-500/20"
-                  : "text-emerald-200 hover:bg-[#143427]"
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white font-extrabold shadow-md shadow-orange-950/40"
+                  : "text-stone-300 hover:bg-[#1e232e]"
               }`}
             >
               <span className="flex items-center gap-2.5">
@@ -617,38 +617,38 @@ export default function AdminPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-black text-white">Огляд піцерії на винос</h2>
-                  <p className="text-xs text-emerald-400">Формат: тільки самовивіз та доставка</p>
+                  <p className="text-xs text-stone-400">Формат: тільки самовивіз та доставка</p>
                 </div>
               </div>
 
               {/* KPI Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-emerald-400">Самовивіз сьогодні</p>
+                <div className="bg-[#13161c] p-4 rounded-2xl border border-[#222733]">
+                  <p className="text-xs text-stone-400">Самовивіз сьогодні</p>
                   <p className="text-3xl font-black text-white mt-1">
                     {todayTakeaways.length}
                   </p>
-                  <p className="text-[11px] text-emerald-500 mt-1">
+                  <p className="text-[11px] text-stone-500 mt-1">
                     Замовлень на винос
                   </p>
                 </div>
 
-                <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-amber-400">Очікують видачі</p>
-                  <p className="text-3xl font-black text-amber-400 mt-1">
+                <div className="bg-[#13161c] p-4 rounded-2xl border border-[#222733]">
+                  <p className="text-xs text-orange-400">Очікують видачі</p>
+                  <p className="text-3xl font-black text-orange-400 mt-1">
                     {pendingTakeaways.length}
                   </p>
-                  <p className="text-[11px] text-emerald-500 mt-1">Нових замовлень</p>
+                  <p className="text-[11px] text-stone-500 mt-1">Нових замовлень</p>
                 </div>
 
-                <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-emerald-400">Замовлень з кошика</p>
+                <div className="bg-[#13161c] p-4 rounded-2xl border border-[#222733]">
+                  <p className="text-xs text-stone-400">Замовлень з кошика</p>
                   <p className="text-3xl font-black text-white mt-1">{orders.length}</p>
-                  <p className="text-[11px] text-emerald-500 mt-1">Оформлено онлайн</p>
+                  <p className="text-[11px] text-stone-500 mt-1">Оформлено онлайн</p>
                 </div>
 
-                <div className="bg-[#0e221a] p-4 rounded-2xl border border-[#183e30]">
-                  <p className="text-xs text-emerald-400">Telegram сповіщення</p>
+                <div className="bg-[#13161c] p-4 rounded-2xl border border-[#222733]">
+                  <p className="text-xs text-stone-400">Telegram сповіщення</p>
                   <div className="flex items-center gap-2 mt-2">
                     <span
                       className={`w-3 h-3 rounded-full ${
@@ -659,21 +659,21 @@ export default function AdminPage() {
                       {isTelegramConfigured ? "Активно" : "Не налаштовано"}
                     </p>
                   </div>
-                  <p className="text-[11px] text-emerald-500 mt-1">
+                  <p className="text-[11px] text-stone-500 mt-1">
                     {isTelegramConfigured ? "Бот на кухні підключено" : "Вкажіть токен у налаштуваннях"}
                   </p>
                 </div>
               </div>
 
               {/* Fresh incoming takeaway orders */}
-              <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
+              <div className="bg-[#13161c] border border-[#222733] rounded-2xl p-6 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="font-extrabold text-white text-lg">
                     Останні замовлення на винос (самовивіз)
                   </h3>
                   <button
                     onClick={() => setActiveTab("takeaways")}
-                    className="text-xs font-bold text-amber-400 hover:underline"
+                    className="text-xs font-bold text-orange-400 hover:underline"
                   >
                     Переглянути всі ({takeaways.length}) →
                   </button>
@@ -682,7 +682,7 @@ export default function AdminPage() {
                 {takeaways.slice(0, 5).map((r) => (
                   <div
                     key={r.id}
-                    className="bg-[#07130f] p-4 rounded-xl border border-[#1b5243] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                    className="bg-[#0c0e12] p-4 rounded-xl border border-[#2d3444] flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                   >
                     <div>
                       <div className="flex items-center gap-2">
@@ -692,7 +692,7 @@ export default function AdminPage() {
                         <span
                           className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
                             r.status === "NEW"
-                              ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                              ? "bg-amber-500/20 text-orange-300 border border-amber-500/40"
                               : r.status === "CONFIRMED"
                               ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
                               : r.status === "COMPLETED"
@@ -709,21 +709,21 @@ export default function AdminPage() {
                             : r.status}
                         </span>
                       </div>
-                      <p className="text-xs text-emerald-300 mt-1 flex flex-wrap items-center gap-2">
-                        <span className="font-bold text-amber-400">⏰ Час видачі: {r.time}</span>
+                      <p className="text-xs text-stone-300 mt-1 flex flex-wrap items-center gap-2">
+                        <span className="font-bold text-orange-400">⏰ Час видачі: {r.time}</span>
                         <span>•</span>
                         <span>📅 {r.date}</span>
                         <span>•</span>
                         <a
                           href={`tel:${r.phone}`}
-                          className="text-emerald-200 font-bold hover:underline flex items-center gap-1"
+                          className="text-stone-300 font-bold hover:underline flex items-center gap-1"
                         >
-                          <Phone className="w-3 h-3 text-amber-400" />
+                          <Phone className="w-3 h-3 text-orange-400" />
                           <span>{r.phone}</span>
                         </a>
                       </p>
                       {r.comment && (
-                        <p className="text-xs text-emerald-400/80 italic mt-1 bg-[#0e221a] px-2 py-1 rounded border border-[#183e30]">
+                        <p className="text-xs text-stone-400/80 italic mt-1 bg-[#13161c] px-2 py-1 rounded border border-[#222733]">
                           Побажання: «{r.comment}»
                         </p>
                       )}
@@ -733,7 +733,7 @@ export default function AdminPage() {
                       {r.status !== "CONFIRMED" && (
                         <button
                           onClick={() => updateTakeawayStatus(r.id, "CONFIRMED")}
-                          className="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg"
+                          className="bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold px-3 py-1.5 rounded-lg"
                         >
                           В роботу (піч)
                         </button>
@@ -741,7 +741,7 @@ export default function AdminPage() {
                       {r.status !== "COMPLETED" && (
                         <button
                           onClick={() => updateTakeawayStatus(r.id, "COMPLETED")}
-                          className="bg-[#0e221a] hover:bg-[#16382b] text-emerald-200 border border-[#1b5243] text-xs font-bold px-3 py-1.5 rounded-lg"
+                          className="bg-[#13161c] hover:bg-[#1e232e] text-stone-300 border border-[#2d3444] text-xs font-bold px-3 py-1.5 rounded-lg"
                         >
                           Видано
                         </button>
@@ -759,20 +759,20 @@ export default function AdminPage() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                   <h2 className="text-2xl font-black text-white">Замовлення на винос (самовивіз)</h2>
-                  <p className="text-xs text-emerald-400">Видача замовлень клієнтам на Лісовому просп., 11</p>
+                  <p className="text-xs text-stone-400">Видача замовлень клієнтам на Лісовому просп., 11</p>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <button
                     onClick={exportTakeawaysToCSV}
-                    className="flex items-center gap-1.5 bg-[#0e221a] hover:bg-[#153428] text-emerald-300 border border-[#1b5243] text-xs font-bold px-3 py-2 rounded-xl"
+                    className="flex items-center gap-1.5 bg-[#13161c] hover:bg-[#1e232e] text-stone-300 border border-[#2d3444] text-xs font-bold px-3 py-2 rounded-xl"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Експорт CSV</span>
                   </button>
 
                   {/* Filter tabs */}
-                  <div className="flex items-center gap-1 bg-[#0e221a] p-1 rounded-xl border border-[#183e30] overflow-x-auto">
+                  <div className="flex items-center gap-1 bg-[#13161c] p-1 rounded-xl border border-[#222733] overflow-x-auto">
                     {["ALL", "NEW", "CONFIRMED", "COMPLETED", "CANCELLED"].map(
                       (st) => (
                         <button
@@ -780,8 +780,8 @@ export default function AdminPage() {
                           onClick={() => setTakeawayFilter(st)}
                           className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${
                             takeawayFilter === st
-                              ? "bg-amber-500 text-black"
-                              : "text-emerald-300 hover:text-white"
+                              ? "bg-orange-500 text-white"
+                              : "text-stone-300 hover:text-white"
                           }`}
                         >
                           {st === "ALL"
@@ -802,13 +802,13 @@ export default function AdminPage() {
 
               {/* Search bar */}
               <div className="relative max-w-md">
-                <Search className="w-4 h-4 text-emerald-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                <Search className="w-4 h-4 text-stone-400 absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
                   placeholder="Пошук за ім'ям або телефоном клієнта..."
                   value={takeawaySearch}
                   onChange={(e) => setTakeawaySearch(e.target.value)}
-                  className="w-full bg-[#0e221a] border border-[#183e30] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-emerald-600/50 focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-[#13161c] border border-[#222733] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-stone-600 focus:outline-none focus:border-orange-500"
                 />
               </div>
 
@@ -829,7 +829,7 @@ export default function AdminPage() {
                   .map((r) => (
                     <div
                       key={r.id}
-                      className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
+                      className="bg-[#13161c] border border-[#222733] rounded-2xl p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"
                     >
                       <div className="space-y-1.5">
                         <div className="flex items-center gap-3">
@@ -839,7 +839,7 @@ export default function AdminPage() {
                           <span
                             className={`text-xs font-extrabold px-2.5 py-0.5 rounded-full ${
                               r.status === "NEW"
-                                ? "bg-amber-500/20 text-amber-300 border border-amber-500/40"
+                                ? "bg-amber-500/20 text-orange-300 border border-amber-500/40"
                                 : r.status === "CONFIRMED"
                                 ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
                                 : r.status === "COMPLETED"
@@ -859,14 +859,14 @@ export default function AdminPage() {
                           {/* Telegram delivery badge */}
                           {r.telegramSent ? (
                             <span
-                              className="text-[10px] text-emerald-400 bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded flex items-center gap-1"
+                              className="text-[10px] text-stone-400 bg-emerald-950/70 border border-emerald-500/30 px-2 py-0.5 rounded flex items-center gap-1"
                               title="Успішно надіслано в Telegram"
                             >
                               <Check className="w-3 h-3" /> TG доставлено
                             </span>
                           ) : (
                             <span
-                              className="text-[10px] text-amber-400 bg-amber-950/70 border border-amber-500/30 px-2 py-0.5 rounded"
+                              className="text-[10px] text-orange-400 bg-amber-950/70 border border-amber-500/30 px-2 py-0.5 rounded"
                               title={r.telegramError || "Не доставлено в Telegram"}
                             >
                               TG не відправлено
@@ -874,20 +874,20 @@ export default function AdminPage() {
                           )}
                         </div>
 
-                        <div className="text-xs text-emerald-300 flex flex-wrap items-center gap-3">
-                          <span className="font-bold text-amber-400">⏰ Час видачі: {r.time}</span>
+                        <div className="text-xs text-stone-300 flex flex-wrap items-center gap-3">
+                          <span className="font-bold text-orange-400">⏰ Час видачі: {r.time}</span>
                           <span>📅 {r.date}</span>
                           <a
                             href={`tel:${r.phone}`}
-                            className="text-emerald-200 hover:text-white font-bold flex items-center gap-1 bg-[#07130f] px-2 py-0.5 rounded border border-[#1b5243]"
+                            className="text-stone-300 hover:text-white font-bold flex items-center gap-1 bg-[#0c0e12] px-2 py-0.5 rounded border border-[#2d3444]"
                           >
-                            <Phone className="w-3 h-3 text-amber-400" />
+                            <Phone className="w-3 h-3 text-orange-400" />
                             <span>{r.phone}</span>
                           </a>
                         </div>
 
                         {r.comment && (
-                          <p className="text-xs text-emerald-400/90 italic bg-[#07130f]/60 p-2 rounded-lg border border-[#183e30]">
+                          <p className="text-xs text-stone-400/90 italic bg-[#0c0e12]/60 p-2 rounded-lg border border-[#222733]">
                             Побажання: «{r.comment}»
                           </p>
                         )}
@@ -900,7 +900,7 @@ export default function AdminPage() {
                           onChange={(e) =>
                             updateTakeawayStatus(r.id, e.target.value)
                           }
-                          className="bg-[#07130f] border border-[#1b5243] rounded-xl px-3 py-1.5 text-xs text-emerald-200 focus:outline-none focus:border-amber-400"
+                          className="bg-[#0c0e12] border border-[#2d3444] rounded-xl px-3 py-1.5 text-xs text-stone-300 focus:outline-none focus:border-orange-500"
                         >
                           <option value="NEW">Нове</option>
                           <option value="CONFIRMED">Прийнято в роботу</option>
@@ -910,7 +910,7 @@ export default function AdminPage() {
 
                         <button
                           onClick={() => deleteTakeaway(r.id)}
-                          className="p-2 text-red-400 hover:text-red-300 bg-[#07130f] hover:bg-red-950/40 rounded-xl border border-red-900/50 transition-colors"
+                          className="p-2 text-red-400 hover:text-red-300 bg-[#0c0e12] hover:bg-red-950/40 rounded-xl border border-red-900/50 transition-colors"
                           title="Видалити"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -927,14 +927,14 @@ export default function AdminPage() {
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-black text-white">Замовлення піци з онлайн-кошика</h2>
-                <p className="text-xs text-emerald-400">Детальний список обраних піц з бортиками та додатками</p>
+                <p className="text-xs text-stone-400">Детальний список обраних піц з бортиками та додатками</p>
               </div>
 
               {orders.length === 0 ? (
-                <div className="bg-[#0e221a] p-12 text-center rounded-2xl border border-[#183e30]">
-                  <ShoppingBag className="w-10 h-10 text-emerald-500 mx-auto mb-2 opacity-50" />
+                <div className="bg-[#13161c] p-12 text-center rounded-2xl border border-[#222733]">
+                  <ShoppingBag className="w-10 h-10 text-stone-500 mx-auto mb-2 opacity-50" />
                   <p className="font-bold text-white">Ще немає замовлень</p>
-                  <p className="text-xs text-emerald-400">
+                  <p className="text-xs text-stone-400">
                     Замовлення з онлайн-кошика з&apos;являтимуться тут та надходитимуть у Telegram.
                   </p>
                 </div>
@@ -943,17 +943,17 @@ export default function AdminPage() {
                   {orders.map((o) => (
                     <div
                       key={o.id}
-                      className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-5 space-y-4"
+                      className="bg-[#13161c] border border-[#222733] rounded-2xl p-5 space-y-4"
                     >
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#183e30] pb-3">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#222733] pb-3">
                         <div className="flex items-center gap-3">
-                          <span className="font-black text-amber-400 text-lg">
+                          <span className="font-black text-orange-400 text-lg">
                             #{o.orderNumber}
                           </span>
                           <span className="font-bold text-white">{o.customerName}</span>
                           <a
                             href={`tel:${o.phone}`}
-                            className="text-xs text-emerald-300 font-bold bg-[#07130f] px-2 py-1 rounded border border-[#1b5243]"
+                            className="text-xs text-stone-300 font-bold bg-[#0c0e12] px-2 py-1 rounded border border-[#2d3444]"
                           >
                             {o.phone}
                           </a>
@@ -962,7 +962,7 @@ export default function AdminPage() {
                           <select
                             value={o.status}
                             onChange={(e) => updateOrderStatus(o.id, e.target.value)}
-                            className="bg-[#07130f] border border-[#1b5243] rounded-lg px-2.5 py-1 text-xs text-emerald-200"
+                            className="bg-[#0c0e12] border border-[#2d3444] rounded-lg px-2.5 py-1 text-xs text-stone-300"
                           >
                             <option value="NEW">Нове</option>
                             <option value="PREPARING">Готується в печі</option>
@@ -981,7 +981,7 @@ export default function AdminPage() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         <div>
-                          <p className="text-emerald-400 font-semibold mb-1">Склад:</p>
+                          <p className="text-stone-400 font-semibold mb-1">Склад:</p>
                           <ul className="space-y-1">
                             {o.items.map((it, i) => (
                               <li key={i} className="text-white">
@@ -991,27 +991,27 @@ export default function AdminPage() {
                           </ul>
                         </div>
                         <div>
-                          <p className="text-emerald-400 font-semibold mb-1">Отримання:</p>
+                          <p className="text-stone-400 font-semibold mb-1">Отримання:</p>
                           <p className="text-white">
                             {o.orderType === "DELIVERY" ? "🚚 Доставка" : "🏃 Самовивіз на винос"}
                           </p>
                           {o.pickupTime && (
-                            <p className="text-amber-400 mt-1">⏰ Час видачі: {o.pickupTime}</p>
+                            <p className="text-orange-400 mt-1">⏰ Час видачі: {o.pickupTime}</p>
                           )}
                           {o.address && (
-                            <p className="text-emerald-300 mt-1">Адреса / точка: {o.address}</p>
+                            <p className="text-stone-300 mt-1">Адреса / точка: {o.address}</p>
                           )}
                           {o.comment && (
-                            <p className="text-emerald-400/80 italic mt-1">
+                            <p className="text-stone-400/80 italic mt-1">
                               Коментар: «{o.comment}»
                             </p>
                           )}
                         </div>
                       </div>
 
-                      <div className="pt-2 border-t border-[#183e30] flex justify-between items-center text-sm">
-                        <span className="text-emerald-400 font-medium">Разом:</span>
-                        <span className="text-lg font-black text-amber-400">
+                      <div className="pt-2 border-t border-[#222733] flex justify-between items-center text-sm">
+                        <span className="text-stone-400 font-medium">Разом:</span>
+                        <span className="text-lg font-black text-orange-400">
                           {o.totalPrice} ₴
                         </span>
                       </div>
@@ -1028,7 +1028,7 @@ export default function AdminPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-2xl font-black text-white">Меню закладу</h2>
-                  <p className="text-xs text-emerald-400">
+                  <p className="text-xs text-stone-400">
                     Управління цінами 30/40 см, наявністю та складом страв
                   </p>
                 </div>
@@ -1046,7 +1046,7 @@ export default function AdminPage() {
                     });
                     setIsNewItem(true);
                   }}
-                  className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all shadow"
+                  className="flex items-center gap-1.5 bg-orange-600 hover:bg-orange-500 text-white font-bold text-xs sm:text-sm px-4 py-2 rounded-xl transition-all shadow"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Додати страву</span>
@@ -1058,11 +1058,11 @@ export default function AdminPage() {
                 {categories.map((cat) => (
                   <div
                     key={cat.id}
-                    className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-5 space-y-4"
+                    className="bg-[#13161c] border border-[#222733] rounded-2xl p-5 space-y-4"
                   >
-                    <h3 className="font-extrabold text-white text-lg border-b border-[#183e30] pb-2 flex items-center justify-between">
+                    <h3 className="font-extrabold text-white text-lg border-b border-[#222733] pb-2 flex items-center justify-between">
                       <span>{cat.name}</span>
-                      <span className="text-xs text-emerald-400 font-normal">
+                      <span className="text-xs text-stone-400 font-normal">
                         {(cat.items || []).length} позицій
                       </span>
                     </h3>
@@ -1071,7 +1071,7 @@ export default function AdminPage() {
                       {(cat.items || []).map((item) => (
                         <div
                           key={item.id}
-                          className="bg-[#07130f] rounded-xl border border-[#1b5243] p-4 flex gap-4 items-start justify-between"
+                          className="bg-[#0c0e12] rounded-xl border border-[#2d3444] p-4 flex gap-4 items-start justify-between"
                         >
                           <div className="flex gap-3">
                             {item.imageUrl && (
@@ -1087,15 +1087,15 @@ export default function AdminPage() {
                                   {item.name}
                                 </h4>
                                 {item.badge && (
-                                  <span className="text-[10px] font-black bg-amber-500 text-black px-1.5 py-0.5 rounded">
+                                  <span className="text-[10px] font-black bg-orange-500 text-white px-1.5 py-0.5 rounded">
                                     {item.badge}
                                   </span>
                                 )}
                               </div>
-                              <p className="text-[11px] text-emerald-300/70 mt-1 line-clamp-2">
+                              <p className="text-[11px] text-stone-300/70 mt-1 line-clamp-2">
                                 {item.description}
                               </p>
-                              <div className="mt-2 text-xs font-bold text-amber-400">
+                              <div className="mt-2 text-xs font-bold text-orange-400">
                                 {item.price30 && item.price40
                                   ? `30 см: ${item.price30} ₴ | 40 см: ${item.price40} ₴`
                                   : `${item.priceSingle || item.price30} ₴`}
@@ -1109,14 +1109,14 @@ export default function AdminPage() {
                                 setEditingItem(item);
                                 setIsNewItem(false);
                               }}
-                              className="p-1.5 text-emerald-300 hover:text-white bg-[#0e221a] rounded-lg border border-[#1b5243]"
+                              className="p-1.5 text-stone-300 hover:text-white bg-[#13161c] rounded-lg border border-[#2d3444]"
                               title="Редагувати"
                             >
                               <Edit className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => handleDeleteMenuItem(item.id)}
-                              className="p-1.5 text-red-400 hover:text-red-300 bg-[#0e221a] rounded-lg border border-[#1b5243]"
+                              className="p-1.5 text-red-400 hover:text-red-300 bg-[#13161c] rounded-lg border border-[#2d3444]"
                               title="Видалити"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -1138,7 +1138,7 @@ export default function AdminPage() {
                 <h2 className="text-2xl font-black text-white">
                   Налаштування піцерії
                 </h2>
-                <p className="text-xs text-emerald-400">
+                <p className="text-xs text-stone-400">
                   Telegram-сповіщення, точка видачі на Лісовому, час приготування, пароль
                 </p>
               </div>
@@ -1147,12 +1147,12 @@ export default function AdminPage() {
                 <div
                   className={`p-4 rounded-xl border text-xs sm:text-sm flex items-center gap-3 ${
                     settingsMessage.type === "success"
-                      ? "bg-emerald-950/80 border-emerald-500/50 text-emerald-200"
+                      ? "bg-emerald-950/80 border-emerald-500/50 text-stone-300"
                       : "bg-red-950/80 border-red-800 text-red-200"
                   }`}
                 >
                   {settingsMessage.type === "success" ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+                    <CheckCircle2 className="w-5 h-5 text-stone-400 flex-shrink-0" />
                   ) : (
                     <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
                   )}
@@ -1162,25 +1162,25 @@ export default function AdminPage() {
 
               <form onSubmit={handleSaveSettings} className="space-y-8">
                 {/* 1. Telegram Settings */}
-                <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
-                  <div className="flex items-center gap-2 border-b border-[#183e30] pb-3">
-                    <Send className="w-5 h-5 text-amber-400" />
+                <div className="bg-[#13161c] border border-[#222733] rounded-2xl p-6 space-y-4">
+                  <div className="flex items-center gap-2 border-b border-[#222733] pb-3">
+                    <Send className="w-5 h-5 text-orange-400" />
                     <div>
                       <h3 className="font-extrabold text-white text-base">
                         Сповіщення в Telegram на кухню
                       </h3>
-                      <p className="text-xs text-emerald-400">
+                      <p className="text-xs text-stone-400">
                         Миттєве надсилання кожного замовлення на винос піцайоло у месенджер
                       </p>
                     </div>
                   </div>
 
-                  <div className="bg-[#07130f] p-4 rounded-xl border border-[#1b5243] text-xs text-emerald-300 space-y-2">
-                    <p className="font-bold text-amber-400 flex items-center gap-1.5">
+                  <div className="bg-[#0c0e12] p-4 rounded-xl border border-[#2d3444] text-xs text-stone-300 space-y-2">
+                    <p className="font-bold text-orange-400 flex items-center gap-1.5">
                       <HelpCircle className="w-4 h-4" />
                       <span>Як підключити Telegram-бота за 2 хвилини:</span>
                     </p>
-                    <ol className="list-decimal list-inside space-y-1 text-emerald-300/90">
+                    <ol className="list-decimal list-inside space-y-1 text-stone-300/90">
                       <li>Відкрийте Telegram та знайдіть <b>@BotFather</b>. Надішліть команду <code>/newbot</code>.</li>
                       <li>Скопіюйте згенерований <b>HTTP API Token</b> і вставте в поле нижче.</li>
                       <li>Знайдіть свого створеного бота в Telegram і натисніть кнопку <b>Start</b>.</li>
@@ -1190,7 +1190,7 @@ export default function AdminPage() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Telegram Bot Token
                       </label>
                       <input
@@ -1200,12 +1200,12 @@ export default function AdminPage() {
                           setSettings({ ...settings, telegram_bot_token: e.target.value })
                         }
                         placeholder="7123456789:AAHq..."
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white placeholder-emerald-600/50 font-mono focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-600 font-mono focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Telegram Chat ID
                       </label>
                       <input
@@ -1215,7 +1215,7 @@ export default function AdminPage() {
                           setSettings({ ...settings, telegram_chat_id: e.target.value })
                         }
                         placeholder="Наприклад: 123456789 або -100123456789"
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white placeholder-emerald-600/50 font-mono focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white placeholder-stone-600 font-mono focus:outline-none focus:border-orange-500"
                       />
                     </div>
                   </div>
@@ -1225,7 +1225,7 @@ export default function AdminPage() {
                       type="button"
                       disabled={testingTelegram}
                       onClick={handleTestTelegram}
-                      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#07130f] hover:bg-[#132c21] text-amber-400 border border-amber-500/40 font-bold text-xs py-2.5 px-4 rounded-xl transition-all disabled:opacity-50"
+                      className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#0c0e12] hover:bg-[#132c21] text-orange-400 border border-amber-500/40 font-bold text-xs py-2.5 px-4 rounded-xl transition-all disabled:opacity-50"
                     >
                       {testingTelegram ? (
                         <span>Надсилаємо тест...</span>
@@ -1236,21 +1236,21 @@ export default function AdminPage() {
                         </>
                       )}
                     </button>
-                    <span className="text-[11px] text-emerald-500">
+                    <span className="text-[11px] text-stone-500">
                       Тестове повідомлення миттєво підтвердить роботу сповіщень.
                     </span>
                   </div>
                 </div>
 
                 {/* 2. Restaurant & Takeaway Point Info */}
-                <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
-                  <h3 className="font-extrabold text-white text-base border-b border-[#183e30] pb-3">
+                <div className="bg-[#13161c] border border-[#222733] rounded-2xl p-6 space-y-4">
+                  <h3 className="font-extrabold text-white text-base border-b border-[#222733] pb-3">
                     Точка самовивозу та контакти
                   </h3>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Назва піцерії
                       </label>
                       <input
@@ -1259,12 +1259,12 @@ export default function AdminPage() {
                         onChange={(e) =>
                           setSettings({ ...settings, restaurant_name: e.target.value })
                         }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Адреса точки видачі (самовивозу)
                       </label>
                       <input
@@ -1273,12 +1273,12 @@ export default function AdminPage() {
                         onChange={(e) =>
                           setSettings({ ...settings, restaurant_address: e.target.value })
                         }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Контактний телефон для замовлень
                       </label>
                       <input
@@ -1287,12 +1287,12 @@ export default function AdminPage() {
                         onChange={(e) =>
                           setSettings({ ...settings, restaurant_phone: e.target.value })
                         }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Графік роботи
                       </label>
                       <input
@@ -1301,12 +1301,12 @@ export default function AdminPage() {
                         onChange={(e) =>
                           setSettings({ ...settings, working_hours: e.target.value })
                         }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Середній час приготування
                       </label>
                       <input
@@ -1315,12 +1315,12 @@ export default function AdminPage() {
                         onChange={(e) =>
                           setSettings({ ...settings, pickup_time_default: e.target.value })
                         }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-emerald-300 mb-1">
+                      <label className="block text-xs font-bold text-stone-300 mb-1">
                         Повідомлення клієнту після замовлення
                       </label>
                       <input
@@ -1329,20 +1329,20 @@ export default function AdminPage() {
                         onChange={(e) =>
                           setSettings({ ...settings, reservation_notice: e.target.value })
                         }
-                        className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-amber-400"
+                        className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
                       />
                     </div>
                   </div>
                 </div>
 
                 {/* 3. Admin Security */}
-                <div className="bg-[#0e221a] border border-[#183e30] rounded-2xl p-6 space-y-4">
-                  <h3 className="font-extrabold text-white text-base border-b border-[#183e30] pb-3">
+                <div className="bg-[#13161c] border border-[#222733] rounded-2xl p-6 space-y-4">
+                  <h3 className="font-extrabold text-white text-base border-b border-[#222733] pb-3">
                     Безпека входу
                   </h3>
 
                   <div className="max-w-md">
-                    <label className="block text-xs font-bold text-emerald-300 mb-1">
+                    <label className="block text-xs font-bold text-stone-300 mb-1">
                       Пароль до адмін-панелі
                     </label>
                     <input
@@ -1351,9 +1351,9 @@ export default function AdminPage() {
                       onChange={(e) =>
                         setSettings({ ...settings, admin_password: e.target.value })
                       }
-                      className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-amber-400"
+                      className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl px-4 py-2.5 text-xs text-white font-mono focus:outline-none focus:border-orange-500"
                     />
-                    <p className="text-[11px] text-emerald-500 mt-1">
+                    <p className="text-[11px] text-stone-500 mt-1">
                       Збережіть форму, щоб оновити пароль адміністратора.
                     </p>
                   </div>
@@ -1376,14 +1376,14 @@ export default function AdminPage() {
       {/* Edit / Add Menu Item Modal */}
       {editingItem && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/80 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#0e221a] border border-[#183e30] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5">
-            <div className="flex items-center justify-between border-b border-[#183e30] pb-3">
+          <div className="bg-[#13161c] border border-[#222733] rounded-3xl p-6 sm:p-8 max-w-lg w-full shadow-2xl space-y-5">
+            <div className="flex items-center justify-between border-b border-[#222733] pb-3">
               <h3 className="font-extrabold text-white text-lg">
                 {isNewItem ? "Додати нову страву" : `Редагувати: ${editingItem.name}`}
               </h3>
               <button
                 onClick={() => setEditingItem(null)}
-                className="text-emerald-300 hover:text-white"
+                className="text-stone-300 hover:text-white"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1391,7 +1391,7 @@ export default function AdminPage() {
 
             <form onSubmit={handleSaveMenuItem} className="space-y-4 text-xs">
               <div>
-                <label className="block text-emerald-300 font-bold mb-1">Назва *</label>
+                <label className="block text-stone-300 font-bold mb-1">Назва *</label>
                 <input
                   type="text"
                   required
@@ -1399,12 +1399,12 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, name: e.target.value })
                   }
-                  className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                  className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-emerald-300 font-bold mb-1">
+                <label className="block text-stone-300 font-bold mb-1">
                   Склад / Опис *
                 </label>
                 <textarea
@@ -1414,18 +1414,18 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, description: e.target.value })
                   }
-                  className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                  className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                 />
               </div>
 
               <div>
-                <label className="block text-emerald-300 font-bold mb-1">Категорія *</label>
+                <label className="block text-stone-300 font-bold mb-1">Категорія *</label>
                 <select
                   value={editingItem.categoryId || ""}
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, categoryId: e.target.value })
                   }
-                  className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                  className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                 >
                   {categories.map((c) => (
                     <option key={c.id} value={c.id}>
@@ -1437,7 +1437,7 @@ export default function AdminPage() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-emerald-300 font-bold mb-1">
+                  <label className="block text-stone-300 font-bold mb-1">
                     Ціна 30 см (грн)
                   </label>
                   <input
@@ -1449,11 +1449,11 @@ export default function AdminPage() {
                         price30: e.target.value ? parseFloat(e.target.value) : null,
                       })
                     }
-                    className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                    className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-emerald-300 font-bold mb-1">
+                  <label className="block text-stone-300 font-bold mb-1">
                     Ціна 40 см (грн)
                   </label>
                   <input
@@ -1465,14 +1465,14 @@ export default function AdminPage() {
                         price40: e.target.value ? parseFloat(e.target.value) : null,
                       })
                     }
-                    className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                    className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-emerald-300 font-bold mb-1">
+                  <label className="block text-stone-300 font-bold mb-1">
                     Або єдина ціна (напої/соуси)
                   </label>
                   <input
@@ -1484,11 +1484,11 @@ export default function AdminPage() {
                         priceSingle: e.target.value ? parseFloat(e.target.value) : null,
                       })
                     }
-                    className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                    className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                   />
                 </div>
                 <div>
-                  <label className="block text-emerald-300 font-bold mb-1">
+                  <label className="block text-stone-300 font-bold mb-1">
                     Бейдж (Хіт, Гостре, Шеф)
                   </label>
                   <input
@@ -1497,13 +1497,13 @@ export default function AdminPage() {
                     onChange={(e) =>
                       setEditingItem({ ...editingItem, badge: e.target.value })
                     }
-                    className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                    className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-emerald-300 font-bold mb-1">
+                <label className="block text-stone-300 font-bold mb-1">
                   URL зображення
                 </label>
                 <input
@@ -1512,7 +1512,7 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, imageUrl: e.target.value })
                   }
-                  className="w-full bg-[#07130f] border border-[#1b5243] rounded-xl p-2.5 text-white"
+                  className="w-full bg-[#0c0e12] border border-[#2d3444] rounded-xl p-2.5 text-white"
                 />
               </div>
 
@@ -1524,7 +1524,7 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setEditingItem({ ...editingItem, isAvailable: e.target.checked })
                   }
-                  className="w-4 h-4 text-emerald-500 rounded"
+                  className="w-4 h-4 text-stone-500 rounded"
                 />
                 <label htmlFor="isAvailable" className="text-white font-bold">
                   В наявності для замовлення
@@ -1535,13 +1535,13 @@ export default function AdminPage() {
                 <button
                   type="button"
                   onClick={() => setEditingItem(null)}
-                  className="px-4 py-2 rounded-xl bg-[#07130f] text-emerald-300"
+                  className="px-4 py-2 rounded-xl bg-[#0c0e12] text-stone-300"
                 >
                   Скасувати
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold"
+                  className="px-6 py-2 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold"
                 >
                   Зберегти
                 </button>

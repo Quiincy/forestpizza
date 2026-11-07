@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Forest Pizza | Крафтова піца на винос на Лісовому масиві в Києві",
   description:
-    "Піцерія Forest Pizza у Києві (Лісовий проспект, 11). Працюємо виключно на винос (Takeaway) та доставку. Справжнє витримане тісто 72г, 10 авторських піц 30 та 40 см, сирні й ковбасні бортики, швидке замовлення з собою за 15-20 хвилин зі сповіщенням у Telegram.",
+    "Піцерія Forest Pizza у Києві (Лісовий проспект, 11). Працюємо виключно на винос (Takeaway) та доставку. 22 автентичні піци 30 та 40 см, витримане тісто, сирні й ковбасні бортики, швидке замовлення з собою за 15-20 хвилин зі сповіщенням у Telegram.",
   keywords: [
     "Forest Pizza",
     "піца на винос Київ",
@@ -30,8 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="uk" className="h-full bg-[#07130f]">
-      <body className="min-h-full flex flex-col bg-[#07130f] text-emerald-100 antialiased">
+    <html lang="uk" className="h-full bg-[#0c0e12]">
+      <body className="min-h-full flex flex-col bg-[#0c0e12] text-stone-100 antialiased selection:bg-orange-500 selection:text-white">
         {children}
       </body>
     </html>

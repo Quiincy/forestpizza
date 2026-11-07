@@ -3,15 +3,18 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { ShoppingBag, Phone, Menu, X, TreePine, MapPin, Store } from "lucide-react";
+import { ShoppingBag, Phone, Menu, X, Flame, MapPin, Store } from "lucide-react";
 
 interface NavbarProps {
   restaurantPhone?: string;
   workingHours?: string;
 }
 
-export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours = "10:00 - 22:00" }: NavbarProps) {
-  const { totalCount, setIsCartOpen } = useCart();
+export function Navbar({
+  restaurantPhone = "+380 (97) 845-12-34",
+  workingHours = "10:00 - 22:00",
+}: NavbarProps) {
+  const { totalCount, totalPrice, setIsCartOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollTo = (id: string) => {
@@ -23,25 +26,25 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-[#07130f]/90 backdrop-blur-md border-b border-[#183e30] transition-colors">
+    <header className="sticky top-0 z-40 bg-[#0d0f11]/95 backdrop-blur-md border-b border-[#242830] transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+        <div className="flex items-center justify-between h-18 sm:h-20">
+          {/* Logo with Orange Flame Emblem */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 via-emerald-700 to-green-900 flex items-center justify-center text-amber-400 shadow-lg shadow-emerald-950/40 border border-emerald-500/30 group-hover:scale-105 transition-transform">
-              <TreePine className="w-6 h-6 text-emerald-200" />
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-950/50 border border-orange-400/40 group-hover:scale-105 transition-transform">
+              <Flame className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-xl sm:text-2xl tracking-wider text-white">
                   FOREST
                 </span>
-                <span className="font-extrabold text-xl sm:text-2xl tracking-wider text-amber-400">
+                <span className="font-extrabold text-xl sm:text-2xl tracking-wider text-orange-500">
                   PIZZA
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-emerald-400/80 uppercase tracking-widest flex items-center gap-1">
-                <MapPin className="w-3 h-3 inline text-amber-400" /> Лісовий просп., 11 • Тільки на винос
+              <p className="text-[10px] sm:text-[11px] font-bold text-orange-400/90 uppercase tracking-widest flex items-center gap-1">
+                <MapPin className="w-3 h-3 inline text-orange-500" /> Лісовий просп., 11 • Тільки на винос
               </p>
             </div>
           </Link>
@@ -50,49 +53,49 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
           <nav className="hidden md:flex items-center gap-8">
             <button
               onClick={() => scrollTo("menu")}
-              className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
+              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
             >
-              Меню
+              Меню піци (22 види)
             </button>
             <button
               onClick={() => scrollTo("takeaway")}
-              className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
+              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
             >
               Замовлення на винос
             </button>
             <button
               onClick={() => scrollTo("about")}
-              className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
+              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
             >
               Про пекарню
             </button>
             <button
               onClick={() => scrollTo("location")}
-              className="text-sm font-semibold text-emerald-100/90 hover:text-amber-400 transition-colors"
+              className="text-sm font-bold text-neutral-300 hover:text-orange-400 transition-colors cursor-pointer"
             >
               Точка самовивозу
             </button>
           </nav>
 
-          {/* Actions */}
-          <div className="hidden sm:flex items-center gap-4">
+          {/* Desktop Actions */}
+          <div className="hidden sm:flex items-center gap-3">
             <a
               href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
-              className="flex items-center gap-2 text-xs font-semibold text-emerald-300 hover:text-emerald-100 bg-[#0e221a] border border-[#1b5243] px-3.5 py-2 rounded-xl transition-all"
+              className="flex items-center gap-2 text-xs font-bold text-neutral-200 hover:text-orange-300 bg-[#171a1f] border border-[#2b303a] px-3.5 py-2 rounded-xl transition-all"
             >
-              <Phone className="w-3.5 h-3.5 text-amber-400" />
+              <Phone className="w-3.5 h-3.5 text-orange-400" />
               <span>{restaurantPhone}</span>
             </a>
 
             {/* Cart Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-xl bg-[#0e221a] hover:bg-[#153428] text-white border border-[#1b5243] transition-all hover:scale-105"
+              className="relative p-2.5 rounded-xl bg-[#171a1f] hover:bg-[#22272f] text-white border border-[#2b303a] transition-all hover:scale-105 cursor-pointer"
               aria-label="Кошик замовлень"
             >
-              <ShoppingBag className="w-5 h-5 text-emerald-300" />
+              <ShoppingBag className="w-5 h-5 text-orange-400" />
               {totalCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-amber-500 text-black font-extrabold text-[11px] w-5 h-5 rounded-full flex items-center justify-center animate-pulse">
+                <span className="absolute -top-1.5 -right-1.5 bg-orange-500 text-white font-black text-[11px] w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-md shadow-orange-950">
                   {totalCount}
                 </span>
               )}
@@ -101,9 +104,9 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
             {/* Order Takeaway Button */}
             <button
               onClick={() => scrollTo("takeaway")}
-              className="flex items-center gap-2 bg-gradient-to-r from-emerald-600 to-emerald-500 hover:from-emerald-500 hover:to-emerald-400 text-white font-bold text-sm px-4 py-2.5 rounded-xl shadow-md shadow-emerald-900/50 transition-all hover:shadow-emerald-700/40"
+              className="flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-md shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer"
             >
-              <Store className="w-4 h-4 text-emerald-100" />
+              <Store className="w-4 h-4 text-white" />
               <span>Замовити на винос</span>
             </button>
           </div>
@@ -112,11 +115,12 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
           <div className="flex md:hidden items-center gap-2">
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-xl bg-[#0e221a] text-white border border-[#1b5243]"
+              className="relative p-2.5 rounded-xl bg-[#171a1f] text-white border border-[#2b303a]"
+              aria-label="Відкрити кошик"
             >
-              <ShoppingBag className="w-5 h-5 text-emerald-300" />
+              <ShoppingBag className="w-5 h-5 text-orange-400" />
               {totalCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 bg-amber-500 text-black font-extrabold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
+                <span className="absolute -top-1.5 -right-1.5 bg-orange-500 text-white font-black text-[10px] w-4 h-4 rounded-full flex items-center justify-center">
                   {totalCount}
                 </span>
               )}
@@ -124,7 +128,8 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
 
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-[#0e221a] text-emerald-200 border border-[#1b5243]"
+              className="p-2.5 rounded-xl bg-[#171a1f] text-neutral-200 border border-[#2b303a]"
+              aria-label="Меню навігації"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -133,42 +138,42 @@ export function Navbar({ restaurantPhone = "+380 (97) 845-12-34", workingHours =
 
         {/* Mobile menu dropdown */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#183e30] flex flex-col gap-3 animate-fadeIn">
+          <div className="md:hidden py-4 border-t border-[#242830] flex flex-col gap-2.5 animate-fadeIn">
             <button
               onClick={() => scrollTo("menu")}
-              className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
             >
-              🍕 Меню піци
+              🍕 Меню (22 фірмові піци)
             </button>
             <button
               onClick={() => scrollTo("takeaway")}
-              className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
             >
               🛍️ Замовлення на винос (самовивіз)
             </button>
             <button
               onClick={() => scrollTo("about")}
-              className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
             >
-              🌲 Про пекарню
+              🔥 Про нашу випічку та бортики
             </button>
             <button
               onClick={() => scrollTo("location")}
-              className="text-left px-3 py-2 text-base font-semibold text-emerald-100 hover:bg-[#0e221a] rounded-lg"
+              className="text-left px-3.5 py-2.5 text-sm font-bold text-neutral-200 hover:bg-[#1a1e24] hover:text-orange-400 rounded-xl"
             >
               📍 Точка видачі на карті
             </button>
-            <div className="pt-2 border-t border-[#183e30] flex flex-col gap-2">
+            <div className="pt-2 border-t border-[#242830] flex flex-col gap-2">
               <a
                 href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
-                className="flex items-center justify-center gap-2 text-sm font-semibold text-emerald-300 bg-[#0e221a] py-2.5 rounded-lg border border-[#1b5243]"
+                className="flex items-center justify-center gap-2 text-sm font-bold text-orange-400 bg-[#171a1f] py-2.5 rounded-xl border border-[#2b303a]"
               >
-                <Phone className="w-4 h-4 text-amber-400" />
+                <Phone className="w-4 h-4 text-orange-500" />
                 <span>{restaurantPhone}</span>
               </a>
               <button
                 onClick={() => scrollTo("takeaway")}
-                className="w-full text-center bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 rounded-lg shadow"
+                className="w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black py-2.5 rounded-xl shadow-md"
               >
                 Замовити на винос онлайн
               </button>

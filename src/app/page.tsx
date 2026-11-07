@@ -9,6 +9,7 @@ import { AboutSection } from "@/components/AboutSection";
 import { LocationSection } from "@/components/LocationSection";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
+import { MobileBottomBar } from "@/components/MobileBottomBar";
 
 export const instant = false;
 
@@ -41,7 +42,7 @@ export default async function HomePage() {
 
   return (
     <CartProvider>
-      <div className="min-h-screen bg-[#07130f] text-emerald-100 flex flex-col selection:bg-emerald-600 selection:text-white">
+      <div className="min-h-screen bg-[#0c0e12] text-stone-100 flex flex-col selection:bg-orange-600 selection:text-white pb-20 md:pb-0">
         {/* Navigation */}
         <Navbar
           restaurantPhone={settings.restaurant_phone}
@@ -86,6 +87,9 @@ export default async function HomePage() {
 
         {/* Cart Drawer */}
         <CartDrawer />
+
+        {/* Sticky Mobile Bottom Bar */}
+        <MobileBottomBar restaurantPhone={settings.restaurant_phone} />
       </div>
     </CartProvider>
   );

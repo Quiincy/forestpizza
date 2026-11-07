@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding Forest Pizza database (Takeaway format)...");
+  console.log("Seeding all 22 pizzas and categories from Google Maps photos (Orange brand style)...");
 
   // 1. Settings
   const defaultSettings = [
@@ -16,8 +16,9 @@ async function main() {
     { key: "maps_url", value: "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z", description: "Посилання на Google Maps" },
     { key: "telegram_bot_token", value: "", description: "Токен Telegram-бота для сповіщень" },
     { key: "telegram_chat_id", value: "", description: "Chat ID адміністратора/групи для сповіщень" },
-    { key: "reservation_notice", value: "Замовлення на винос прийнято! Піца буде гарячою та чекатиме вас за 15-20 хв за адресою: Лісовий проспект, 11.", description: "Повідомлення клієнту після замовлення на винос" },
+    { key: "reservation_notice", value: "Замовлення на винос прийнято! Піца буде готова за 15-20 хвилин за адресою: Лісовий проспект, 11.", description: "Повідомлення клієнту після замовлення на винос" },
     { key: "pickup_time_default", value: "15-20 хвилин", description: "Середній час приготування" },
+    { key: "brand_color", value: "#ff6600", description: "Фірмовий помаранчевий колір" },
     { key: "admin_password", value: "forest2026", description: "Пароль до панелі керування" }
   ];
 
@@ -31,7 +32,7 @@ async function main() {
 
   // 2. Categories
   const categoriesData = [
-    { name: "Піца", slug: "pizza", order: 1 },
+    { name: "Піца (22 види)", slug: "pizza", order: 1 },
     { name: "Бортики та соуси", slug: "extras", order: 2 },
     { name: "Закуски", slug: "snacks", order: 3 },
     { name: "Напої", slug: "drinks", order: 4 },
@@ -47,116 +48,242 @@ async function main() {
     categoriesMap[cat.slug] = c.id;
   }
 
-  // 3. Clear existing items and reseed authentic Forest Pizza menu
+  // 3. Clear existing items and reseed full authentic Forest Pizza menu (all 22 pizzas from Google Maps)
   await prisma.menuItem.deleteMany({});
 
-  const menuItems = [
-    // PIZZAS (from official Forest Pizza menu board photo)
+  const allPizzas = [
+    // --- PHOTO 2 PIZZAS ---
+    {
+      name: "Pizza Forest",
+      description: "Соус томатний / часниковий, бекон, балик, печериці, маслини, філе куряче, сир моцарела",
+      price30: 320,
+      price40: 540,
+      badge: "Фірмова 🌲",
+      imageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 1,
+    },
     {
       name: "Пепероні",
       description: "Соус томатний, ніжна моцарела, пікантна ковбаска пепероні",
       price30: 240,
       price40: 420,
-      badge: "Хіт",
+      badge: "Хіт 🍕",
       imageUrl: "https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=800&q=80",
-      categoryId: categoriesMap["pizza"],
-      order: 1,
-    },
-    {
-      name: "Прошутто",
-      description: "Соус томатний, сир моцарела, витриманий пармезан, вишукане прошуто, свіжа свіжа руккола, соковиті помідори черрі",
-      price30: 350,
-      price40: 600,
-      badge: "Преміум",
-      imageUrl: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 2,
     },
     {
       name: "4 М'яса",
-      description: "Соус томатний, сир моцарела, ароматний бекон, балик, куряче філе, мисливські ковбаски, свіжі стиглі томати",
+      description: "Соус томатний, сир моцарела, бекон, балик, куряче філе, мисливські ковбаски, томати",
       price30: 320,
       price40: 540,
       badge: "Ситна",
-      imageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 3,
     },
     {
-      name: "Від Шефа",
-      description: "Ніжний вершковий соус, сир моцарела, пікантна пепероні, пармезан, свіжі печериці, мариновані ковбаски",
+      name: "4 Сири",
+      description: "Вершковий соус, сир моцарела, гауда, шляхетна горгонзола, пармезан",
       price30: 320,
       price40: 540,
-      badge: "Шеф",
-      imageUrl: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80",
+      badge: "Сирна 🧀",
+      imageUrl: "https://images.unsplash.com/photo-1573821663912-569905455b1c?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 4,
     },
     {
-      name: "4 Сири",
-      description: "Оксамитовий вершковий соус, сир моцарела, класична гауда, благородна горгонзола з блакитною пліснявою, пікантний пармезан",
-      price30: 320,
-      price40: 540,
-      badge: "Хіт",
-      imageUrl: "https://images.unsplash.com/photo-1573821663912-569905455b1c?auto=format&fit=crop&w=800&q=80",
+      name: "Прошутто",
+      description: "Соус томатний, моцарела, пармезан, прошуто, свіжа рукола, помідори черрі",
+      price30: 350,
+      price40: 600,
+      badge: "Преміум",
+      imageUrl: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 5,
     },
     {
-      name: "Сезон",
-      description: "Ароматний часниковий соус, сир моцарела, свіжі печериці, соковита червона цибуля, ніжне куряче філе, хрусткий мікс салатів, пармезан",
-      price30: 340,
+      name: "Від Шефа",
+      description: "Соус вершковий, сир моцарела, пепероні, сир пармезан, печериці, мариновані ковбаски",
+      price30: 320,
       price40: 540,
-      badge: "Сезонне",
-      imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+      badge: "Шеф 👨‍🍳",
+      imageUrl: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 6,
     },
     {
-      name: "Піца Бургер",
-      description: "Фірмовий соус бургер, сир моцарела, хрусткий бекон, балик, червона цибуля, мариновані корнішони, томати, розплавлений сир чеддер",
-      price30: 320,
-      price40: 540,
-      badge: "Новинка",
-      imageUrl: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=800&q=80",
+      name: "Мюнхенська",
+      description: "Соус барбекю, моцарела, балик, мисливські ковбаски, мариновані огірочки, кукурудза, томати",
+      price30: 280,
+      price40: 500,
+      badge: "Баварська",
+      imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 7,
     },
     {
-      name: "Мексиканська",
-      description: "Соус барбекю, моцарела, балик, копчена курочка, пепероні, червона цибуля, томати, пікантний гострий перець",
-      price30: 300,
-      price40: 500,
-      badge: "Гостре 🔥",
-      imageUrl: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80",
+      name: "Д'ябло",
+      description: "Соус гострий, сир моцарела, салямі, пікантний перець халапеньйо",
+      price30: 250,
+      price40: 420,
+      badge: "Гостра 🔥🌶️",
+      imageUrl: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 8,
     },
     {
-      name: "Італійська",
-      description: "Соус вершковий, моцарела, відбірні гриби печериці, ніжне прошуто котто, сир пармезан",
-      price30: 350,
-      price40: 560,
-      badge: "Класика",
+      name: "Цезар",
+      description: "Соус вершковий, сир моцарела, бекон, курка копчена, томати, салат айсберг, сир пармезан, соус цезар",
+      price30: 300,
+      price40: 520,
+      badge: "Хіт",
       imageUrl: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 9,
     },
     {
-      name: "Чіназес",
-      description: "Соус барбекю, сир моцарела, ніжне соковите куряче філе, солодка кукурудза, червона цибуля, насичений сир чеддер",
-      price30: 320,
-      price40: 540,
-      badge: "Топ",
-      imageUrl: "https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?auto=format&fit=crop&w=800&q=80",
+      name: "Ocean",
+      description: "Соус вершковий, сир моцарела, морський коктейль, лосось, маслини, рукола, помідори чері",
+      price30: 380,
+      price40: 650,
+      badge: "Морепродукти 🦐",
+      imageUrl: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["pizza"],
       order: 10,
     },
+    {
+      name: "Туна",
+      description: "Соус вершковий, сир моцарела, тунець, цибуля червона, маслини, сир пармезан",
+      price30: 300,
+      price40: 520,
+      badge: "З тунцем 🐟",
+      imageUrl: "https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 11,
+    },
+    {
+      name: "Карбонара",
+      description: "Соус вершковий, моцарела, бекон, балик, цибуля червона, сир пармезан",
+      price30: 300,
+      price40: 520,
+      badge: "Класика",
+      imageUrl: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 12,
+    },
+    {
+      name: "BBQ",
+      description: "Соус барбекю, бекон, копчена курка, перець болгарський солодкий, кукурудза",
+      price30: 300,
+      price40: 500,
+      badge: "Димна BBQ",
+      imageUrl: "https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 13,
+    },
+    {
+      name: "Горгонзола Груша",
+      description: "Соус вершковий, сир моцарела, сир горгонзола, прошутто, карамелізована груша, сир пармезан",
+      price30: 350,
+      price40: 560,
+      badge: "Гурман 🍐",
+      imageUrl: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 14,
+    },
+    {
+      name: "Гавайська",
+      description: "Соус вершковий, сир моцарела, куряче філе, кукурудза, соковиті ананаси",
+      price30: 300,
+      price40: 480,
+      badge: "Ананасова",
+      imageUrl: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 15,
+    },
+    {
+      name: "Лосось",
+      description: "Соус вершковий, лосось с/с, свіжа рукола, черрі, ніжний сир Філадельфія",
+      price30: 360,
+      price40: 580,
+      badge: "Філадельфія",
+      imageUrl: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 16,
+    },
+    {
+      name: "Українська",
+      description: "Часниковий соус, моцарела, гриби печериці, цибуля Марс, домашня ковбаска, пармезан, хрін",
+      price30: 320,
+      price40: 540,
+      badge: "Козацька 🇺🇦",
+      imageUrl: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 17,
+    },
+    {
+      name: "Сезон",
+      description: "Соус часниковий, сир моцарела, печериці, червона цибуля, куряче філе, мікс салатів, пармезан",
+      price30: 340,
+      price40: 540,
+      badge: "Сезонна",
+      imageUrl: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 18,
+    },
+    {
+      name: "Піца Бургер",
+      description: "Соус бургер, сир моцарела, бекон, балик, цибуля, мариновані огірки, томати, чеддер",
+      price30: 320,
+      price40: 540,
+      badge: "Новинка",
+      imageUrl: "https://images.unsplash.com/photo-1590947132387-155cc02f3212?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 19,
+    },
+    {
+      name: "Мексиканська",
+      description: "Соус барбекю, моцарела, балик, курка копчена, пепероні, червона цибуля, томати, перець халапеньйо",
+      price30: 300,
+      price40: 500,
+      badge: "Гостре 🔥",
+      imageUrl: "https://images.unsplash.com/photo-1534308983496-4fabb1a015ee?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 20,
+    },
+    {
+      name: "Італійська",
+      description: "Соус вершковий, моцарела, гриби печериці, прошуто котто, сир пармезан",
+      price30: 350,
+      price40: 560,
+      badge: "Класика",
+      imageUrl: "https://images.unsplash.com/photo-1604382355076-af4b0eb60143?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 21,
+    },
+    {
+      name: "Чіназес",
+      description: "Соус барбекю, сир моцарела, курка, кукурудза, цибуля червона, сир чеддер",
+      price30: 320,
+      price40: 540,
+      badge: "Популярна",
+      imageUrl: "https://images.unsplash.com/photo-1588315029754-2dd089d39a1a?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["pizza"],
+      order: 22,
+    },
+  ];
 
-    // EXTRAS (Бортики та соуси)
+  for (const p of allPizzas) {
+    await prisma.menuItem.create({ data: p });
+  }
+
+  // --- EXTRAS (БОРТИКИ ТА СОУСИ) ---
+  const extras = [
     {
       name: "Бортик Сирний",
-      description: "Запечений пухкий бортик піци, щедро начинений гарячим сиром моцарела",
+      description: "Запечений пухкий бортик піци, щедро начинений розплавленим сиром моцарела",
       price30: 65,
       price40: 95,
       imageUrl: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=800&q=80",
@@ -183,7 +310,7 @@ async function main() {
     {
       name: "Соус Сирний Чеддер",
       description: "Густий кремовий соус на основі натурального сиру чеддер (50г)",
-      priceSingle: 35,
+      priceSingle: 40,
       imageUrl: "https://images.unsplash.com/photo-1582169296194-e4d644c48063?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["extras"],
       order: 4,
@@ -196,8 +323,22 @@ async function main() {
       categoryId: categoriesMap["extras"],
       order: 5,
     },
+    {
+      name: "Соус Барбекю (BBQ)",
+      description: "Карамельно-димний пікантний соус BBQ (50г)",
+      priceSingle: 30,
+      imageUrl: "https://images.unsplash.com/photo-1544982503-9f984c14501a?auto=format&fit=crop&w=800&q=80",
+      categoryId: categoriesMap["extras"],
+      order: 6,
+    },
+  ];
 
-    // SNACKS (Закуски)
+  for (const ex of extras) {
+    await prisma.menuItem.create({ data: ex });
+  }
+
+  // --- SNACKS (ЗАКУСКИ) ---
+  const snacks = [
     {
       name: "Картопля Фрі",
       description: "Золотиста хрустка картопля фрі з паприкою та морською сіллю (150г)",
@@ -232,8 +373,14 @@ async function main() {
       categoryId: categoriesMap["snacks"],
       order: 4,
     },
+  ];
 
-    // DRINKS (Напої)
+  for (const sn of snacks) {
+    await prisma.menuItem.create({ data: sn });
+  }
+
+  // --- DRINKS (НАПОЇ) ---
+  const drinks = [
     {
       name: "Крафтове Пиво Forest Light (0.5л)",
       description: "Світлий нефільтрований свіжий ель з нотками хвої та цитрусів від локальної броварні",
@@ -255,7 +402,7 @@ async function main() {
       name: "Домашній Обліпиховий Лимонад (0.4л)",
       description: "Освіжаючий авторський напій на основі ягід карпатської обліпихи, апельсину та м'яти",
       priceSingle: 65,
-      badge: "Авторський",
+      badge: "Авторський 🍊",
       imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80",
       categoryId: categoriesMap["drinks"],
       order: 3,
@@ -270,38 +417,11 @@ async function main() {
     },
   ];
 
-  for (const item of menuItems) {
-    await prisma.menuItem.create({
-      data: item,
-    });
+  for (const dr of drinks) {
+    await prisma.menuItem.create({ data: dr });
   }
 
-  // 4. Sample takeaway pre-orders
-  await prisma.reservation.deleteMany({});
-  await prisma.reservation.createMany({
-    data: [
-      {
-        customerName: "Максим Коваленко",
-        phone: "+380 98 765 43 21",
-        date: new Date().toISOString().split("T")[0],
-        time: "19:00",
-        comment: "Заберу сам з машини біля входу, піцу порізати на 8 шматочків",
-        status: "NEW",
-        telegramSent: false,
-      },
-      {
-        customerName: "Олена Петренко",
-        phone: "+380 50 123 99 88",
-        date: new Date().toISOString().split("T")[0],
-        time: "Якомога швидше (15-20 хв)",
-        comment: "Самовивіз на винос",
-        status: "CONFIRMED",
-        telegramSent: true,
-      },
-    ],
-  });
-
-  console.log("Database seeded successfully for takeaway!");
+  console.log("Database seeded successfully with all 22 pizzas and subcategories!");
 }
 
 main()
