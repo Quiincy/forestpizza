@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Flame, Sparkles, Clock, ArrowRight, MapPin, Store } from "lucide-react";
+import { ForestPizzaLogo } from "./ForestPizzaLogo";
 
 interface HeroProps {
   restaurantAddress?: string;
@@ -9,7 +10,7 @@ interface HeroProps {
 }
 
 export function Hero({
-  restaurantAddress = "м. Київ, Лісовий проспект, 11",
+  restaurantAddress = "м. Київ, Проспект Лісовий, 11",
   workingHours = "Щодня з 10:00 до 22:00",
 }: HeroProps) {
   const scrollTo = (id: string) => {
@@ -27,12 +28,15 @@ export function Hero({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left Column: Text & CTAs */}
           <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold">
-              <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
-              <span>Працюємо виключно на винос (самовивіз) • Лісовий масив</span>
+            <div className="flex flex-col items-center lg:items-start gap-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold">
+                <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
+                <span>Працюємо виключно на винос (TO GO) • Лісовий масив</span>
+              </div>
+              <ForestPizzaLogo size="lg" className="my-1" />
             </div>
 
-            <h1 className="text-3xl sm:text-5xl lg:text-[54px] font-black text-white tracking-tight leading-[1.12]">
+            <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-[1.12]">
               Гаряча крафтова піца{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-orange-400">
                 на винос
@@ -41,8 +45,8 @@ export function Hero({
             </h1>
 
             <p className="text-sm sm:text-base lg:text-lg text-stone-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              22 фірмові піци за оригінальним меню (30 см та 40 см), соковиті сирні й ковбасні бортики,
-              натуральна моцарела та витримане тісто. <b>Замовляйте онлайн та забирайте без черги за 15–20 хвилин!</b>
+              23 фірмові піци за оригінальним меню (30 см та 40 см), соковиті чебуреки, хрусткий фритюр,
+              сирні й ковбасні бортики. <b>Замовляйте онлайн та забирайте без черги за 15–20 хвилин!</b>
             </p>
 
             {/* Quick Feature Badges */}
@@ -53,7 +57,7 @@ export function Hero({
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-3 py-2 rounded-xl border border-[#282e3b]">
                 <Flame className="w-4 h-4 text-orange-500 shrink-0" />
-                <span className="truncate">Випікаємо при 400°C</span>
+                <span className="truncate">23 піци + чебуреки</span>
               </div>
               <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-3 py-2 rounded-xl border border-[#282e3b]">
                 <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
@@ -71,7 +75,7 @@ export function Hero({
                 onClick={() => scrollTo("menu")}
                 className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-black text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-lg shadow-orange-950/60 transition-all hover:scale-[1.02] cursor-pointer"
               >
-                <span>Обрати піцу з меню (22 види)</span>
+                <span>Переглянути меню (23 піци)</span>
                 <ArrowRight className="w-4 h-4 shrink-0" />
               </button>
 
@@ -108,7 +112,7 @@ export function Hero({
                   <img
                     src="/images/pizzas/pizza-forest.jpg"
                     alt="Pizza Forest фірмова піца на винос"
-                    className="w-full h-full object-contain object-center group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0c0e12] via-transparent to-transparent opacity-85 pointer-events-none" />
 
@@ -126,7 +130,7 @@ export function Hero({
 
                   <div className="absolute top-3 left-3 bg-orange-500 text-white font-black text-xs px-3 py-1.5 rounded-lg shadow-md flex items-center gap-1.5">
                     <Flame className="w-3.5 h-3.5 fill-white" />
-                    <span>22 піци в меню</span>
+                    <span>23 піци в меню</span>
                   </div>
                 </div>
 
@@ -138,7 +142,7 @@ export function Hero({
                   </div>
                   <div className="bg-[#12151c] p-2.5 rounded-xl border border-[#232832]">
                     <p className="text-[10px] sm:text-[11px] text-stone-400">Формат</p>
-                    <p className="text-xs sm:text-sm font-black text-orange-400">На винос</p>
+                    <p className="text-xs sm:text-sm font-black text-orange-400">TO GO (Винос)</p>
                   </div>
                   <div className="bg-[#12151c] p-2.5 rounded-xl border border-[#232832]">
                     <p className="text-[10px] sm:text-[11px] text-stone-400">Розміри</p>

@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { ShoppingBag, Phone, Menu, X, Flame, MapPin, Store } from "lucide-react";
+import { ShoppingBag, Phone, Menu, X, MapPin, Store } from "lucide-react";
+import { ForestPizzaLogo } from "./ForestPizzaLogo";
 
 interface NavbarProps {
   restaurantPhone?: string;
@@ -11,7 +12,7 @@ interface NavbarProps {
 }
 
 export function Navbar({
-  restaurantPhone = "+380 (97) 845-12-34",
+  restaurantPhone = "+38 093 204 28 04",
   workingHours = "10:00 - 22:00",
 }: NavbarProps) {
   const { totalCount, totalPrice, setIsCartOpen } = useCart();
@@ -28,59 +29,51 @@ export function Navbar({
   return (
     <header className="sticky top-0 z-40 bg-[#0c0e12]/95 backdrop-blur-xl border-b border-[#232832] shadow-lg shadow-black/30">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20 gap-3">
-          {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-orange-500 via-orange-600 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-950/60 border border-orange-400/40 group-hover:scale-105 transition-transform shrink-0">
-              <Flame className="w-5 h-5 sm:w-6 sm:h-6 text-white fill-white/20" />
-            </div>
-            <div className="leading-tight">
-              <div className="flex items-center gap-1.5 whitespace-nowrap">
-                <span className="font-black text-lg sm:text-2xl tracking-wider text-white">
-                  FOREST
-                </span>
-                <span className="font-black text-lg sm:text-2xl tracking-wider text-orange-500">
-                  PIZZA
-                </span>
-              </div>
-              <p className="text-[10px] sm:text-[11px] font-bold text-stone-400 whitespace-nowrap flex items-center gap-1 mt-0.5">
-                <MapPin className="w-3 h-3 text-orange-500 shrink-0" />
-                <span>Лісовий просп., 11</span>
-                <span className="hidden xs:inline text-orange-400">• На винос</span>
-              </p>
-            </div>
+        <div className="flex items-center justify-between h-16 sm:h-20 gap-2 sm:gap-3">
+          {/* Authentic Brand Logo ("FOREST 🍕 PIZZA TO GO") */}
+          <Link
+            href="/"
+            className="flex flex-col justify-center group shrink-0 py-1"
+            title="Forest Pizza To Go — На головну"
+          >
+            <ForestPizzaLogo size="md" className="group-hover:scale-[1.02] transition-transform" />
+            <p className="text-[10px] sm:text-[11px] font-bold text-stone-400 whitespace-nowrap flex items-center gap-1 mt-0.5 pl-0.5">
+              <MapPin className="w-3 h-3 text-orange-500 shrink-0" />
+              <span>Проспект Лісовий, 11</span>
+              <span className="hidden xs:inline text-orange-400">• Тільки на винос</span>
+            </p>
           </Link>
 
           {/* Desktop Navigation (lg+) */}
-          <nav className="hidden lg:flex items-center gap-1 xl:gap-2 bg-[#14171f] border border-[#242936] rounded-2xl p-1.5">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 bg-[#14171f] border border-[#242936] rounded-2xl p-1.5">
             <button
               onClick={() => scrollTo("menu")}
-              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
+              className="px-3 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
-              🍕 Меню піци (22)
+              🍕 Меню (23 піци)
             </button>
             <button
               onClick={() => scrollTo("takeaway")}
-              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
+              className="px-3 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
               🛍️ Замовити на час
             </button>
             <button
               onClick={() => scrollTo("about")}
-              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
+              className="px-3 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
               🔥 Про піцерію
             </button>
             <button
               onClick={() => scrollTo("location")}
-              className="px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
+              className="px-3 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
             >
               📍 Локація
             </button>
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* Phone Call Button */}
             <a
               href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
@@ -94,7 +87,7 @@ export function Navbar({
             {/* Cart Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 px-3 py-2.5 rounded-xl bg-[#151820] hover:bg-[#1d222d] text-white border border-[#282e3b] transition-all cursor-pointer whitespace-nowrap"
+              className="relative flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2.5 rounded-xl bg-[#151820] hover:bg-[#1d222d] text-white border border-[#282e3b] transition-all cursor-pointer whitespace-nowrap"
               aria-label="Кошик замовлень"
             >
               <ShoppingBag className="w-5 h-5 text-orange-400 shrink-0" />
@@ -113,7 +106,7 @@ export function Navbar({
             {/* Primary Takeaway CTA (Desktop/Tablet) */}
             <button
               onClick={() => scrollTo("takeaway")}
-              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-lg shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer whitespace-nowrap"
+              className="hidden md:flex items-center gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-xl shadow-lg shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer whitespace-nowrap"
             >
               <Store className="w-4 h-4 text-white shrink-0" />
               <span>На винос</span>
@@ -134,7 +127,7 @@ export function Navbar({
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-[#232832] flex flex-col gap-2 animate-fadeIn">
             <div className="px-3 py-2 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-between text-xs">
-              <span className="font-bold text-orange-300">🛍️ Працюємо тільки на винос</span>
+              <span className="font-bold text-orange-300">🛍️ Працюємо тільки на винос (TO GO)</span>
               <span className="text-stone-300 font-semibold">{workingHours}</span>
             </div>
 
@@ -142,7 +135,7 @@ export function Navbar({
               onClick={() => scrollTo("menu")}
               className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors"
             >
-              🍕 Меню піци (усі 22 види)
+              🍕 Повне меню (23 піци, чебуреки, фритюр)
             </button>
             <button
               onClick={() => scrollTo("takeaway")}
@@ -160,7 +153,7 @@ export function Navbar({
               onClick={() => scrollTo("location")}
               className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors"
             >
-              📍 Як нас знайти (Лісовий просп., 11)
+              📍 Як нас знайти (Проспект Лісовий, 11)
             </button>
 
             <div className="pt-2 border-t border-[#232832] grid grid-cols-1 sm:grid-cols-2 gap-2">

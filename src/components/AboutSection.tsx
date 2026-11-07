@@ -19,9 +19,9 @@ export function AboutSection() {
           </h2>
 
           <p className="text-stone-300 text-xs sm:text-sm lg:text-base leading-relaxed">
-            <b>Forest Pizza</b> працює у форматі <b>Takeaway (виключно на винос)</b>.
-            Ми сфокусовані на головному — смаку та швидкості: 22 авторські рецепти піци на ферментованому тісті,
-            що випікається при 400°C і видається вам гарячою просто з печі.
+            <b>Forest Pizza</b> працює у форматі <b>TO GO / Takeaway (виключно на винос)</b>.
+            Ми сфокусовані на головному — смаку та швидкості: 23 авторські рецепти піци, соковиті чебуреки та фритюр,
+            що готуються і видаються вам гарячими просто з печі.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-1">
@@ -59,9 +59,9 @@ export function AboutSection() {
               <div className="w-9 h-9 rounded-xl bg-orange-950/70 border border-orange-500/30 flex items-center justify-center text-orange-400">
                 <Sparkles className="w-5 h-5" />
               </div>
-              <h4 className="font-black text-white text-sm sm:text-base">22 види піци в меню</h4>
+              <h4 className="font-black text-white text-sm sm:text-base">23 види піци + чебуреки</h4>
               <p className="text-xs text-stone-400 leading-relaxed">
-                Від фірмової Pizza Forest, 4 М&apos;яса та Пепероні до делікатесних Лосось, Ocean і Горгонзола Груша.
+                Від фірмової Pizza Forest, Чорізо, Італійської та 4 М&apos;яса до делікатесних Лосось, Ocean і Горгонзола Груша.
               </p>
             </div>
           </div>

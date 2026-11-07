@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { TreePine, Lock, MapPin, Phone, Clock, Heart, Store, Flame } from "lucide-react";
+import { Lock, MapPin, Phone, Clock, Heart } from "lucide-react";
 import { InstagramIcon } from "./InstagramIcon";
+import { ForestPizzaLogo } from "./ForestPizzaLogo";
 
 interface FooterProps {
   restaurantName?: string;
@@ -14,11 +15,10 @@ interface FooterProps {
 }
 
 export function Footer({
-  restaurantName = "Forest Pizza",
-  restaurantAddress = "м. Київ, Лісовий проспект, 11",
-  restaurantPhone = "+380 (97) 845-12-34",
+  restaurantAddress = "м. Київ, Проспект Лісовий, 11",
+  restaurantPhone = "+38 093 204 28 04",
   workingHours = "Щодня з 10:00 до 22:00 (тільки на винос)",
-  instagramUrl = "https://instagram.com/forestpizza.kyiv",
+  instagramUrl = "https://www.instagram.com/forest_pizza",
 }: FooterProps) {
   const scrollTo = (id: string) => {
     const elem = document.getElementById(id);
@@ -31,21 +31,14 @@ export function Footer({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-[#1e232b]">
           {/* Col 1: Brand */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white shadow-lg shadow-orange-950/50">
-                <Flame className="w-5 h-5 fill-white" />
-              </div>
-              <span className="font-extrabold text-xl tracking-wider text-white">
-                FOREST <span className="text-orange-500">PIZZA</span>
-              </span>
-            </div>
+            <ForestPizzaLogo size="md" />
             <p className="text-xs text-stone-400 leading-relaxed">
-              Крафтова піца <b>виключно на винос (самовивіз)</b> на Лісовому масиві.
-              22 автентичні рецепти, соковиті сирні та ковбасні бортики, готовність за 15-20 хвилин.
+              Крафтова піца <b>виключно на винос (TO GO / самовивіз)</b> на Лісовому масиві.
+              23 автентичні рецепти піци, соковиті чебуреки, фритюр, сирні та ковбасні бортики.
             </p>
-            <div className="pt-2">
+            <div className="pt-1">
               <span className="inline-flex items-center gap-1.5 text-xs text-orange-400 bg-[#14171e] px-3 py-1.5 rounded-lg border border-[#242933]">
-                <Clock className="w-3.5 h-3.5 text-orange-500" />
+                <Clock className="w-3.5 h-3.5 text-orange-500 shrink-0" />
                 <span>{workingHours}</span>
               </span>
             </div>
@@ -60,33 +53,33 @@ export function Footer({
               <li>
                 <button
                   onClick={() => scrollTo("menu")}
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors cursor-pointer"
                 >
-                  🍕 Меню піци (22 види, 30 та 40 см)
+                  🍕 Меню піци (23 види, 30 та 40 см)
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollTo("menu")}
+                  className="hover:text-orange-400 transition-colors cursor-pointer"
+                >
+                  🥟 Чебуреки та фритюр (нагетси, фрі, сирні палички)
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => scrollTo("takeaway")}
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors cursor-pointer"
                 >
-                  🛍️ Замовлення на винос на час
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollTo("about")}
-                  className="hover:text-orange-400 transition-colors"
-                >
-                  🌲 Тісто 72 години та крафтовий підхід
+                  🛍️ Замовлення на винос на точний час
                 </button>
               </li>
               <li>
                 <button
                   onClick={() => scrollTo("location")}
-                  className="hover:text-orange-400 transition-colors"
+                  className="hover:text-orange-400 transition-colors cursor-pointer"
                 >
-                  📍 Точка видачі (Лісовий просп., 11)
+                  📍 Точка видачі (Проспект Лісовий, 11)
                 </button>
               </li>
             </ul>
@@ -118,9 +111,9 @@ export function Footer({
                     href={instagramUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-orange-400"
+                    className="hover:text-orange-400 font-semibold"
                   >
-                    @forestpizza.kyiv
+                    @forest_pizza
                   </a>
                 </li>
               )}
@@ -147,7 +140,7 @@ export function Footer({
 
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
-          <p>© {new Date().getFullYear()} Forest Pizza (Київ, Лісовий проспект, 11). Тільки на винос (самовивіз).</p>
+          <p>© {new Date().getFullYear()} Forest Pizza (Київ, Проспект Лісовий, 11). Тільки на винос (TO GO).</p>
           <p className="flex items-center gap-1">
             Зроблено з <Heart className="w-3 h-3 text-orange-500 fill-orange-500 inline" /> для поціновувачів справжньої піци
           </p>

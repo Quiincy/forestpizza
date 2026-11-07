@@ -57,6 +57,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
             desc.includes("бекон") ||
             desc.includes("балик") ||
             desc.includes("пепероні") ||
+            desc.includes("чорізо") ||
             desc.includes("курка") ||
             desc.includes("куряч") ||
             desc.includes("салямі") ||
@@ -82,6 +83,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
             desc.includes("гостр") ||
             desc.includes("халапень") ||
             desc.includes("д'ябло") ||
+            desc.includes("чорізо") ||
             desc.includes("мексиканськ");
           if (!isSpicy) return false;
         }
@@ -102,10 +104,10 @@ export function MenuSection({ categories }: MenuSectionProps) {
           <span>Оригінальне меню Forest Pizza</span>
         </div>
         <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
-          Меню піци на винос
+          Меню Forest Pizza To Go
         </h2>
         <p className="text-stone-300 text-xs sm:text-sm lg:text-base leading-relaxed">
-          Усі 22 авторські піци у розмірах 30 см та 40 см, фірмові сирні й ковбасні бортики, соуси, закуски та напої.
+          Усі {pizzaCount} авторські піци у розмірах 30 см та 40 см, фірмові чебуреки, хрусткий фритюр, сирні й ковбасні бортики та додатки.
         </p>
 
         {/* Search bar */}
@@ -185,7 +187,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
                 : "bg-[#101319] text-stone-400 border border-[#222733] hover:text-white"
             }`}
           >
-            Усі 22 піци
+            Усі {pizzaCount} піци
           </button>
           <button
             onClick={() => setPizzaSubfilter("meat")}

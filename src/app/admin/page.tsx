@@ -26,6 +26,7 @@ import {
   Clock,
   Download,
 } from "lucide-react";
+import { ForestPizzaLogo } from "@/components/ForestPizzaLogo";
 
 interface TakeawayOrderItem {
   id: string;
@@ -405,13 +406,11 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen bg-[#0c0e12] flex items-center justify-center p-4">
         <div className="w-full max-w-md bg-[#13161c] border border-[#222733] rounded-3xl p-8 shadow-2xl space-y-6">
-          <div className="text-center space-y-2">
-            <div className="w-16 h-16 rounded-2xl bg-[#0c0e12] border border-[#2d3444] flex items-center justify-center text-orange-400 mx-auto">
-              <Lock className="w-8 h-8" />
-            </div>
-            <h1 className="text-2xl font-black text-white">Панель керування</h1>
+          <div className="text-center space-y-2.5 flex flex-col items-center">
+            <ForestPizzaLogo size="md" />
+            <h1 className="text-xl font-black text-white pt-1">Панель керування</h1>
             <p className="text-xs text-stone-400">
-              Forest Pizza • Тільки на винос (самовивіз) • Лісовий просп., 11
+              Forest Pizza • Тільки на винос (TO GO) • Проспект Лісовий, 11
             </p>
           </div>
 
@@ -479,15 +478,13 @@ export default function AdminPage() {
       <header className="bg-[#13161c] border-b border-[#222733] sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-orange-400 border border-emerald-500/30">
-              <Flame className="w-5 h-5 fill-white text-white" />
-            </div>
-            <div>
-              <span className="font-extrabold text-lg text-white">
-                FOREST <span className="text-orange-400">ADMIN</span>
+            <ForestPizzaLogo size="sm" />
+            <div className="hidden sm:flex items-center gap-2">
+              <span className="font-extrabold text-sm text-orange-400 bg-orange-950/60 px-2.5 py-0.5 rounded-lg border border-orange-500/30">
+                ADMIN
               </span>
-              <span className="text-[10px] text-stone-400 ml-2 bg-[#0c0e12] px-2 py-0.5 rounded border border-[#222733]">
-                Тільки на винос • Лісовий просп., 11
+              <span className="text-[11px] text-stone-400 bg-[#0c0e12] px-2.5 py-0.5 rounded-lg border border-[#222733]">
+                Тільки на винос • Проспект Лісовий, 11
               </span>
             </div>
           </div>

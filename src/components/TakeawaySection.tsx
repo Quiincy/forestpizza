@@ -9,8 +9,8 @@ interface TakeawaySectionProps {
 }
 
 export function TakeawaySection({
-  takeawayNotice = "Замовлення на винос прийнято! Піца буде готова за 15-20 хвилин за адресою: Лісовий проспект, 11.",
-  restaurantPhone = "+380 (97) 845-12-34",
+  takeawayNotice = "Замовлення на винос прийнято! Піца буде готова за 15-20 хвилин за адресою: Проспект Лісовий, 11.",
+  restaurantPhone = "+38 093 204 28 04",
 }: TakeawaySectionProps) {
   const todayStr = new Date().toISOString().split("T")[0];
 

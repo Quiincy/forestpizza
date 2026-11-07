@@ -8,7 +8,7 @@ interface MobileBottomBarProps {
   restaurantPhone?: string;
 }
 
-export function MobileBottomBar({ restaurantPhone = "+380 (97) 845-12-34" }: MobileBottomBarProps) {
+export function MobileBottomBar({ restaurantPhone = "+38 093 204 28 04" }: MobileBottomBarProps) {
   const { totalCount, totalPrice, setIsCartOpen } = useCart();
 
   const scrollTo = (id: string) => {
