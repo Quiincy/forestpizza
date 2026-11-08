@@ -96,7 +96,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
   const pizzaCount = allItems.filter((i) => i.categorySlug === "pizza").length;
 
   return (
-    <section id="menu" className="py-12 sm:py-16 lg:py-22 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="menu" className="py-10 sm:py-16 lg:py-22 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
       {/* Section Header */}
       <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider">
@@ -232,7 +232,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
         </div>
       )}
 
-      {/* Menu Items Grid */}
+      {/* Menu Items Grid: 2 columns on mobile, 2 columns on md, 3 columns on lg */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-16 bg-[#13161c] rounded-2xl border border-[#242933] max-w-md mx-auto">
           <Info className="w-10 h-10 text-orange-400 mx-auto mb-3" />
@@ -242,7 +242,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-5 lg:gap-6">
           {filteredItems.map((item) => (
             <MenuItemCard key={item.id} item={item} />
           ))}
@@ -295,7 +295,7 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
   };
 
   return (
-    <div className="bg-[#13161c] rounded-2xl border border-[#242934] hover:border-orange-500/50 transition-all flex flex-col justify-between overflow-hidden group shadow-xl">
+    <div className="bg-[#13161c] rounded-xl sm:rounded-2xl border border-[#242934] hover:border-orange-500/50 transition-all flex flex-col justify-between overflow-hidden group shadow-xl">
       <div>
         {/* Item Image (10:7 aspect ratio matches studio pizza renders without clipping) */}
         <div className="relative aspect-[10/7] w-full overflow-hidden bg-[#101217]">
@@ -309,112 +309,112 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
             />
           ) : (
             <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#1a1e24] to-[#121417] text-orange-500">
-              <Pizza className="w-12 h-12 mb-1 opacity-70" />
-              <span className="text-[11px] font-bold text-stone-400">Forest Pizza</span>
+              <Pizza className="w-8 h-8 sm:w-12 sm:h-12 mb-1 opacity-70" />
+              <span className="text-[10px] sm:text-[11px] font-bold text-stone-400">Forest Pizza</span>
             </div>
           )}
-          <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#13161c] to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-8 sm:h-12 bg-gradient-to-t from-[#13161c] to-transparent pointer-events-none" />
 
           {/* Badge */}
           {item.badge && (
-            <div className="absolute top-3 left-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[11px] font-black px-2.5 py-1 rounded-lg shadow-md">
+            <div className="absolute top-1.5 left-1.5 sm:top-3 sm:left-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[9px] sm:text-[11px] font-black px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg shadow-md">
               <span>{item.badge}</span>
             </div>
           )}
 
           {!item.isAvailable && (
             <div className="absolute inset-0 bg-black/75 flex items-center justify-center backdrop-blur-xs">
-              <span className="bg-red-950 text-red-200 text-xs font-bold px-3 py-1.5 rounded-lg border border-red-800">
+              <span className="bg-red-950 text-red-200 text-[10px] sm:text-xs font-bold px-2 py-1 rounded-md border border-red-800">
                 Тимчасово відсутнє
               </span>
             </div>
           )}
         </div>
 
-        {/* Card Content */}
-        <div className="p-4 sm:p-5 space-y-3">
-          <div className="flex items-start justify-between gap-2">
-            <h3 className="text-base sm:text-lg font-black text-white group-hover:text-orange-400 transition-colors leading-snug">
+        {/* Card Content: compact on mobile */}
+        <div className="p-2 sm:p-4 space-y-1.5 sm:space-y-3">
+          <div className="flex items-start justify-between gap-1 sm:gap-2">
+            <h3 className="text-xs sm:text-base font-black text-white group-hover:text-orange-400 transition-colors leading-snug line-clamp-1" title={item.name}>
               {item.name}
             </h3>
-            <span className="text-base sm:text-lg font-black text-orange-400 whitespace-nowrap shrink-0">
+            <span className="text-xs sm:text-base font-black text-orange-400 whitespace-nowrap shrink-0">
               {currentPrice} ₴
             </span>
           </div>
 
-          <p className="text-xs text-stone-300 leading-relaxed min-h-[2.5rem]">
+          <p className="text-[10px] sm:text-xs text-stone-300 leading-snug line-clamp-2 min-h-[1.75rem] sm:min-h-[2.5rem]">
             {item.description}
           </p>
 
           {/* Size Switcher (for Pizzas and Crusts that have 30cm & 40cm) */}
           {hasTwoSizes && (
-            <div className="space-y-2.5 pt-2 border-t border-[#222733]">
-              <div className="grid grid-cols-2 gap-1.5 bg-[#0c0e12] p-1 rounded-xl border border-[#252a36]">
+            <div className="space-y-1 sm:space-y-2 pt-1 sm:pt-2 border-t border-[#222733]">
+              <div className="grid grid-cols-2 gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36]">
                 <button
                   type="button"
                   onClick={() => setSelectedSize("30 см")}
-                  className={`py-1.5 px-2 rounded-lg font-black text-xs transition-colors cursor-pointer text-center whitespace-nowrap ${
+                  className={`py-1 sm:py-1.5 px-0.5 sm:px-1 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
                     selectedSize === "30 см"
                       ? "bg-orange-500 text-white shadow-sm"
                       : "text-stone-400 hover:text-white"
                   }`}
                 >
-                  30 см • {item.price30} ₴
+                  30 см • {item.price30}₴
                 </button>
                 <button
                   type="button"
                   onClick={() => setSelectedSize("40 см")}
-                  className={`py-1.5 px-2 rounded-lg font-black text-xs transition-colors cursor-pointer text-center whitespace-nowrap ${
+                  className={`py-1 sm:py-1.5 px-0.5 sm:px-1 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
                     selectedSize === "40 см"
                       ? "bg-orange-500 text-white shadow-sm"
                       : "text-stone-400 hover:text-white"
                   }`}
                 >
-                  40 см • {item.price40} ₴
+                  40 см • {item.price40}₴
                 </button>
               </div>
 
               {/* Crust Selector (Only for Pizzas) */}
               {isPizza && (
-                <div className="space-y-1">
-                  <span className="block text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                    Додати у бортик:
+                <div className="space-y-0.5 sm:space-y-1">
+                  <span className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400 truncate">
+                    Бортик:
                   </span>
-                  <div className="grid grid-cols-3 gap-1 bg-[#0c0e12] p-1 rounded-xl border border-[#252a36]">
+                  <div className="grid grid-cols-3 gap-0.5 sm:gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36]">
                     <button
                       type="button"
                       onClick={() => setSelectedCrust("none")}
-                      className={`py-1.5 px-1 rounded-lg text-[11px] font-bold transition-colors cursor-pointer truncate ${
+                      className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg text-[8px] sm:text-[11px] font-bold transition-colors cursor-pointer truncate text-center ${
                         selectedCrust === "none"
                           ? "bg-[#1f2430] text-white border border-[#343c4e]"
                           : "text-stone-400 hover:text-stone-200"
                       }`}
                     >
-                      Класичний
+                      Базовий
                     </button>
                     <button
                       type="button"
                       onClick={() => setSelectedCrust("cheese")}
-                      className={`py-1.5 px-1 rounded-lg text-[11px] font-bold transition-colors cursor-pointer truncate ${
+                      className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg text-[8px] sm:text-[11px] font-bold transition-colors cursor-pointer truncate text-center ${
                         selectedCrust === "cheese"
                           ? "bg-orange-500/20 text-orange-300 border border-orange-500/50"
                           : "text-stone-400 hover:text-stone-200"
                       }`}
                       title={`Сирний бортик (+${crustAddonPrice} ₴)`}
                     >
-                      🧀 Сир +{crustAddonPrice}₴
+                      🧀 +{crustAddonPrice}₴
                     </button>
                     <button
                       type="button"
                       onClick={() => setSelectedCrust("sausage")}
-                      className={`py-1.5 px-1 rounded-lg text-[11px] font-bold transition-colors cursor-pointer truncate ${
+                      className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg text-[8px] sm:text-[11px] font-bold transition-colors cursor-pointer truncate text-center ${
                         selectedCrust === "sausage"
                           ? "bg-orange-500/20 text-orange-300 border border-orange-500/50"
                           : "text-stone-400 hover:text-stone-200"
                       }`}
                       title={`Ковбасний бортик (+${crustAddonPrice} ₴)`}
                     >
-                      🌭 Ковб. +{crustAddonPrice}₴
+                      🌭 +{crustAddonPrice}₴
                     </button>
                   </div>
                 </div>
@@ -425,12 +425,12 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
       </div>
 
       {/* Add to Cart Footer Button */}
-      <div className="p-4 sm:p-5 pt-0">
+      <div className="p-2 sm:p-4 pt-0">
         <button
           type="button"
           disabled={!item.isAvailable}
           onClick={handleAddToCart}
-          className={`w-full py-2.5 sm:py-3 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${
+          className={`w-full py-1.5 sm:py-2.5 px-1.5 sm:px-3 rounded-lg sm:rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
             !item.isAvailable
               ? "bg-neutral-800 text-neutral-500 cursor-not-allowed"
               : justAdded
@@ -440,13 +440,14 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
         >
           {justAdded ? (
             <>
-              <Check className="w-4 h-4 shrink-0" />
-              <span>Додано в кошик!</span>
+              <Check className="w-3.5 h-3.5 shrink-0" />
+              <span>Додано!</span>
             </>
           ) : (
             <>
-              <Plus className="w-4 h-4 shrink-0" />
-              <span>Додати в кошик • {currentPrice} ₴</span>
+              <Plus className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate sm:hidden">+ {currentPrice} ₴</span>
+              <span className="truncate hidden sm:inline">Додати • {currentPrice} ₴</span>
             </>
           )}
         </button>

@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import { Flame, Sparkles, Clock, ArrowRight, MapPin, Store, Bike, ChevronRight } from "lucide-react";
-import { ForestPizzaLogo } from "./ForestPizzaLogo";
 import { DeliveryZonesModal } from "./DeliveryZonesModal";
 
 interface HeroProps {
@@ -33,18 +32,17 @@ export function Hero({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
             {/* Left Column: Text & CTAs */}
-            <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-              <div className="flex flex-col items-center lg:items-start gap-3">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
+              <div className="flex flex-col items-center lg:items-start">
                 <button
                   type="button"
                   onClick={() => setDeliveryModalOpen(true)}
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold hover:bg-orange-950 hover:border-orange-500/60 transition-all cursor-pointer"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold hover:bg-orange-950 hover:border-orange-500/60 transition-all cursor-pointer shadow-md shadow-orange-950/40"
                 >
                   <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
-                  <span>🛵 Доставка по Лісовому: 70 ₴ • Самовивіз • Співпраця з Glovo</span>
+                  <span>🛵 Доставка по Лісовому: 70 ₴ • Самовивіз • Glovo</span>
                   <ChevronRight className="w-3.5 h-3.5 text-orange-400" />
                 </button>
-                <ForestPizzaLogo size="lg" className="my-1" />
               </div>
 
               <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-[1.12]">
