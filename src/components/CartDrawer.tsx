@@ -199,6 +199,11 @@ export function CartDrawer() {
                         <p className="text-[11px] text-orange-400 font-bold truncate">
                           {[item.size, item.crust].filter(Boolean).join(" • ")}
                         </p>
+                        {item.addons && item.addons.length > 0 && (
+                          <p className="text-[10px] text-amber-300 font-medium truncate">
+                            + {item.addons.join(", ")}
+                          </p>
+                        )}
                         <p className="text-xs text-orange-400 font-black mt-0.5">
                           {item.price * item.quantity} ₴{" "}
                           <span className="text-[10px] text-stone-400 font-normal">

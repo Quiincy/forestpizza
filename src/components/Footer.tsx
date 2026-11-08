@@ -38,7 +38,7 @@ export function Footer({
               <ForestPizzaLogo size="md" />
               <p className="text-xs text-stone-400 leading-relaxed">
                 Крафтова піца <b>з доставкою по Лісовому масиву (70 грн)</b> та самовивозом на Лісовому проспекті, 11.
-                23 авторські рецепти піци, соковиті чебуреки, фритюр, сирні та ковбасні бортики. Співпраця з <b>Glovo</b>.
+                23 авторські рецепти піци, соковиті чебуреки, фритюр, сирні та ковбасні бортики.
               </p>
               <div className="pt-1 flex flex-wrap gap-2">
                 <span className="inline-flex items-center gap-1.5 text-xs text-orange-400 bg-[#14171e] px-3 py-1.5 rounded-lg border border-[#242933]">
@@ -137,10 +137,6 @@ export function Footer({
                     </a>
                   </li>
                 )}
-                <li className="flex items-center gap-2 text-stone-400 pt-1">
-                  <span className="text-amber-400 font-bold">🟡 Glovo:</span>
-                  <span>Шукайте Forest Pizza у додатку</span>
-                </li>
               </ul>
             </div>
 

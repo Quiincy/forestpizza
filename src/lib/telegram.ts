@@ -133,6 +133,7 @@ export function formatOrderMessage(order: {
     name: string;
     size?: string;
     crust?: string;
+    addons?: string[];
     price: number;
     quantity: number;
   }>;
@@ -161,7 +162,8 @@ export function formatOrderMessage(order: {
 
   const itemsList = order.items
     .map((item, idx) => {
-      const details = [item.size, item.crust].filter(Boolean).join(", ");
+      const addonStr = item.addons && item.addons.length > 0 ? `+ ${item.addons.join(", ")}` : "";
+      const details = [item.size, item.crust, addonStr].filter(Boolean).join(" | ");
       const detailStr = details ? ` (${details})` : "";
       return `${idx + 1}. <b>${escapeHtml(item.name)}</b>${detailStr} — ${item.quantity} шт × ${item.price} грн = <b>${item.quantity * item.price} грн</b>`;
     })

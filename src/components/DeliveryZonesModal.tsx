@@ -120,19 +120,6 @@ export function DeliveryZonesModal({
           </div>
         </div>
 
-        {/* Glovo Partnership Pill */}
-        <div className="p-3.5 rounded-2xl bg-[#151921] border border-[#282d3b] flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">🟡</span>
-            <div>
-              <p className="font-black text-white">Співпрацюємо з Glovo</p>
-              <p className="text-[11px] text-stone-400">Шукайте «Forest Pizza» у додатку Glovo</p>
-            </div>
-          </div>
-          <span className="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">
-            Glovo
-          </span>
-        </div>
 
         {/* Call CTA */}
         <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">

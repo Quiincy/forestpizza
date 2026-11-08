@@ -53,6 +53,7 @@ interface OrderItem {
     name: string;
     size?: string;
     crust?: string;
+    addons?: string[];
     price: number;
     quantity: number;
   }>;
@@ -982,7 +983,7 @@ export default function AdminPage() {
                           <ul className="space-y-1">
                             {o.items.map((it, i) => (
                               <li key={i} className="text-white">
-                                • <b>{it.name}</b> {it.size && `(${it.size})`} {it.crust && `[${it.crust}]`} — {it.quantity} шт × {it.price} ₴
+                                • <b>{it.name}</b> {it.size && `(${it.size})`} {it.crust && `[${it.crust}]`} {it.addons && it.addons.length > 0 && `(+${it.addons.join(", ")})`} — {it.quantity} шт × {it.price} ₴
                               </li>
                             ))}
                           </ul>

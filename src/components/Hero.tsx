@@ -40,7 +40,7 @@ export function Hero({
                   className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold hover:bg-orange-950 hover:border-orange-500/60 transition-all cursor-pointer shadow-md shadow-orange-950/40"
                 >
                   <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
-                  <span>🛵 Доставка по Лісовому: 70 ₴ • Самовивіз • Glovo</span>
+                  <span>🛵 Доставка по Лісовому: 70 ₴ • Швидкий самовивіз</span>
                   <ChevronRight className="w-3.5 h-3.5 text-orange-400" />
                 </button>
               </div>
@@ -158,8 +158,8 @@ export function Hero({
                       <p className="text-xs sm:text-sm font-black text-white">15–20 хв</p>
                     </div>
                     <div className="bg-[#12151c] p-2.5 rounded-xl border border-[#232832]">
-                      <p className="text-[10px] sm:text-[11px] text-stone-400">Партнер</p>
-                      <p className="text-xs sm:text-sm font-black text-amber-400">Glovo</p>
+                      <p className="text-[10px] sm:text-[11px] text-stone-400">Локація</p>
+                      <p className="text-xs sm:text-sm font-black text-amber-400">Лісовий, 11</p>
                     </div>
                   </div>
                 </div>

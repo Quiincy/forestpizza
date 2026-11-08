@@ -3,11 +3,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 export interface CartItem {
-  id: string; // generated unique id: menuItemId-size-crust
+  id: string; // generated unique id: menuItemId-size-crust-addons
   menuItemId: string;
   name: string;
   size?: string; // "30 см" | "40 см"
-  crust?: string; // "Сирний (+65 грн)"
+  crust?: string; // "Сирний бортик (+65 грн)"
+  addons?: string[]; // e.g. ["Овочі (+30 ₴)", "Сир (+40 ₴)"]
   price: number;
   quantity: number;
   imageUrl?: string | null;
@@ -57,7 +58,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items, isInitialized]);
 
   const addItem = (newItem: Omit<CartItem, "id">) => {
-    const id = `${newItem.menuItemId}-${newItem.size || "default"}-${newItem.crust || "none"}`;
+    const addonKey = (newItem.addons || []).slice().sort().join("|");
+    const id = `${newItem.menuItemId}-${newItem.size || "default"}-${newItem.crust || "none"}-${addonKey || "noaddon"}`;
 
     setItems((prev) => {
       const existing = prev.find((i) => i.id === id);

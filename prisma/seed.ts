@@ -16,7 +16,6 @@ async function main() {
     { key: "maps_url", value: "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z", description: "Посилання на Google Maps" },
     { key: "delivery_fee_lisovyi", value: "70", description: "Вартість доставки по Лісовому масиву (грн)" },
     { key: "delivery_taxi_notice", value: "За межі Лісового масиву — за тарифом таксі", description: "Умови доставки за межі" },
-    { key: "glovo_partner", value: "true", description: "Офіційний партнер Glovo" },
     { key: "telegram_bot_token", value: "", description: "Токен Telegram-бота для сповіщень" },
     { key: "telegram_chat_id", value: "", description: "Chat ID адміністратора/групи для сповіщень" },
     { key: "reservation_notice", value: "Замовлення прийнято! Самовивіз за адресою: Проспект Лісовий, 11 або очікуйте на доставку кур'єром.", description: "Повідомлення клієнту після замовлення" },
@@ -44,12 +43,11 @@ async function main() {
     },
   });
 
-  // 3. Categories matching the two menu boards
+  // 3. Categories matching the authentic menu (Pizza, Chebureki, Snacks)
   const categoriesData = [
     { name: "Піца (23 види)", slug: "pizza", order: 1 },
     { name: "Чебуреки", slug: "chebureki", order: 2 },
     { name: "Фритюр та закуски", slug: "snacks", order: 3 },
-    { name: "Бортики та додатки", slug: "extras", order: 4 },
   ];
 
   const categoriesMap: Record<string, string> = {};
@@ -400,71 +398,7 @@ async function main() {
     await prisma.menuItem.create({ data: sn });
   }
 
-  // 7. Crusts & Extra Toppings (Dedicated high-craft cards with descriptions and studio photos)
-  const extras = [
-    {
-      name: "Бортик Ковбасний",
-      description: "Запечений пухкий бортик із мисливськими ковбасками та сиром усередині тіста (30 см — 65 грн / 40 см — 95 грн)",
-      price30: 65,
-      price40: 95,
-      badge: "До піци 🌭",
-      imageUrl: "/images/pizzas/crust-sausage.jpg",
-      categoryId: categoriesMap["extras"],
-      order: 1,
-    },
-    {
-      name: "Бортик Сирний",
-      description: "Фірмовий бортик із ніжною тягучою розплавленою моцарелою всередині (30 см — 65 грн / 40 см — 95 грн)",
-      price30: 65,
-      price40: 95,
-      badge: "До піци 🧀",
-      imageUrl: "/images/pizzas/crust-cheese.jpg",
-      categoryId: categoriesMap["extras"],
-      order: 2,
-    },
-    {
-      name: "Додатково: Овочі (30 г)",
-      description: "Свіжі та мариновані овочі до піци: ананас, кукурудза, гриби печериці, червона цибуля, мариновані огірки, солодкий перець, чилі, перець халапеньйо, оливки, томати",
-      priceSingle: 30,
-      badge: "30 г 🫑",
-      imageUrl: "/images/pizzas/extra-vegetables.jpg",
-      categoryId: categoriesMap["extras"],
-      order: 3,
-    },
-    {
-      name: "Додатково: М'ясо (30 г)",
-      description: "М'ясні інгредієнти на вибір: пікантна салямі, копчений бекон, соковитий балик, мисливські ковбаски, копчена курка, куряче філе",
-      priceSingle: 30,
-      badge: "30 г 🥓",
-      imageUrl: "/images/pizzas/extra-meat.jpg",
-      categoryId: categoriesMap["extras"],
-      order: 4,
-    },
-    {
-      name: "Додатково: Сир (30 г)",
-      description: "Шляхетні сири до піци: тягуча моцарелла, витриманий пармезан, пікантний чеддер, блакитний сир дор блю",
-      priceSingle: 40,
-      badge: "30 г 🧀",
-      imageUrl: "/images/pizzas/extra-cheese.jpg",
-      categoryId: categoriesMap["extras"],
-      order: 5,
-    },
-    {
-      name: "Додатково: М'ясні кульки (30 г)",
-      description: "Запечені пряні м'ясні кульки з яловичини та свинини за фірмовим рецептом",
-      priceSingle: 40,
-      badge: "30 г 🥩",
-      imageUrl: "/images/pizzas/extra-meatballs.jpg",
-      categoryId: categoriesMap["extras"],
-      order: 6,
-    },
-  ];
-
-  for (const ex of extras) {
-    await prisma.menuItem.create({ data: ex });
-  }
-
-  console.log("Database seeded successfully with 23 pizzas, 5 chebureks, 4 snacks, and 6 dedicated extras!");
+  console.log("Database seeded successfully with 23 pizzas, 5 chebureks, and 4 snacks!");
 }
 
 main()

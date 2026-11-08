@@ -70,7 +70,7 @@ export function LocationSection({
                       По Лісовому масиву — 70 грн
                     </p>
                     <p className="text-xs text-stone-400 mt-1">
-                      За межі Лісового масиву — за тарифом таксі • Співпраця з <b>Glovo</b>
+                      За межі Лісового масиву — за тарифом таксі
                     </p>
                   </div>
                 </div>

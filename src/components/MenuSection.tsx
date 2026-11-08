@@ -252,6 +252,13 @@ export function MenuSection({ categories }: MenuSectionProps) {
   );
 }
 
+const PIZZA_ADDONS = [
+  { id: "vegetables", name: "Овочі (30 г)", price: 30, icon: "🫑" },
+  { id: "meat", name: "М'ясо (30 г)", price: 30, icon: "🥓" },
+  { id: "cheese", name: "Сир (30 г)", price: 40, icon: "🧀" },
+  { id: "meatballs", name: "М'ясні кульки (30 г)", price: 40, icon: "🥩" },
+];
+
 function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } }) {
   const { addItem } = useCart();
   const hasTwoSizes = Boolean(item.price30 && item.price40);
@@ -259,6 +266,7 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
   const [selectedSize, setSelectedSize] = useState<"30 см" | "40 см">("30 см");
   const [selectedCrust, setSelectedCrust] = useState<"none" | "cheese" | "sausage">("none");
+  const [selectedAddons, setSelectedAddons] = useState<Array<{ id: string; name: string; price: number; icon: string }>>([]);
   const [justAdded, setJustAdded] = useState(false);
   const [imgError, setImgError] = useState(false);
 
@@ -270,7 +278,8 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
   const crustAddonPrice = selectedSize === "30 см" ? 65 : 95;
   const crustPrice = isPizza && selectedCrust !== "none" ? crustAddonPrice : 0;
-  const currentPrice = basePrice + crustPrice;
+  const addonsPrice = isPizza ? selectedAddons.reduce((sum, a) => sum + a.price, 0) : 0;
+  const currentPrice = basePrice + crustPrice + addonsPrice;
 
   const handleAddToCart = () => {
     let crustLabel: string | undefined;
@@ -280,11 +289,16 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
       crustLabel = `Ковбасний бортик (+${crustAddonPrice} грн)`;
     }
 
+    const addonsList = isPizza && selectedAddons.length > 0
+      ? selectedAddons.map((a) => `${a.name} (+${a.price} грн)`)
+      : undefined;
+
     addItem({
       menuItemId: item.id,
       name: item.name,
       size: hasTwoSizes ? selectedSize : undefined,
       crust: crustLabel,
+      addons: addonsList,
       price: currentPrice,
       quantity: 1,
       imageUrl: item.imageUrl,
@@ -332,7 +346,7 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
         </div>
 
         {/* Card Content: compact on mobile */}
-        <div className="p-2 sm:p-4 space-y-1.5 sm:space-y-3">
+        <div className="p-2 sm:p-4 space-y-2 sm:space-y-3">
           <div className="flex items-start justify-between gap-1 sm:gap-2">
             <h3 className="text-xs sm:text-base font-black text-white group-hover:text-orange-400 transition-colors leading-snug line-clamp-1" title={item.name}>
               {item.name}
@@ -346,9 +360,10 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
             {item.description}
           </p>
 
-          {/* Size Switcher (for Pizzas and Crusts that have 30cm & 40cm) */}
+          {/* Controls for Pizzas: Size, Crust dropdown, and Addon dropdown */}
           {hasTwoSizes && (
-            <div className="space-y-1 sm:space-y-2 pt-1 sm:pt-2 border-t border-[#222733]">
+            <div className="space-y-2 pt-1.5 sm:pt-2 border-t border-[#222733]">
+              {/* Size selector buttons */}
               <div className="grid grid-cols-2 gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36]">
                 <button
                   type="button"
@@ -374,48 +389,74 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
                 </button>
               </div>
 
-              {/* Crust Selector (Only for Pizzas) */}
+              {/* Pizza Customization: Crust & Addons dropdowns */}
               {isPizza && (
-                <div className="space-y-0.5 sm:space-y-1">
-                  <span className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400 truncate">
-                    Бортик:
-                  </span>
-                  <div className="grid grid-cols-3 gap-0.5 sm:gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36]">
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCrust("none")}
-                      className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg text-[8px] sm:text-[11px] font-bold transition-colors cursor-pointer truncate text-center ${
-                        selectedCrust === "none"
-                          ? "bg-[#1f2430] text-white border border-[#343c4e]"
-                          : "text-stone-400 hover:text-stone-200"
-                      }`}
+                <div className="space-y-1.5">
+                  {/* Crust Dropdown */}
+                  <div className="space-y-0.5">
+                    <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                      Бортик до піци:
+                    </label>
+                    <select
+                      value={selectedCrust}
+                      onChange={(e) => setSelectedCrust(e.target.value as "none" | "cheese" | "sausage")}
+                      className="w-full bg-[#0c0e12] border border-[#252a36] text-white rounded-lg px-2 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer"
                     >
-                      Базовий
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCrust("cheese")}
-                      className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg text-[8px] sm:text-[11px] font-bold transition-colors cursor-pointer truncate text-center ${
-                        selectedCrust === "cheese"
-                          ? "bg-orange-500/20 text-orange-300 border border-orange-500/50"
-                          : "text-stone-400 hover:text-stone-200"
-                      }`}
-                      title={`Сирний бортик (+${crustAddonPrice} ₴)`}
+                      <option value="none">Класичний (без доплати)</option>
+                      <option value="cheese">🧀 Сирний (+{crustAddonPrice} ₴)</option>
+                      <option value="sausage">🌭 Ковбасний (+{crustAddonPrice} ₴)</option>
+                    </select>
+                  </div>
+
+                  {/* Addons Dropdown */}
+                  <div className="space-y-0.5">
+                    <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
+                      Додати топінг (30 г):
+                    </label>
+                    <select
+                      value=""
+                      onChange={(e) => {
+                        const addonId = e.target.value;
+                        if (!addonId) return;
+                        const found = PIZZA_ADDONS.find((a) => a.id === addonId);
+                        if (found && !selectedAddons.some((a) => a.id === found.id)) {
+                          setSelectedAddons((prev) => [...prev, found]);
+                        }
+                      }}
+                      className="w-full bg-[#0c0e12] border border-[#252a36] text-stone-300 rounded-lg px-2 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer"
                     >
-                      🧀 +{crustAddonPrice}₴
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setSelectedCrust("sausage")}
-                      className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg text-[8px] sm:text-[11px] font-bold transition-colors cursor-pointer truncate text-center ${
-                        selectedCrust === "sausage"
-                          ? "bg-orange-500/20 text-orange-300 border border-orange-500/50"
-                          : "text-stone-400 hover:text-stone-200"
-                      }`}
-                      title={`Ковбасний бортик (+${crustAddonPrice} ₴)`}
-                    >
-                      🌭 +{crustAddonPrice}₴
-                    </button>
+                      <option value="">+ Обрати додаток...</option>
+                      {PIZZA_ADDONS.map((a) => {
+                        const isAdded = selectedAddons.some((s) => s.id === a.id);
+                        return (
+                          <option key={a.id} value={a.id} disabled={isAdded}>
+                            {a.icon} {a.name} (+{a.price} ₴) {isAdded ? "✓ додано" : ""}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    {/* Active Addon Badges */}
+                    {selectedAddons.length > 0 && (
+                      <div className="flex flex-wrap gap-1 pt-1">
+                        {selectedAddons.map((addon) => (
+                          <span
+                            key={addon.id}
+                            className="inline-flex items-center gap-1 bg-orange-950/70 border border-orange-500/40 text-orange-200 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+                          >
+                            <span>{addon.icon} +{addon.price}₴</span>
+                            <button
+                              type="button"
+                              onClick={() => setSelectedAddons((prev) => prev.filter((a) => a.id !== addon.id))}
+                              className="text-stone-400 hover:text-white cursor-pointer ml-0.5"
+                              title="Видалити"
+                            >
+                              ✕
+                            </button>
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -441,13 +482,13 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
           {justAdded ? (
             <>
               <Check className="w-3.5 h-3.5 shrink-0" />
-              <span>Додано!</span>
+              <span>Додано в кошик!</span>
             </>
           ) : (
             <>
               <Plus className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate sm:hidden">+ {currentPrice} ₴</span>
-              <span className="truncate hidden sm:inline">Додати • {currentPrice} ₴</span>
+              <span className="truncate hidden sm:inline">Додати в кошик • {currentPrice} ₴</span>
             </>
           )}
         </button>
