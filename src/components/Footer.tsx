@@ -19,7 +19,7 @@ export function Footer({
   restaurantAddress = "м. Київ, Проспект Лісовий, 11",
   restaurantPhone = "+38 093 204 28 04",
   workingHours = "Щодня з 10:00 до 22:00",
-  instagramUrl = "https://www.instagram.com/forest_pizza",
+  instagramUrl = "https://www.instagram.com/forest._pizza/",
 }: FooterProps) {
   const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);
 
@@ -125,7 +125,7 @@ export function Footer({
                       rel="noopener noreferrer"
                       className="hover:text-orange-400 font-semibold"
                     >
-                      @forest_pizza
+                      @forest._pizza
                     </a>
                   </li>
                 )}

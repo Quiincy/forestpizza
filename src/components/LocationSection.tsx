@@ -17,7 +17,7 @@ export function LocationSection({
   address = "м. Київ, Проспект Лісовий, 11 (Деснянський район)",
   phone = "+38 093 204 28 04",
   workingHours = "Щодня з 10:00 до 22:00",
-  instagramUrl = "https://www.instagram.com/forest_pizza",
+  instagramUrl = "https://www.instagram.com/forest._pizza/",
   mapsUrl = "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z/data=!4m7!3m6!1s0x40d4d10041a05fcb:0xd6959839f9881570!8m2!3d50.4808836!4d30.6236834!10e9!16s%2Fg%2F11wj6ttlky",
 }: LocationSectionProps) {
   const [deliveryModalOpen, setDeliveryModalOpen] = useState(false);

@@ -26,7 +26,7 @@ export const DEFAULT_SETTINGS: Record<string, string> = {
   restaurant_phone: "+38 093 204 28 04",
   restaurant_email: "forestpizza.kyiv@gmail.com",
   working_hours: "Щодня з 10:00 до 22:00",
-  instagram_url: "https://www.instagram.com/forest_pizza",
+  instagram_url: "https://www.instagram.com/forest._pizza/",
   maps_url: "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z",
   delivery_fee_lisovyi: "70",
   delivery_taxi_notice: "За межі Лісового масиву — за тарифом таксі",

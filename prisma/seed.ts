@@ -12,7 +12,7 @@ async function main() {
     { key: "restaurant_phone", value: "+38 093 204 28 04", description: "Телефон для замовлень та доставки" },
     { key: "restaurant_email", value: "forestpizza.kyiv@gmail.com", description: "Контактний email" },
     { key: "working_hours", value: "Щодня з 10:00 до 22:00", description: "Графік роботи" },
-    { key: "instagram_url", value: "https://www.instagram.com/forest_pizza", description: "Посилання на Instagram (@forest_pizza)" },
+    { key: "instagram_url", value: "https://www.instagram.com/forest._pizza/", description: "Посилання на Instagram (@forest._pizza)" },
     { key: "maps_url", value: "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z", description: "Посилання на Google Maps" },
     { key: "delivery_fee_lisovyi", value: "70", description: "Вартість доставки по Лісовому масиву (грн)" },
     { key: "delivery_taxi_notice", value: "За межі Лісового масиву — за тарифом таксі", description: "Умови доставки за межі" },
