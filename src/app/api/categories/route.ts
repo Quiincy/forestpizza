@@ -1,16 +1,24 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkAdminAuth } from "@/lib/auth";
+import { DEFAULT_CATEGORIES } from "@/lib/defaultData";
 
 export async function GET() {
   try {
     const categories = await prisma.category.findMany({
       orderBy: { order: "asc" },
     });
-    return NextResponse.json({ categories });
+    if (categories && categories.length > 0) {
+      return NextResponse.json({ categories });
+    }
+    return NextResponse.json({
+      categories: DEFAULT_CATEGORIES.map((c) => ({ id: c.id, name: c.name, slug: c.slug, order: c.order })),
+    });
   } catch (error) {
-    console.error("Get categories error:", error);
-    return NextResponse.json({ error: "Не вдалося отримати категорії" }, { status: 500 });
+    console.warn("Get categories DB fallback:", error);
+    return NextResponse.json({
+      categories: DEFAULT_CATEGORIES.map((c) => ({ id: c.id, name: c.name, slug: c.slug, order: c.order })),
+    });
   }
 }
 

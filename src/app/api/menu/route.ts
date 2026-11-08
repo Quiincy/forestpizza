@@ -1,20 +1,25 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkAdminAuth } from "@/lib/auth";
+import { DEFAULT_CATEGORIES } from "@/lib/defaultData";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const categorySlug = searchParams.get("category");
 
-    const categories = await prisma.category.findMany({
+    let categories = await prisma.category.findMany({
       orderBy: { order: "asc" },
       include: {
         items: {
           orderBy: { order: "asc" },
         },
       },
-    });
+    }).catch(() => []);
+
+    if (!categories || categories.length === 0) {
+      categories = DEFAULT_CATEGORIES as any;
+    }
 
     if (categorySlug && categorySlug !== "all") {
       const filtered = categories.filter((c) => c.slug === categorySlug);
@@ -23,8 +28,14 @@ export async function GET(req: Request) {
 
     return NextResponse.json({ categories });
   } catch (error) {
-    console.error("Menu fetch error:", error);
-    return NextResponse.json({ error: "Не вдалося отримати меню" }, { status: 500 });
+    console.warn("Menu fetch DB fallback:", error);
+    const { searchParams } = new URL(req.url);
+    const categorySlug = searchParams.get("category");
+    if (categorySlug && categorySlug !== "all") {
+      const filtered = DEFAULT_CATEGORIES.filter((c) => c.slug === categorySlug);
+      return NextResponse.json({ categories: filtered });
+    }
+    return NextResponse.json({ categories: DEFAULT_CATEGORIES });
   }
 }
 

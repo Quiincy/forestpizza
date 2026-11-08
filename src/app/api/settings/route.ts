@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkAdminAuth } from "@/lib/auth";
+import { DEFAULT_SETTINGS } from "@/lib/defaultData";
 
 const PUBLIC_KEYS = [
   "restaurant_name",
@@ -11,16 +12,22 @@ const PUBLIC_KEYS = [
   "instagram_url",
   "maps_url",
   "reservation_notice",
-  "min_guests",
-  "max_guests",
+  "delivery_fee_lisovyi",
+  "delivery_taxi_notice",
+  "pickup_time_default",
+  "brand_color",
 ];
 
 export async function GET() {
   try {
     const isAuth = await checkAdminAuth();
-    const settings = await prisma.restaurantSetting.findMany();
+    const settings = await prisma.restaurantSetting.findMany().catch(() => []);
 
     const result: Record<string, string> = {};
+    // Seed with defaults
+    for (const key of PUBLIC_KEYS) {
+      if (DEFAULT_SETTINGS[key]) result[key] = DEFAULT_SETTINGS[key];
+    }
     for (const s of settings) {
       if (isAuth || PUBLIC_KEYS.includes(s.key)) {
         result[s.key] = s.value;
@@ -32,8 +39,12 @@ export async function GET() {
       isAdmin: isAuth,
     });
   } catch (error) {
-    console.error("Settings fetch error:", error);
-    return NextResponse.json({ error: "Не вдалося отримати налаштування" }, { status: 500 });
+    console.warn("Settings fetch DB fallback:", error);
+    const result: Record<string, string> = {};
+    for (const key of PUBLIC_KEYS) {
+      if (DEFAULT_SETTINGS[key]) result[key] = DEFAULT_SETTINGS[key];
+    }
+    return NextResponse.json({ settings: result, isAdmin: false });
   }
 }
 

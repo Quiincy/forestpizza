@@ -10,31 +10,42 @@ import { LocationSection } from "@/components/LocationSection";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
 import { MobileBottomBar } from "@/components/MobileBottomBar";
+import { DEFAULT_SETTINGS, DEFAULT_CATEGORIES } from "@/lib/defaultData";
 
 export const instant = false;
 
 async function getRestaurantData() {
-  const [settingsList, categories] = await Promise.all([
-    prisma.restaurantSetting.findMany(),
-    prisma.category.findMany({
-      orderBy: { order: "asc" },
-      include: {
-        items: {
-          orderBy: { order: "asc" },
+  try {
+    const [settingsList, dbCategories] = await Promise.all([
+      prisma.restaurantSetting.findMany().catch(() => []),
+      prisma.category.findMany({
+        orderBy: { order: "asc" },
+        include: {
+          items: {
+            orderBy: { order: "asc" },
+          },
         },
-      },
-    }),
-  ]);
+      }).catch(() => []),
+    ]);
 
-  const settings: Record<string, string> = {};
-  for (const s of settingsList) {
-    settings[s.key] = s.value;
+    const settings: Record<string, string> = { ...DEFAULT_SETTINGS };
+    for (const s of settingsList) {
+      if (s.value) settings[s.key] = s.value;
+    }
+
+    const categories = dbCategories && dbCategories.length > 0 ? dbCategories : DEFAULT_CATEGORIES;
+
+    return {
+      settings,
+      categories,
+    };
+  } catch (error) {
+    console.warn("Database not reachable, using built-in authentic Forest Pizza menu:", error);
+    return {
+      settings: DEFAULT_SETTINGS,
+      categories: DEFAULT_CATEGORIES,
+    };
   }
-
-  return {
-    settings,
-    categories,
-  };
 }
 
 export default async function HomePage() {
