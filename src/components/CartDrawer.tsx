@@ -329,7 +329,7 @@ export function CartDrawer() {
                           value={customerName}
                           onChange={(e) => setCustomerName(e.target.value)}
                           placeholder="Олександр"
-                          className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                          className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl pl-9 pr-3 py-2 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500 transition-colors"
                         />
                       </div>
                     </div>
@@ -346,7 +346,7 @@ export function CartDrawer() {
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
                           placeholder="+380 (93) 204-28-04"
-                          className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                          className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl pl-9 pr-3 py-2 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500 transition-colors"
                         />
                       </div>
                     </div>
@@ -365,7 +365,7 @@ export function CartDrawer() {
                             value={streetAddress}
                             onChange={(e) => setStreetAddress(e.target.value)}
                             placeholder="напр., вул. Братиславська, 14-А"
-                            className="w-full bg-[#141720] border border-[#2e3444] rounded-lg px-3 py-1.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                            className="w-full bg-[#141720] border border-[#2e3444] rounded-lg px-3 py-1.5 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500 transition-colors"
                           />
                         </div>
 
@@ -378,7 +378,7 @@ export function CartDrawer() {
                             value={aptDetails}
                             onChange={(e) => setAptDetails(e.target.value)}
                             placeholder="Під'їзд 2, поверх 5, кв. 42"
-                            className="w-full bg-[#141720] border border-[#2e3444] rounded-lg px-3 py-1.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                            className="w-full bg-[#141720] border border-[#2e3444] rounded-lg px-3 py-1.5 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500 transition-colors"
                           />
                         </div>
                       </div>
@@ -418,7 +418,7 @@ export function CartDrawer() {
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="Напр., гострий соус окремо, без цибулі..."
-                        className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                        className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl px-3 py-2 text-base sm:text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500 transition-colors"
                       />
                     </div>
                   </div>

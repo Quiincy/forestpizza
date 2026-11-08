@@ -325,7 +325,7 @@ export function TakeawaySection({
                       placeholder="Олександр"
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
+                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-base sm:text-sm focus:outline-none focus:border-orange-500 transition-colors"
                     />
                   </div>
 
@@ -339,7 +339,7 @@ export function TakeawaySection({
                       placeholder="+380 (93) 204-28-04"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
+                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-base sm:text-sm focus:outline-none focus:border-orange-500 transition-colors"
                     />
                   </div>
                 </div>
@@ -356,7 +356,7 @@ export function TakeawaySection({
                       placeholder="напр., вул. Шолом-Алейхема, 15, під'їзд 1, кв. 12"
                       value={address}
                       onChange={(e) => setAddress(e.target.value)}
-                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
+                      className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-base sm:text-sm focus:outline-none focus:border-orange-500 transition-colors"
                     />
                   </div>
                 )}
@@ -371,7 +371,7 @@ export function TakeawaySection({
                     placeholder="Напр., порізати на 8 частин, покласти серветки, додатковий соус..."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-orange-500"
+                    className="w-full bg-[#0e1013] border border-[#2b303a] rounded-xl px-4 py-2.5 text-white placeholder-neutral-500 text-base sm:text-sm focus:outline-none focus:border-orange-500 transition-colors"
                   />
                 </div>
               </div>
