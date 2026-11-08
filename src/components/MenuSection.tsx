@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { Plus, Check, Search, Flame, Info, Pizza, X, ChevronDown } from "lucide-react";
+import { ProductModal, ConfiguredCartItem } from "./ProductModal";
 
 export interface MenuItemData {
   id: string;
@@ -31,9 +32,11 @@ interface MenuSectionProps {
 type PizzaSubfilter = "all" | "meat" | "seafood" | "cheese" | "spicy";
 
 export function MenuSection({ categories }: MenuSectionProps) {
+  const { addItem } = useCart();
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [pizzaSubfilter, setPizzaSubfilter] = useState<PizzaSubfilter>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [modalItem, setModalItem] = useState<(MenuItemData & { categorySlug: string }) | null>(null);
 
   const allItems = categories.flatMap((c) =>
     c.items.map((item) => ({ ...item, categorySlug: c.slug, categoryName: c.name }))
@@ -242,74 +245,47 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 w-full min-w-0 overflow-hidden">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-4 lg:gap-6 w-full min-w-0 overflow-hidden">
           {filteredItems.map((item) => (
-            <MenuItemCard key={item.id} item={item} />
+            <MenuItemCard
+              key={item.id}
+              item={item}
+              onSelect={(selected) => setModalItem(selected)}
+            />
           ))}
         </div>
       )}
+
+      {/* Product Detail Modal (for selecting sizes, бортики, and додатки) */}
+      <ProductModal
+        item={modalItem}
+        isOpen={Boolean(modalItem)}
+        onClose={() => setModalItem(null)}
+        onAddToCart={(configured: ConfiguredCartItem) => {
+          addItem(configured);
+        }}
+      />
     </section>
   );
 }
 
-const PIZZA_ADDONS = [
-  { id: "vegetables", name: "Овочі", price: 30, icon: "🫑" },
-  { id: "meat", name: "М'ясо", price: 30, icon: "🥓" },
-  { id: "cheese", name: "Сир", price: 40, icon: "🧀" },
-  { id: "meatballs", name: "Кульки", price: 40, icon: "🥩" },
-];
-
-function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } }) {
-  const { addItem } = useCart();
-  const hasTwoSizes = Boolean(item.price30 && item.price40);
-  const isPizza = item.categorySlug === "pizza" && hasTwoSizes;
-
-  const [selectedSize, setSelectedSize] = useState<"30 см" | "40 см">("30 см");
-  const [selectedCrust, setSelectedCrust] = useState<"none" | "cheese" | "sausage">("none");
-  const [selectedAddons, setSelectedAddons] = useState<Array<{ id: string; name: string; price: number; icon: string }>>([]);
-  const [justAdded, setJustAdded] = useState(false);
+function MenuItemCard({
+  item,
+  onSelect,
+}: {
+  item: MenuItemData & { categorySlug: string };
+  onSelect: (item: MenuItemData & { categorySlug: string }) => void;
+}) {
   const [imgError, setImgError] = useState(false);
-
-  const basePrice = hasTwoSizes
-    ? selectedSize === "30 см"
-      ? item.price30 || 240
-      : item.price40 || 420
-    : item.priceSingle || item.price30 || 100;
-
-  const crustAddonPrice = selectedSize === "30 см" ? 65 : 95;
-  const crustPrice = isPizza && selectedCrust !== "none" ? crustAddonPrice : 0;
-  const addonsPrice = isPizza ? selectedAddons.reduce((sum, a) => sum + a.price, 0) : 0;
-  const currentPrice = basePrice + crustPrice + addonsPrice;
-
-  const handleAddToCart = () => {
-    let crustLabel: string | undefined;
-    if (isPizza && selectedCrust === "cheese") {
-      crustLabel = `Сирний бортик (+${crustAddonPrice} грн)`;
-    } else if (isPizza && selectedCrust === "sausage") {
-      crustLabel = `Ковбасний бортик (+${crustAddonPrice} грн)`;
-    }
-
-    const addonsList = isPizza && selectedAddons.length > 0
-      ? selectedAddons.map((a) => `${a.name} (+${a.price} грн)`)
-      : undefined;
-
-    addItem({
-      menuItemId: item.id,
-      name: item.name,
-      size: hasTwoSizes ? selectedSize : undefined,
-      crust: crustLabel,
-      addons: addonsList,
-      price: currentPrice,
-      quantity: 1,
-      imageUrl: item.imageUrl,
-    });
-
-    setJustAdded(true);
-    setTimeout(() => setJustAdded(false), 1400);
-  };
+  const hasTwoSizes = Boolean(item.price30 && item.price40);
+  const displayPrice = hasTwoSizes ? `від ${item.price30} ₴` : `${item.priceSingle || item.price30} ₴`;
 
   return (
-    <div className="min-w-0 w-full bg-[#13161c] rounded-xl sm:rounded-2xl border border-[#242934] hover:border-orange-500/50 transition-all flex flex-col justify-between overflow-hidden group shadow-xl">
+    <div
+      onClick={() => onSelect(item)}
+      className="min-w-0 w-full bg-[#13161c] rounded-xl sm:rounded-2xl border border-[#242934] hover:border-orange-500/60 transition-all flex flex-col justify-between overflow-hidden group shadow-xl cursor-pointer hover:shadow-orange-950/20 active:scale-[0.99]"
+      title={`Переглянути та обрати ${item.name}`}
+    >
       <div className="min-w-0 w-full">
         {/* Item Image */}
         <div className="relative aspect-[10/7] w-full overflow-hidden bg-[#101217]">
@@ -346,157 +322,41 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
         </div>
 
         {/* Card Content */}
-        <div className="p-2 sm:p-4 space-y-1.5 sm:space-y-3 min-w-0 w-full">
+        <div className="p-2 sm:p-4 space-y-1 sm:space-y-2 min-w-0 w-full">
           <div className="flex items-start justify-between gap-1 min-w-0">
             <h3 className="text-xs sm:text-base font-black text-white group-hover:text-orange-400 transition-colors leading-snug truncate" title={item.name}>
               {item.name}
             </h3>
             <span className="text-xs sm:text-base font-black text-orange-400 whitespace-nowrap shrink-0">
-              {currentPrice} ₴
+              {displayPrice}
             </span>
           </div>
 
           <p className="text-[10px] sm:text-xs text-stone-300 leading-snug line-clamp-2 min-h-[1.75rem] sm:min-h-[2.5rem]">
             {item.description}
           </p>
-
-          {/* Controls for Pizzas: Size, Crust dropdown, and Addon dropdown */}
-          {hasTwoSizes && (
-            <div className="space-y-1.5 pt-1.5 sm:pt-2 border-t border-[#222733] min-w-0 w-full">
-              {/* Size selector buttons */}
-              <div className="grid grid-cols-2 gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36] min-w-0">
-                <button
-                  type="button"
-                  onClick={() => setSelectedSize("30 см")}
-                  className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
-                    selectedSize === "30 см"
-                      ? "bg-orange-500 text-white shadow-sm"
-                      : "text-stone-400 hover:text-white"
-                  }`}
-                >
-                  30 см • {item.price30}₴
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedSize("40 см")}
-                  className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
-                    selectedSize === "40 см"
-                      ? "bg-orange-500 text-white shadow-sm"
-                      : "text-stone-400 hover:text-white"
-                  }`}
-                >
-                  40 см • {item.price40}₴
-                </button>
-              </div>
-
-              {/* Pizza Customization: Crust & Addons dropdowns */}
-              {isPizza && (
-                <div className="space-y-1 pt-0.5 min-w-0 w-full">
-                  {/* Crust Dropdown */}
-                  <div className="space-y-0.5 min-w-0 w-full">
-                    <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                      Бортик до піци:
-                    </label>
-                    <div className="relative min-w-0 w-full overflow-hidden">
-                      <select
-                        value={selectedCrust}
-                        onChange={(e) => setSelectedCrust(e.target.value as "none" | "cheese" | "sausage")}
-                        className="w-full min-w-0 max-w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-white rounded-lg pl-1.5 pr-5 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors truncate"
-                      >
-                        <option value="none">Бортик: Класика</option>
-                        <option value="cheese">🧀 Сирний (+{crustAddonPrice} ₴)</option>
-                        <option value="sausage">🌭 Ковбасний (+{crustAddonPrice} ₴)</option>
-                      </select>
-                      <ChevronDown className="w-3 h-3 text-stone-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-                  </div>
-
-                  {/* Addons Dropdown */}
-                  <div className="space-y-0.5 min-w-0 w-full">
-                    <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                      Додати топінг:
-                    </label>
-                    <div className="relative min-w-0 w-full overflow-hidden">
-                      <select
-                        value=""
-                        onChange={(e) => {
-                          const addonId = e.target.value;
-                          if (!addonId) return;
-                          const found = PIZZA_ADDONS.find((a) => a.id === addonId);
-                          if (found && !selectedAddons.some((a) => a.id === found.id)) {
-                            setSelectedAddons((prev) => [...prev, found]);
-                          }
-                        }}
-                        className="w-full min-w-0 max-w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-stone-300 rounded-lg pl-1.5 pr-5 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors truncate"
-                      >
-                        <option value="">+ Топінг (30 г)...</option>
-                        {PIZZA_ADDONS.map((a) => {
-                          const isAdded = selectedAddons.some((s) => s.id === a.id);
-                          return (
-                            <option key={a.id} value={a.id} disabled={isAdded}>
-                              {a.icon} {a.name} (+{a.price} ₴) {isAdded ? "✓" : ""}
-                            </option>
-                          );
-                        })}
-                      </select>
-                      <ChevronDown className="w-3 h-3 text-stone-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-                    </div>
-
-                    {/* Active Addon Badges */}
-                    {selectedAddons.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pt-0.5 min-w-0">
-                        {selectedAddons.map((addon) => (
-                          <span
-                            key={addon.id}
-                            className="inline-flex items-center gap-1 bg-orange-950/80 border border-orange-500/50 text-orange-200 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md min-w-0 truncate"
-                          >
-                            <span className="truncate">{addon.icon} +{addon.price}₴</span>
-                            <button
-                              type="button"
-                              onClick={() => setSelectedAddons((prev) => prev.filter((a) => a.id !== addon.id))}
-                              className="text-stone-400 hover:text-white cursor-pointer ml-0.5 p-0.5 shrink-0"
-                              title="Видалити"
-                            >
-                              ✕
-                            </button>
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Add to Cart Footer Button */}
+      {/* Action Footer Button */}
       <div className="p-2 sm:p-4 pt-0 min-w-0 w-full">
         <button
           type="button"
           disabled={!item.isAvailable}
-          onClick={handleAddToCart}
-          className={`w-full py-1.5 sm:py-2.5 px-1 sm:px-3 rounded-lg sm:rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer min-w-0 ${
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(item);
+          }}
+          className={`w-full py-2 sm:py-2.5 px-2 sm:px-3 rounded-lg sm:rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer min-w-0 ${
             !item.isAvailable
               ? "bg-neutral-800 text-neutral-500 cursor-not-allowed"
-              : justAdded
-              ? "bg-emerald-600 text-white scale-[1.01]"
-              : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-md shadow-orange-950/50"
+              : "bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-md shadow-orange-950/50 group-hover:scale-[1.02]"
           }`}
         >
-          {justAdded ? (
-            <>
-              <Check className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate">Додано!</span>
-            </>
-          ) : (
-            <>
-              <Plus className="w-3.5 h-3.5 shrink-0" />
-              <span className="truncate sm:hidden">+ {currentPrice} ₴</span>
-              <span className="truncate hidden sm:inline">Додати • {currentPrice} ₴</span>
-            </>
-          )}
+          <Plus className="w-3.5 h-3.5 shrink-0" />
+          <span className="truncate">
+            {hasTwoSizes ? "Обрати" : "Додати"} • {displayPrice}
+          </span>
         </button>
       </div>
     </div>
