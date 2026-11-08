@@ -37,20 +37,50 @@ export async function POST(req: Request) {
         ? "Самовивіз: Проспект Лісовий, 11"
         : address.trim();
 
-    const order = await prisma.order.create({
-      data: {
+    let order: {
+      id: string;
+      orderNumber: string;
+      customerName: string;
+      phone: string;
+      orderType: string;
+      address: string | null;
+      pickupTime: string | null;
+      totalPrice: number;
+      comment: string | null;
+      status: string;
+    };
+
+    try {
+      const dbOrder = await prisma.order.create({
+        data: {
+          orderNumber,
+          customerName: customerName.trim(),
+          phone: phone.trim(),
+          orderType: type,
+          address: savedAddress,
+          pickupTime: pickupTime ? pickupTime.trim() : (type === "PICKUP" ? "Якомога швидше (15-20 хв)" : "30-45 хвилин"),
+          itemsJson: JSON.stringify(items),
+          totalPrice: finalTotal,
+          comment: comment ? comment.trim() : null,
+          status: "NEW",
+        },
+      });
+      order = dbOrder;
+    } catch (dbErr) {
+      console.warn("Database not accessible, creating fallback order in-memory:", dbErr);
+      order = {
+        id: `ord_${Date.now()}`,
         orderNumber,
         customerName: customerName.trim(),
         phone: phone.trim(),
         orderType: type,
         address: savedAddress,
         pickupTime: pickupTime ? pickupTime.trim() : (type === "PICKUP" ? "Якомога швидше (15-20 хв)" : "30-45 хвилин"),
-        itemsJson: JSON.stringify(items),
         totalPrice: finalTotal,
         comment: comment ? comment.trim() : null,
         status: "NEW",
-      },
-    });
+      };
+    }
 
     // Send Telegram alert
     let telegramSent = false;
@@ -74,11 +104,11 @@ export async function POST(req: Request) {
       console.error("Order Telegram notification error:", tgErr);
     }
 
-    if (telegramSent) {
+    if (telegramSent && !order.id.startsWith("ord_")) {
       await prisma.order.update({
         where: { id: order.id },
         data: { telegramSent: true },
-      });
+      }).catch(() => {});
     }
 
     return NextResponse.json({

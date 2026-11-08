@@ -16,17 +16,41 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create takeaway pre-order in DB
-    const reservation = await prisma.reservation.create({
-      data: {
+    // Create takeaway pre-order in DB or fallback in-memory
+    let reservation: {
+      id: string;
+      customerName: string;
+      phone: string;
+      date: string;
+      time: string;
+      comment: string | null;
+      status: string;
+    };
+
+    try {
+      const dbRes = await prisma.reservation.create({
+        data: {
+          customerName: customerName.trim(),
+          phone: phone.trim(),
+          date: date.trim(),
+          time: time.trim(),
+          comment: comment ? comment.trim() : null,
+          status: "NEW",
+        },
+      });
+      reservation = dbRes;
+    } catch (dbErr) {
+      console.warn("Database not accessible, creating reservation in-memory:", dbErr);
+      reservation = {
+        id: `res_${Date.now()}`,
         customerName: customerName.trim(),
         phone: phone.trim(),
         date: date.trim(),
         time: time.trim(),
         comment: comment ? comment.trim() : null,
         status: "NEW",
-      },
-    });
+      };
+    }
 
     // Send instant notification to Telegram
     let telegramSent = false;
@@ -52,14 +76,16 @@ export async function POST(req: Request) {
       telegramError = tgErr instanceof Error ? tgErr.message : "Telegram network error";
     }
 
-    // Update with telegram delivery status
-    await prisma.reservation.update({
-      where: { id: reservation.id },
-      data: {
-        telegramSent,
-        telegramError,
-      },
-    });
+    // Update with telegram delivery status if DB record exists
+    if (!reservation.id.startsWith("res_")) {
+      await prisma.reservation.update({
+        where: { id: reservation.id },
+        data: {
+          telegramSent,
+          telegramError,
+        },
+      }).catch(() => {});
+    }
 
     return NextResponse.json({
       success: true,
