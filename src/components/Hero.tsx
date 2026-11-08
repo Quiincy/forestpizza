@@ -24,28 +24,28 @@ export function Hero({
 
   return (
     <>
-      <section className="relative overflow-hidden pt-6 pb-12 sm:pt-12 sm:pb-18 lg:pt-14 lg:pb-22 border-b border-[#232832]">
+      <section className="w-full max-w-full min-w-0 relative overflow-hidden pt-6 pb-12 sm:pt-12 sm:pb-18 lg:pt-14 lg:pb-22 border-b border-[#232832]">
         {/* Background orange glowing effects */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-gradient-to-b from-orange-600/15 via-amber-500/10 to-transparent blur-3xl pointer-events-none" />
         <div className="absolute -top-24 right-10 w-72 h-72 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10 w-full min-w-0">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center min-w-0">
             {/* Left Column: Text & CTAs */}
-            <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left">
-              <div className="flex flex-col items-center lg:items-start">
+            <div className="lg:col-span-7 space-y-4 sm:space-y-5 text-center lg:text-left min-w-0">
+              <div className="flex flex-col items-center lg:items-start max-w-full">
                 <button
                   type="button"
                   onClick={() => setDeliveryModalOpen(true)}
-                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold hover:bg-orange-950 hover:border-orange-500/60 transition-all cursor-pointer shadow-md shadow-orange-950/40"
+                  className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-300 text-xs sm:text-sm font-bold hover:bg-orange-950 hover:border-orange-500/60 transition-all cursor-pointer shadow-md shadow-orange-950/40 max-w-full"
                 >
                   <span className="flex h-2 w-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
-                  <span>🛵 Доставка по Лісовому: 70 ₴ • Швидкий самовивіз</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-orange-400" />
+                  <span className="truncate">🛵 Доставка по Лісовому: 70 ₴ • Самовивіз</span>
+                  <ChevronRight className="w-3.5 h-3.5 text-orange-400 shrink-0" />
                 </button>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-[1.12]">
+              <h1 className="text-3xl sm:text-5xl lg:text-[52px] font-black text-white tracking-tight leading-[1.12] break-words">
                 Гаряча крафтова піца{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 via-amber-400 to-orange-400">
                   з доставкою
@@ -59,45 +59,45 @@ export function Hero({
               </p>
 
               {/* Quick Feature Badges */}
-              <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-2.5 pt-1 text-xs font-bold text-stone-200">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center lg:justify-start gap-2 sm:gap-2.5 pt-1 text-xs font-bold text-stone-200 w-full min-w-0">
                 <button
                   type="button"
                   onClick={() => setDeliveryModalOpen(true)}
-                  className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] hover:bg-[#1f2430] px-3 py-2 rounded-xl border border-[#282e3b] text-orange-300 transition-colors cursor-pointer"
+                  className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] hover:bg-[#1f2430] px-2.5 py-2 rounded-xl border border-[#282e3b] text-orange-300 transition-colors cursor-pointer min-w-0"
                 >
-                  <Bike className="w-4 h-4 text-orange-400 shrink-0" />
-                  <span className="truncate">Доставка 70 ₴ (30-45 хв)</span>
+                  <Bike className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                  <span className="truncate text-[11px] sm:text-xs">Доставка 70 ₴</span>
                 </button>
-                <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-3 py-2 rounded-xl border border-[#282e3b]">
-                  <Store className="w-4 h-4 text-orange-500 shrink-0" />
-                  <span className="truncate">Самовивіз 15-20 хв</span>
+                <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-2.5 py-2 rounded-xl border border-[#282e3b] min-w-0">
+                  <Store className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                  <span className="truncate text-[11px] sm:text-xs">Самовивіз 15 хв</span>
                 </div>
-                <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-3 py-2 rounded-xl border border-[#282e3b]">
-                  <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                  <span className="truncate">Сирні & ковбасні бортики</span>
+                <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-2.5 py-2 rounded-xl border border-[#282e3b] min-w-0">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+                  <span className="truncate text-[11px] sm:text-xs">Смачні бортики</span>
                 </div>
-                <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-3 py-2 rounded-xl border border-[#282e3b]">
-                  <Clock className="w-4 h-4 text-orange-400 shrink-0" />
-                  <span className="truncate">{workingHours}</span>
+                <div className="flex items-center justify-center sm:justify-start gap-1.5 bg-[#151820] px-2.5 py-2 rounded-xl border border-[#282e3b] min-w-0">
+                  <Clock className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                  <span className="truncate text-[11px] sm:text-xs">{workingHours}</span>
                 </div>
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-2.5 pt-2 w-full max-w-full">
                 <button
                   onClick={() => scrollTo("menu")}
-                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-black text-sm sm:text-base px-6 py-3.5 rounded-xl shadow-lg shadow-orange-950/60 transition-all hover:scale-[1.02] cursor-pointer"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-gradient-to-r from-orange-500 via-orange-600 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-black text-sm sm:text-base px-5 py-3 rounded-xl shadow-lg shadow-orange-950/60 transition-all cursor-pointer truncate"
                 >
-                  <span>Обрати піцу з меню (23 види)</span>
+                  <span className="truncate">Меню піцерії (23 види)</span>
                   <ArrowRight className="w-4 h-4 shrink-0" />
                 </button>
 
                 <button
                   onClick={() => scrollTo("takeaway")}
-                  className="flex items-center justify-center gap-2 bg-[#151820] hover:bg-[#1f2430] text-stone-200 hover:text-white font-bold text-sm sm:text-base px-6 py-3.5 rounded-xl border border-[#282e3b] hover:border-orange-500/50 transition-all cursor-pointer"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#151820] hover:bg-[#1f2430] text-stone-200 hover:text-white font-bold text-sm sm:text-base px-5 py-3 rounded-xl border border-[#282e3b] hover:border-orange-500/50 transition-all cursor-pointer truncate"
                 >
                   <Bike className="w-4 h-4 text-orange-400 shrink-0" />
-                  <span>Швидке замовлення</span>
+                  <span className="truncate">Швидке замовлення</span>
                 </button>
               </div>
 

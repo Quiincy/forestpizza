@@ -106,8 +106,8 @@ export function TakeawaySection({
   };
 
   return (
-    <section id="takeaway" className="py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-[#0d0f11] via-[#121417] to-[#0d0f11] border-t border-b border-[#242830]">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="takeaway" className="w-full max-w-full min-w-0 overflow-hidden py-12 sm:py-16 lg:py-24 bg-gradient-to-b from-[#0d0f11] via-[#121417] to-[#0d0f11] border-t border-b border-[#242830]">
+      <div className="max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 w-full min-w-0">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10 space-y-3">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider">

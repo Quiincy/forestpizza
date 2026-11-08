@@ -24,8 +24,8 @@ export function LocationSection({
 
   return (
     <>
-      <section id="location" className="py-16 lg:py-24 bg-gradient-to-b from-[#101317] to-[#0c0e12] border-t border-[#222730]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="location" className="w-full max-w-full min-w-0 overflow-hidden py-16 lg:py-24 bg-gradient-to-b from-[#101317] to-[#0c0e12] border-t border-[#222730]">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 w-full min-w-0">
           <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xs font-semibold uppercase tracking-wider">
               <MapPin className="w-3.5 h-3.5 text-orange-500" />

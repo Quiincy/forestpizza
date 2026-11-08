@@ -30,9 +30,9 @@ export function Navbar({
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-[#0c0e12]/98 backdrop-blur-md border-b border-[#232832] shadow-xl shadow-black/50">
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 sm:h-18 gap-2 sm:gap-4">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c0e12] border-b border-[#232832] shadow-xl shadow-black/60">
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-18 gap-2">
             {/* Authentic Brand Logo - Strictly Single Instance */}
             <Link
               href="/"
@@ -40,7 +40,7 @@ export function Navbar({
               title="Forest Pizza — На головну"
             >
               <ForestPizzaLogo size="md" className="group-hover:scale-[1.02] transition-transform" />
-              <p className="text-[10px] sm:text-[11px] font-bold text-stone-400 whitespace-nowrap flex items-center gap-1 mt-0.5">
+              <p className="text-[9px] sm:text-[11px] font-bold text-stone-400 whitespace-nowrap flex items-center gap-1 mt-0.5">
                 <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-orange-500 shrink-0" />
                 <span>Лісовий просп., 11</span>
                 <span className="hidden sm:inline text-orange-400">• Самовивіз & Доставка</span>
@@ -83,7 +83,7 @@ export function Navbar({
             </nav>
 
             {/* Right Actions: Phone + Primary Cart/Order Button */}
-            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
               {/* Phone Call (md+) */}
               <a
                 href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
@@ -97,15 +97,17 @@ export function Navbar({
               {/* Primary Cart Button */}
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-lg shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer whitespace-nowrap"
+                className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black text-xs sm:text-sm px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl shadow-lg shadow-orange-950/50 transition-all hover:scale-[1.02] cursor-pointer whitespace-nowrap"
                 aria-label="Кошик замовлень"
               >
                 <ShoppingBag className="w-4 h-4 text-white shrink-0" />
-                <span className="hidden xs:inline">Кошик</span>
-                {totalCount > 0 && (
-                  <span className="bg-black/40 text-white text-[10px] sm:text-[11px] font-black px-1.5 py-0.5 rounded-md ml-0.5">
+                <span className="hidden sm:inline">Кошик</span>
+                {totalCount > 0 ? (
+                  <span className="bg-black/40 text-white text-[10px] sm:text-[11px] font-black px-1.5 py-0.5 rounded-md">
                     {totalCount} • {totalPrice} ₴
                   </span>
+                ) : (
+                  <span className="sm:hidden text-[11px]">Кошик</span>
                 )}
               </button>
 

@@ -42,39 +42,41 @@ export default async function HomePage() {
 
   return (
     <CartProvider>
-      <div className="min-h-screen bg-[#0c0e12] text-stone-100 flex flex-col selection:bg-orange-600 selection:text-white pb-28 md:pb-0">
+      <div className="min-h-screen w-full max-w-full overflow-x-hidden bg-[#0c0e12] text-stone-100 flex flex-col selection:bg-orange-600 selection:text-white pt-14 sm:pt-18 pb-28 md:pb-0">
         {/* Navigation */}
         <Navbar
           restaurantPhone={settings.restaurant_phone}
           workingHours={settings.working_hours}
         />
 
-        {/* Hero */}
-        <Hero
-          restaurantAddress={settings.restaurant_address}
-          workingHours={settings.working_hours}
-        />
+        <main className="w-full max-w-full min-w-0 flex-1 flex flex-col">
+          {/* Hero */}
+          <Hero
+            restaurantAddress={settings.restaurant_address}
+            workingHours={settings.working_hours}
+          />
 
-        {/* Menu */}
-        <MenuSection categories={categories} />
+          {/* Menu */}
+          <MenuSection categories={categories} />
 
-        {/* Takeaway Order Section */}
-        <TakeawaySection
-          takeawayNotice={settings.reservation_notice}
-          restaurantPhone={settings.restaurant_phone}
-        />
+          {/* Takeaway Order Section */}
+          <TakeawaySection
+            takeawayNotice={settings.reservation_notice}
+            restaurantPhone={settings.restaurant_phone}
+          />
 
-        {/* About */}
-        <AboutSection />
+          {/* About */}
+          <AboutSection />
 
-        {/* Location & Map */}
-        <LocationSection
-          address={settings.restaurant_address}
-          phone={settings.restaurant_phone}
-          workingHours={settings.working_hours}
-          instagramUrl={settings.instagram_url}
-          mapsUrl={settings.maps_url}
-        />
+          {/* Location & Map */}
+          <LocationSection
+            address={settings.restaurant_address}
+            phone={settings.restaurant_phone}
+            workingHours={settings.working_hours}
+            instagramUrl={settings.instagram_url}
+            mapsUrl={settings.maps_url}
+          />
+        </main>
 
         {/* Footer */}
         <Footer

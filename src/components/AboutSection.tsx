@@ -9,8 +9,8 @@ export function AboutSection() {
 
   return (
     <>
-      <section id="about" className="py-12 sm:py-16 lg:py-22 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <section id="about" className="w-full max-w-full min-w-0 overflow-hidden py-12 sm:py-16 lg:py-22 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center w-full min-w-0">
           {/* Left side text */}
           <div className="lg:col-span-6 space-y-5 sm:space-y-6">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider">

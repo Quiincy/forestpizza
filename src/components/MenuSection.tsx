@@ -96,14 +96,14 @@ export function MenuSection({ categories }: MenuSectionProps) {
   const pizzaCount = allItems.filter((i) => i.categorySlug === "pizza").length;
 
   return (
-    <section id="menu" className="py-10 sm:py-16 lg:py-22 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
+    <section id="menu" className="py-10 sm:py-16 lg:py-22 max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 w-full max-w-full min-w-0 overflow-hidden">
       {/* Section Header */}
-      <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider">
-          <Flame className="w-3.5 h-3.5 text-orange-500" />
-          <span>Оригінальне меню Forest Pizza</span>
+      <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 space-y-3 w-full min-w-0">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-orange-950/70 border border-orange-500/30 text-orange-400 text-xs font-black uppercase tracking-wider max-w-full">
+          <Flame className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+          <span className="truncate">Оригінальне меню Forest Pizza</span>
         </div>
-        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+        <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight break-words">
           Меню Forest Pizza To Go
         </h2>
         <p className="text-stone-300 text-xs sm:text-sm lg:text-base leading-relaxed">
@@ -111,13 +111,13 @@ export function MenuSection({ categories }: MenuSectionProps) {
         </p>
 
         {/* Search bar */}
-        <div className="relative max-w-md mx-auto pt-2">
+        <div className="relative w-full max-w-md mx-auto pt-2 min-w-0">
           <Search className="w-4 h-4 text-orange-400 absolute left-3.5 top-1/2 -translate-y-1/2 mt-1" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Пошук піци або інгредієнта (лосось, 4 сири, бекон)..."
+            placeholder="Пошук піци або інгредієнта..."
             className="w-full pl-10 pr-9 py-2.5 rounded-xl bg-[#14171f] border border-[#282e3b] text-white placeholder-stone-500 text-xs sm:text-sm focus:outline-none focus:border-orange-500 transition-colors"
           />
           {searchQuery && (
@@ -133,13 +133,13 @@ export function MenuSection({ categories }: MenuSectionProps) {
       </div>
 
       {/* Main Category Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-3 sm:pb-4 scrollbar-none snap-x touch-pan-x justify-start sm:justify-center">
+      <div className="w-full max-w-full min-w-0 flex items-center gap-2 overflow-x-auto pb-3 sm:pb-4 scrollbar-none snap-x touch-pan-x justify-start sm:justify-center">
         <button
           onClick={() => {
             setActiveCategory("all");
             setPizzaSubfilter("all");
           }}
-          className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer ${
+          className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer shrink-0 ${
             activeCategory === "all"
               ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-950/60"
               : "bg-[#14171f] text-stone-300 hover:bg-[#1e232f] border border-[#282e3b]"
@@ -150,7 +150,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
 
         <button
           onClick={() => setActiveCategory("pizza")}
-          className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer flex items-center gap-1.5 ${
+          className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer flex items-center gap-1.5 shrink-0 ${
             activeCategory === "pizza"
               ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-950/60"
               : "bg-[#14171f] text-stone-300 hover:bg-[#1e232f] border border-[#282e3b]"
@@ -165,7 +165,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.slug)}
-              className={`px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer ${
+              className={`px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all snap-start cursor-pointer shrink-0 ${
                 activeCategory === cat.slug
                   ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg shadow-orange-950/60"
                   : "bg-[#14171f] text-stone-300 hover:bg-[#1e232f] border border-[#282e3b]"
@@ -178,10 +178,10 @@ export function MenuSection({ categories }: MenuSectionProps) {
 
       {/* Pizza Subcategories */}
       {(activeCategory === "all" || activeCategory === "pizza") && (
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-6 scrollbar-none snap-x justify-start sm:justify-center">
+        <div className="w-full max-w-full min-w-0 flex items-center gap-1.5 overflow-x-auto pb-5 scrollbar-none snap-x justify-start sm:justify-center">
           <button
             onClick={() => setPizzaSubfilter("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               pizzaSubfilter === "all"
                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
                 : "bg-[#101319] text-stone-400 border border-[#222733] hover:text-white"
@@ -191,7 +191,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </button>
           <button
             onClick={() => setPizzaSubfilter("meat")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               pizzaSubfilter === "meat"
                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
                 : "bg-[#101319] text-stone-400 border border-[#222733] hover:text-white"
@@ -201,7 +201,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </button>
           <button
             onClick={() => setPizzaSubfilter("seafood")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               pizzaSubfilter === "seafood"
                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
                 : "bg-[#101319] text-stone-400 border border-[#222733] hover:text-white"
@@ -211,7 +211,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </button>
           <button
             onClick={() => setPizzaSubfilter("cheese")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               pizzaSubfilter === "cheese"
                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
                 : "bg-[#101319] text-stone-400 border border-[#222733] hover:text-white"
@@ -221,7 +221,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </button>
           <button
             onClick={() => setPizzaSubfilter("spicy")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               pizzaSubfilter === "spicy"
                 ? "bg-orange-500/20 text-orange-400 border border-orange-500/50"
                 : "bg-[#101319] text-stone-400 border border-[#222733] hover:text-white"
@@ -232,7 +232,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
         </div>
       )}
 
-      {/* Menu Items Grid: 2 columns on mobile, 2 columns on md, 3 columns on lg */}
+      {/* Menu Items Grid: strictly 2 columns on mobile, 2 columns on md, 3 columns on lg */}
       {filteredItems.length === 0 ? (
         <div className="text-center py-16 bg-[#13161c] rounded-2xl border border-[#242933] max-w-md mx-auto">
           <Info className="w-10 h-10 text-orange-400 mx-auto mb-3" />
@@ -242,7 +242,7 @@ export function MenuSection({ categories }: MenuSectionProps) {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-5 lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 w-full min-w-0 overflow-hidden">
           {filteredItems.map((item) => (
             <MenuItemCard key={item.id} item={item} />
           ))}
@@ -253,10 +253,10 @@ export function MenuSection({ categories }: MenuSectionProps) {
 }
 
 const PIZZA_ADDONS = [
-  { id: "vegetables", name: "Овочі (30 г)", price: 30, icon: "🫑" },
-  { id: "meat", name: "М'ясо (30 г)", price: 30, icon: "🥓" },
-  { id: "cheese", name: "Сир (30 г)", price: 40, icon: "🧀" },
-  { id: "meatballs", name: "М'ясні кульки (30 г)", price: 40, icon: "🥩" },
+  { id: "vegetables", name: "Овочі", price: 30, icon: "🫑" },
+  { id: "meat", name: "М'ясо", price: 30, icon: "🥓" },
+  { id: "cheese", name: "Сир", price: 40, icon: "🧀" },
+  { id: "meatballs", name: "Кульки", price: 40, icon: "🥩" },
 ];
 
 function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } }) {
@@ -309,9 +309,9 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
   };
 
   return (
-    <div className="bg-[#13161c] rounded-xl sm:rounded-2xl border border-[#242934] hover:border-orange-500/50 transition-all flex flex-col justify-between overflow-hidden group shadow-xl">
-      <div>
-        {/* Item Image (10:7 aspect ratio matches studio pizza renders without clipping) */}
+    <div className="min-w-0 w-full bg-[#13161c] rounded-xl sm:rounded-2xl border border-[#242934] hover:border-orange-500/50 transition-all flex flex-col justify-between overflow-hidden group shadow-xl">
+      <div className="min-w-0 w-full">
+        {/* Item Image */}
         <div className="relative aspect-[10/7] w-full overflow-hidden bg-[#101217]">
           {!imgError && item.imageUrl ? (
             <img
@@ -331,7 +331,7 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
           {/* Badge */}
           {item.badge && (
-            <div className="absolute top-1.5 left-1.5 sm:top-3 sm:left-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[9px] sm:text-[11px] font-black px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg shadow-md">
+            <div className="absolute top-1.5 left-1.5 sm:top-3 sm:left-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-[9px] sm:text-[11px] font-black px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg shadow-md max-w-[85%] truncate">
               <span>{item.badge}</span>
             </div>
           )}
@@ -345,10 +345,10 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
           )}
         </div>
 
-        {/* Card Content: compact on mobile */}
-        <div className="p-2 sm:p-4 space-y-2 sm:space-y-3">
-          <div className="flex items-start justify-between gap-1 sm:gap-2">
-            <h3 className="text-xs sm:text-base font-black text-white group-hover:text-orange-400 transition-colors leading-snug line-clamp-1" title={item.name}>
+        {/* Card Content */}
+        <div className="p-2 sm:p-4 space-y-1.5 sm:space-y-3 min-w-0 w-full">
+          <div className="flex items-start justify-between gap-1 min-w-0">
+            <h3 className="text-xs sm:text-base font-black text-white group-hover:text-orange-400 transition-colors leading-snug truncate" title={item.name}>
               {item.name}
             </h3>
             <span className="text-xs sm:text-base font-black text-orange-400 whitespace-nowrap shrink-0">
@@ -362,13 +362,13 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
           {/* Controls for Pizzas: Size, Crust dropdown, and Addon dropdown */}
           {hasTwoSizes && (
-            <div className="space-y-2 pt-1.5 sm:pt-2 border-t border-[#222733]">
+            <div className="space-y-1.5 pt-1.5 sm:pt-2 border-t border-[#222733] min-w-0 w-full">
               {/* Size selector buttons */}
-              <div className="grid grid-cols-2 gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36]">
+              <div className="grid grid-cols-2 gap-1 bg-[#0c0e12] p-0.5 sm:p-1 rounded-lg sm:rounded-xl border border-[#252a36] min-w-0">
                 <button
                   type="button"
                   onClick={() => setSelectedSize("30 см")}
-                  className={`py-1 sm:py-1.5 px-0.5 sm:px-1 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
+                  className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
                     selectedSize === "30 см"
                       ? "bg-orange-500 text-white shadow-sm"
                       : "text-stone-400 hover:text-white"
@@ -379,7 +379,7 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
                 <button
                   type="button"
                   onClick={() => setSelectedSize("40 см")}
-                  className={`py-1 sm:py-1.5 px-0.5 sm:px-1 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
+                  className={`py-1 sm:py-1.5 px-0.5 rounded-md sm:rounded-lg font-black text-[9px] sm:text-xs transition-colors cursor-pointer text-center truncate ${
                     selectedSize === "40 см"
                       ? "bg-orange-500 text-white shadow-sm"
                       : "text-stone-400 hover:text-white"
@@ -391,19 +391,19 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
               {/* Pizza Customization: Crust & Addons dropdowns */}
               {isPizza && (
-                <div className="space-y-1.5 pt-0.5">
+                <div className="space-y-1 pt-0.5 min-w-0 w-full">
                   {/* Crust Dropdown */}
-                  <div className="space-y-0.5">
+                  <div className="space-y-0.5 min-w-0 w-full">
                     <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
                       Бортик до піци:
                     </label>
-                    <div className="relative">
+                    <div className="relative min-w-0 w-full overflow-hidden">
                       <select
                         value={selectedCrust}
                         onChange={(e) => setSelectedCrust(e.target.value as "none" | "cheese" | "sausage")}
-                        className="w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-white rounded-lg pl-2 pr-6 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors"
+                        className="w-full min-w-0 max-w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-white rounded-lg pl-1.5 pr-5 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors truncate"
                       >
-                        <option value="none">Класичний (без доплати)</option>
+                        <option value="none">Бортик: Класика</option>
                         <option value="cheese">🧀 Сирний (+{crustAddonPrice} ₴)</option>
                         <option value="sausage">🌭 Ковбасний (+{crustAddonPrice} ₴)</option>
                       </select>
@@ -412,11 +412,11 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
                   </div>
 
                   {/* Addons Dropdown */}
-                  <div className="space-y-0.5">
+                  <div className="space-y-0.5 min-w-0 w-full">
                     <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
-                      Додати топінг (30 г):
+                      Додати топінг:
                     </label>
-                    <div className="relative">
+                    <div className="relative min-w-0 w-full overflow-hidden">
                       <select
                         value=""
                         onChange={(e) => {
@@ -427,14 +427,14 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
                             setSelectedAddons((prev) => [...prev, found]);
                           }
                         }}
-                        className="w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-stone-300 rounded-lg pl-2 pr-6 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors"
+                        className="w-full min-w-0 max-w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-stone-300 rounded-lg pl-1.5 pr-5 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors truncate"
                       >
-                        <option value="">+ Обрати додаток...</option>
+                        <option value="">+ Топінг (30 г)...</option>
                         {PIZZA_ADDONS.map((a) => {
                           const isAdded = selectedAddons.some((s) => s.id === a.id);
                           return (
                             <option key={a.id} value={a.id} disabled={isAdded}>
-                              {a.icon} {a.name} (+{a.price} ₴) {isAdded ? "✓ додано" : ""}
+                              {a.icon} {a.name} (+{a.price} ₴) {isAdded ? "✓" : ""}
                             </option>
                           );
                         })}
@@ -444,17 +444,17 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
                     {/* Active Addon Badges */}
                     {selectedAddons.length > 0 && (
-                      <div className="flex flex-wrap gap-1 pt-1">
+                      <div className="flex flex-wrap gap-1 pt-0.5 min-w-0">
                         {selectedAddons.map((addon) => (
                           <span
                             key={addon.id}
-                            className="inline-flex items-center gap-1 bg-orange-950/80 border border-orange-500/50 text-orange-200 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+                            className="inline-flex items-center gap-1 bg-orange-950/80 border border-orange-500/50 text-orange-200 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md min-w-0 truncate"
                           >
-                            <span>{addon.icon} +{addon.price}₴</span>
+                            <span className="truncate">{addon.icon} +{addon.price}₴</span>
                             <button
                               type="button"
                               onClick={() => setSelectedAddons((prev) => prev.filter((a) => a.id !== addon.id))}
-                              className="text-stone-400 hover:text-white cursor-pointer ml-0.5 p-0.5"
+                              className="text-stone-400 hover:text-white cursor-pointer ml-0.5 p-0.5 shrink-0"
                               title="Видалити"
                             >
                               ✕
@@ -472,12 +472,12 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
       </div>
 
       {/* Add to Cart Footer Button */}
-      <div className="p-2 sm:p-4 pt-0">
+      <div className="p-2 sm:p-4 pt-0 min-w-0 w-full">
         <button
           type="button"
           disabled={!item.isAvailable}
           onClick={handleAddToCart}
-          className={`w-full py-1.5 sm:py-2.5 px-1.5 sm:px-3 rounded-lg sm:rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer ${
+          className={`w-full py-1.5 sm:py-2.5 px-1 sm:px-3 rounded-lg sm:rounded-xl font-black text-[11px] sm:text-xs flex items-center justify-center gap-1 sm:gap-1.5 transition-all cursor-pointer min-w-0 ${
             !item.isAvailable
               ? "bg-neutral-800 text-neutral-500 cursor-not-allowed"
               : justAdded
@@ -488,13 +488,13 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
           {justAdded ? (
             <>
               <Check className="w-3.5 h-3.5 shrink-0" />
-              <span>Додано в кошик!</span>
+              <span className="truncate">Додано!</span>
             </>
           ) : (
             <>
               <Plus className="w-3.5 h-3.5 shrink-0" />
               <span className="truncate sm:hidden">+ {currentPrice} ₴</span>
-              <span className="truncate hidden sm:inline">Додати в кошик • {currentPrice} ₴</span>
+              <span className="truncate hidden sm:inline">Додати • {currentPrice} ₴</span>
             </>
           )}
         </button>
