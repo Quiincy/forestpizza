@@ -9,6 +9,7 @@ import { LocationSection } from "@/components/LocationSection";
 import { Footer } from "@/components/Footer";
 import { CartDrawer } from "@/components/CartDrawer";
 import { MobileBottomBar } from "@/components/MobileBottomBar";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { DEFAULT_SETTINGS, DEFAULT_CATEGORIES } from "@/lib/defaultData";
 
 export const instant = false;
@@ -96,6 +97,9 @@ export default async function HomePage() {
 
         {/* Sticky Mobile Bottom Bar */}
         <MobileBottomBar restaurantPhone={settings.restaurant_phone} />
+
+        {/* Floating Scroll To Top Button */}
+        <ScrollToTop />
       </div>
     </CartProvider>
   );

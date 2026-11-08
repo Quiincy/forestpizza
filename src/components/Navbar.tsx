@@ -33,16 +33,20 @@ export function Navbar({
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#0c0e12] border-b border-[#232832] shadow-xl shadow-black/60">
         <div className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-18 gap-2">
-            {/* Authentic Brand Logo - Strictly Single Instance */}
+            {/* Authentic Brand Logo - Clicking scrolls to top */}
             <Link
               href="/"
-              className="flex flex-col justify-center group shrink-0"
-              title="Forest Pizza — На головну"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="flex flex-col justify-center group shrink-0 cursor-pointer"
+              title="Forest Pizza — Догори"
             >
               <ForestPizzaLogo size="md" className="group-hover:scale-[1.02] transition-transform" />
               <p className="text-[9px] sm:text-[11px] font-bold text-stone-400 whitespace-nowrap flex items-center gap-1 mt-0.5">
                 <MapPin className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-orange-500 shrink-0" />
-                <span>Лісовий просп., 11</span>
+                <span>Проспект Лісовий, 11</span>
                 <span className="hidden sm:inline text-orange-400">• Самовивіз & Доставка</span>
               </p>
             </Link>
@@ -77,15 +81,27 @@ export function Navbar({
             </nav>
 
             {/* Right Actions: Phone + Primary Cart/Order Button */}
-            <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
-              {/* Phone Call (md+) */}
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+              {/* Phone Call (Desktop / Tablet) */}
               <a
                 href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
-                className="hidden md:flex items-center gap-1.5 text-xs font-bold text-stone-300 hover:text-orange-400 bg-[#151820] hover:bg-[#1d222d] border border-[#282e3b] px-3 py-2 rounded-xl transition-all whitespace-nowrap"
+                className="hidden sm:flex items-center gap-2 text-xs xl:text-sm font-black text-white hover:text-white bg-gradient-to-r from-orange-950/60 via-[#181c25] to-[#141720] hover:from-orange-600 hover:to-amber-500 border border-orange-500/40 hover:border-orange-400 px-3 py-2 rounded-xl shadow-md shadow-orange-950/40 transition-all whitespace-nowrap group"
                 title={`Зателефонувати: ${restaurantPhone}`}
               >
-                <Phone className="w-3.5 h-3.5 text-orange-400 shrink-0" />
-                <span>{restaurantPhone}</span>
+                <div className="w-6 h-6 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center group-hover:bg-white group-hover:text-orange-600 transition-colors">
+                  <Phone className="w-3.5 h-3.5 shrink-0" />
+                </div>
+                <span className="tracking-tight">{restaurantPhone}</span>
+              </a>
+
+              {/* Phone Call Quick Button (Mobile) */}
+              <a
+                href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
+                className="flex sm:hidden items-center justify-center w-9 h-9 rounded-xl bg-orange-950/70 border border-orange-500/50 text-orange-400 hover:bg-orange-600 hover:text-white transition-all shadow-md shadow-orange-950/40"
+                title={`Зателефонувати: ${restaurantPhone}`}
+                aria-label="Зателефонувати"
+              >
+                <Phone className="w-4 h-4 shrink-0" />
               </a>
 
               {/* Primary Cart Button */}
@@ -156,14 +172,19 @@ export function Navbar({
               <div className="pt-2 border-t border-[#232832] grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <a
                   href={`tel:${restaurantPhone.replace(/\s+/g, "")}`}
-                  className="flex items-center justify-center gap-2 text-sm font-bold text-orange-400 bg-[#151820] py-2.5 rounded-xl border border-[#282e3b]"
+                  className="flex items-center justify-center gap-2.5 text-sm font-black text-white bg-gradient-to-r from-orange-950/80 via-[#181c25] to-[#141720] hover:from-orange-600 hover:to-amber-500 py-3 rounded-xl border border-orange-500/50 shadow-md shadow-orange-950/40 transition-all group"
                 >
-                  <Phone className="w-4 h-4 text-orange-500" />
-                  <span>{restaurantPhone}</span>
+                  <div className="w-6 h-6 rounded-lg bg-orange-500/20 text-orange-400 flex items-center justify-center group-hover:bg-white group-hover:text-orange-600 transition-colors">
+                    <Phone className="w-3.5 h-3.5" />
+                  </div>
+                  <span>Зателефонувати: {restaurantPhone}</span>
                 </a>
                 <button
-                  onClick={() => setIsCartOpen(true)}
-                  className="w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black py-2.5 rounded-xl shadow-md text-sm cursor-pointer"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setIsCartOpen(true);
+                  }}
+                  className="w-full text-center bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-black py-3 rounded-xl shadow-lg shadow-orange-950/50 text-sm cursor-pointer transition-all"
                 >
                   Перейти до кошика
                 </button>
