@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { Plus, Check, Search, Flame, Info, Pizza, X } from "lucide-react";
+import { Plus, Check, Search, Flame, Info, Pizza, X, ChevronDown } from "lucide-react";
 
 export interface MenuItemData {
   id: string;
@@ -391,21 +391,24 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
 
               {/* Pizza Customization: Crust & Addons dropdowns */}
               {isPizza && (
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 pt-0.5">
                   {/* Crust Dropdown */}
                   <div className="space-y-0.5">
                     <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
                       Бортик до піци:
                     </label>
-                    <select
-                      value={selectedCrust}
-                      onChange={(e) => setSelectedCrust(e.target.value as "none" | "cheese" | "sausage")}
-                      className="w-full bg-[#0c0e12] border border-[#252a36] text-white rounded-lg px-2 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer"
-                    >
-                      <option value="none">Класичний (без доплати)</option>
-                      <option value="cheese">🧀 Сирний (+{crustAddonPrice} ₴)</option>
-                      <option value="sausage">🌭 Ковбасний (+{crustAddonPrice} ₴)</option>
-                    </select>
+                    <div className="relative">
+                      <select
+                        value={selectedCrust}
+                        onChange={(e) => setSelectedCrust(e.target.value as "none" | "cheese" | "sausage")}
+                        className="w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-white rounded-lg pl-2 pr-6 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors"
+                      >
+                        <option value="none">Класичний (без доплати)</option>
+                        <option value="cheese">🧀 Сирний (+{crustAddonPrice} ₴)</option>
+                        <option value="sausage">🌭 Ковбасний (+{crustAddonPrice} ₴)</option>
+                      </select>
+                      <ChevronDown className="w-3 h-3 text-stone-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
                   </div>
 
                   {/* Addons Dropdown */}
@@ -413,28 +416,31 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
                     <label className="block text-[8px] sm:text-[10px] font-bold uppercase tracking-wider text-stone-400">
                       Додати топінг (30 г):
                     </label>
-                    <select
-                      value=""
-                      onChange={(e) => {
-                        const addonId = e.target.value;
-                        if (!addonId) return;
-                        const found = PIZZA_ADDONS.find((a) => a.id === addonId);
-                        if (found && !selectedAddons.some((a) => a.id === found.id)) {
-                          setSelectedAddons((prev) => [...prev, found]);
-                        }
-                      }}
-                      className="w-full bg-[#0c0e12] border border-[#252a36] text-stone-300 rounded-lg px-2 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer"
-                    >
-                      <option value="">+ Обрати додаток...</option>
-                      {PIZZA_ADDONS.map((a) => {
-                        const isAdded = selectedAddons.some((s) => s.id === a.id);
-                        return (
-                          <option key={a.id} value={a.id} disabled={isAdded}>
-                            {a.icon} {a.name} (+{a.price} ₴) {isAdded ? "✓ додано" : ""}
-                          </option>
-                        );
-                      })}
-                    </select>
+                    <div className="relative">
+                      <select
+                        value=""
+                        onChange={(e) => {
+                          const addonId = e.target.value;
+                          if (!addonId) return;
+                          const found = PIZZA_ADDONS.find((a) => a.id === addonId);
+                          if (found && !selectedAddons.some((a) => a.id === found.id)) {
+                            setSelectedAddons((prev) => [...prev, found]);
+                          }
+                        }}
+                        className="w-full appearance-none bg-[#0c0e12] border border-[#272d3b] hover:border-orange-500/50 text-stone-300 rounded-lg pl-2 pr-6 py-1 text-[9px] sm:text-xs font-semibold focus:outline-none focus:border-orange-500 cursor-pointer transition-colors"
+                      >
+                        <option value="">+ Обрати додаток...</option>
+                        {PIZZA_ADDONS.map((a) => {
+                          const isAdded = selectedAddons.some((s) => s.id === a.id);
+                          return (
+                            <option key={a.id} value={a.id} disabled={isAdded}>
+                              {a.icon} {a.name} (+{a.price} ₴) {isAdded ? "✓ додано" : ""}
+                            </option>
+                          );
+                        })}
+                      </select>
+                      <ChevronDown className="w-3 h-3 text-stone-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    </div>
 
                     {/* Active Addon Badges */}
                     {selectedAddons.length > 0 && (
@@ -442,13 +448,13 @@ function MenuItemCard({ item }: { item: MenuItemData & { categorySlug: string } 
                         {selectedAddons.map((addon) => (
                           <span
                             key={addon.id}
-                            className="inline-flex items-center gap-1 bg-orange-950/70 border border-orange-500/40 text-orange-200 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md"
+                            className="inline-flex items-center gap-1 bg-orange-950/80 border border-orange-500/50 text-orange-200 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-md"
                           >
                             <span>{addon.icon} +{addon.price}₴</span>
                             <button
                               type="button"
                               onClick={() => setSelectedAddons((prev) => prev.filter((a) => a.id !== addon.id))}
-                              className="text-stone-400 hover:text-white cursor-pointer ml-0.5"
+                              className="text-stone-400 hover:text-white cursor-pointer ml-0.5 p-0.5"
                               title="Видалити"
                             >
                               ✕

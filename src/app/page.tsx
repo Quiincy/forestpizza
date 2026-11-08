@@ -42,7 +42,7 @@ export default async function HomePage() {
 
   return (
     <CartProvider>
-      <div className="min-h-screen bg-[#0c0e12] text-stone-100 flex flex-col selection:bg-orange-600 selection:text-white pb-20 md:pb-0">
+      <div className="min-h-screen bg-[#0c0e12] text-stone-100 flex flex-col selection:bg-orange-600 selection:text-white pb-28 md:pb-0">
         {/* Navigation */}
         <Navbar
           restaurantPhone={settings.restaurant_phone}
