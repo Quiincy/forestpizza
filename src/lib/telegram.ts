@@ -127,6 +127,7 @@ export function formatOrderMessage(order: {
   address?: string | null;
   pickupTime?: string | null;
   totalPrice: number;
+  deliveryFee?: number;
   comment?: string | null;
   items: Array<{
     name: string;
@@ -136,13 +137,23 @@ export function formatOrderMessage(order: {
     quantity: number;
   }>;
 }) {
-  const typeText = "🏃 <b>Самовивіз (на винос)</b>";
+  let typeHeader = "🍕 <b>НОВЕ ЗАМОВЛЕННЯ!</b>";
+  let typeText = "🏃 <b>Самовивіз (на винос)</b>";
+  let addressLine = `\n📍 <b>Точка видачі:</b> Проспект Лісовий, 11`;
+
+  if (order.orderType === "DELIVERY_LISOVYI") {
+    typeHeader = "🛵 <b>ДОСТАВКА ПО ЛІСОВОМУ МАСИВУ (+70 ₴)!</b>";
+    typeText = "🛵 <b>Доставка кур'єром по Лісовому масиву</b> (+70 грн)";
+    addressLine = `\n📍 <b>Адреса доставки:</b> <b>${escapeHtml(order.address || "Не вказано")}</b>`;
+  } else if (order.orderType === "DELIVERY_TAXI") {
+    typeHeader = "🚖 <b>ДОСТАВКА НА ТАКСІ ЗА МЕЖІ ЛІСОВОГО!</b>";
+    typeText = "🚖 <b>Доставка на таксі за межі Лісового</b> (за тарифом таксі)";
+    addressLine = `\n📍 <b>Адреса доставки:</b> <b>${escapeHtml(order.address || "Не вказано")}</b>`;
+  }
 
   const timeLine = order.pickupTime
-    ? `\n⏰ <b>Час готовності:</b> <b>${escapeHtml(order.pickupTime)}</b>`
+    ? `\n⏰ <b>Час готовності / доставки:</b> <b>${escapeHtml(order.pickupTime)}</b>`
     : "";
-
-  const addressLine = `\n📍 <b>Точка видачі:</b> Лісовий проспект, 11`;
 
   const commentLine = order.comment
     ? `\n💬 <b>Коментар:</b> <i>${escapeHtml(order.comment)}</i>`
@@ -156,19 +167,27 @@ export function formatOrderMessage(order: {
     })
     .join("\n");
 
+  const deliveryNotice =
+    order.orderType === "DELIVERY_LISOVYI"
+      ? `\n🛵 <i>У суму включено доставку 70 грн</i>`
+      : order.orderType === "DELIVERY_TAXI"
+      ? `\n🚖 <i>Вартість таксі клієнт сплачує окремо при отриманні</i>`
+      : "";
+
   return (
-`🍕 <b>ЗАМОВЛЕННЯ #${escapeHtml(order.orderNumber)} (НА ВИНОС)!</b>
+`${typeHeader}
 ───────────────
-👤 <b>Клієнт:</b> ${escapeHtml(order.customerName)}
+🔢 <b>Номер замовлення:</b> #${escapeHtml(order.orderNumber)}
+👤 <b>Клієнт:</b> <b>${escapeHtml(order.customerName)}</b>
 📞 <b>Телефон:</b> <a href="tel:${escapeHtml(order.phone)}">${escapeHtml(order.phone)}</a>
-${typeText}${timeLine}${addressLine}${commentLine}
+📦 <b>Тип:</b> ${typeText}${addressLine}${timeLine}${commentLine}
 
 📋 <b>Склад замовлення:</b>
 ${itemsList}
 
-💰 <b>РАЗОМ ДО ОПЛАТИ:</b> <b>${order.totalPrice} грн</b>
+💰 <b>РАЗОМ ДО ОПЛАТИ:</b> <b>${order.totalPrice} грн</b>${deliveryNotice}
 ───────────────
-📍 Forest Pizza • Лісовий проспект, 11`
+📍 Forest Pizza • Проспект Лісовий, 11`
   );
 }
 

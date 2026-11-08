@@ -16,7 +16,11 @@ import {
   User,
   Clock,
   AlertCircle,
+  Bike,
+  Car,
 } from "lucide-react";
+
+type OrderType = "PICKUP" | "DELIVERY_LISOVYI" | "DELIVERY_TAXI";
 
 export function CartDrawer() {
   const {
@@ -26,13 +30,16 @@ export function CartDrawer() {
     updateQuantity,
     removeItem,
     clearCart,
-    totalPrice,
+    totalPrice: itemsTotal,
     totalCount,
   } = useCart();
 
+  const [orderType, setOrderType] = useState<OrderType>("DELIVERY_LISOVYI");
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
-  const [pickupTime, setPickupTime] = useState("Якомога швидше (~15-20 хв)");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [aptDetails, setAptDetails] = useState("");
+  const [deliveryTime, setDeliveryTime] = useState("Якомога швидше (30-45 хв)");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<{
@@ -44,6 +51,9 @@ export function CartDrawer() {
 
   if (!isCartOpen) return null;
 
+  const deliveryFee = orderType === "DELIVERY_LISOVYI" ? 70 : 0;
+  const finalTotal = itemsTotal + deliveryFee;
+
   const handleCheckout = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -53,7 +63,17 @@ export function CartDrawer() {
       return;
     }
 
+    if (orderType !== "PICKUP" && !streetAddress.trim()) {
+      setErrorMessage("Будь ласка, вкажіть вулицю та номер будинку для доставки");
+      return;
+    }
+
     setLoading(true);
+
+    const fullAddress =
+      orderType === "PICKUP"
+        ? "Самовивіз: Проспект Лісовий, 11"
+        : `${streetAddress.trim()}${aptDetails.trim() ? `, ${aptDetails.trim()}` : ""}`;
 
     try {
       const res = await fetch("/api/orders", {
@@ -62,9 +82,9 @@ export function CartDrawer() {
         body: JSON.stringify({
           customerName: customerName.trim(),
           phone: phone.trim(),
-          orderType: "TAKEAWAY",
-          address: "Самовивіз: Лісовий просп., 11",
-          pickupTime,
+          orderType,
+          address: fullAddress,
+          pickupTime: deliveryTime,
           comment: comment.trim(),
           items,
         }),
@@ -104,7 +124,7 @@ export function CartDrawer() {
               <div>
                 <h3 className="font-black text-white text-base sm:text-lg">Кошик замовлення</h3>
                 <p className="text-xs text-orange-400 font-bold">
-                  {totalCount} поз. • {totalPrice} ₴ • Тільки на винос
+                  {totalCount} поз. • {finalTotal} ₴ {orderType === "DELIVERY_LISOVYI" && "(з доставкою 70 ₴)"}
                 </p>
               </div>
             </div>
@@ -134,11 +154,15 @@ export function CartDrawer() {
                   </p>
                   {orderSuccess.pickupTime && (
                     <p>
-                      Час готовності: <b className="text-amber-400">{orderSuccess.pickupTime}</b>
+                      Час готовності / доставки: <b className="text-amber-400">{orderSuccess.pickupTime}</b>
                     </p>
                   )}
                   <p className="text-xs text-orange-300 pt-2 border-t border-[#242832]">
-                    📍 Точка самовивозу: <b>м. Київ, Лісовий проспект, 11</b>. Замовлення вже на кухні в Telegram!
+                    {orderType === "PICKUP" ? (
+                      <span>📍 Точка видачі: <b>м. Київ, Проспект Лісовий, 11</b>. Замовлення вже на кухні в Telegram!</span>
+                    ) : (
+                      <span>🛵 Кур&apos;єр вирушить з замовленням гарячим просто з печі! Замовлення надіслано в Telegram піцерії.</span>
+                    )}
                   </p>
                 </div>
                 <button
@@ -156,7 +180,7 @@ export function CartDrawer() {
                 <ShoppingBag className="w-12 h-12 mx-auto text-stone-600 opacity-60" />
                 <p className="font-black text-white text-base">Кошик поки що порожній</p>
                 <p className="text-xs text-stone-400 max-w-xs mx-auto">
-                  Оберіть улюблену піцу з меню, додайте соковитий сирний або ковбасний бортик та заберіть гарячою з собою!
+                  Оберіть улюблену піцу з меню, додайте соковитий сирний або ковбасний бортик, соуси та оформіть доставку чи самовивіз!
                 </p>
               </div>
             ) : (
@@ -213,17 +237,71 @@ export function CartDrawer() {
                   ))}
                 </div>
 
-                {/* Checkout form (100% Takeaway) */}
-                <form id="cart-form" onSubmit={handleCheckout} className="space-y-3.5 pt-3 border-t border-[#242832]">
-                  <div className="text-xs text-orange-200 bg-orange-950/35 p-3 rounded-xl border border-orange-500/30 flex items-start gap-2.5">
-                    <Store className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-black text-white">Тільки самовивіз (на винос)</p>
-                      <p className="text-[11px] text-orange-300 mt-0.5 flex items-center gap-1">
-                        <MapPin className="w-3 h-3 shrink-0" />
-                        <span>м. Київ, Лісовий проспект, 11</span>
-                      </p>
+                {/* Checkout form with Delivery Options */}
+                <form id="cart-form" onSubmit={handleCheckout} className="space-y-4 pt-3 border-t border-[#242832]">
+                  {/* Delivery Mode Selector */}
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-black text-white uppercase tracking-wider">
+                      Спосіб отримання:
+                    </label>
+                    <div className="grid grid-cols-3 gap-1.5 bg-[#0c0e12] p-1 rounded-2xl border border-[#262a34]">
+                      <button
+                        type="button"
+                        onClick={() => setOrderType("DELIVERY_LISOVYI")}
+                        className={`py-2 px-1 rounded-xl text-[11px] font-black transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                          orderType === "DELIVERY_LISOVYI"
+                            ? "bg-orange-500 text-white shadow-md shadow-orange-950/50"
+                            : "text-stone-400 hover:text-white"
+                        }`}
+                      >
+                        <Bike className="w-4 h-4" />
+                        <span>Лісовий (70₴)</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setOrderType("DELIVERY_TAXI")}
+                        className={`py-2 px-1 rounded-xl text-[11px] font-black transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                          orderType === "DELIVERY_TAXI"
+                            ? "bg-orange-500 text-white shadow-md shadow-orange-950/50"
+                            : "text-stone-400 hover:text-white"
+                        }`}
+                      >
+                        <Car className="w-4 h-4" />
+                        <span>На таксі</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setOrderType("PICKUP")}
+                        className={`py-2 px-1 rounded-xl text-[11px] font-black transition-all flex flex-col items-center justify-center gap-0.5 cursor-pointer ${
+                          orderType === "PICKUP"
+                            ? "bg-orange-500 text-white shadow-md shadow-orange-950/50"
+                            : "text-stone-400 hover:text-white"
+                        }`}
+                      >
+                        <Store className="w-4 h-4" />
+                        <span>Самовивіз</span>
+                      </button>
                     </div>
+
+                    <p className="text-[11px] text-stone-400 px-1">
+                      {orderType === "DELIVERY_LISOVYI" && (
+                        <span className="text-orange-400 font-semibold">
+                          🛵 Доставка по Лісовому масиву: фіксовано 70 ₴ • 30–45 хв
+                        </span>
+                      )}
+                      {orderType === "DELIVERY_TAXI" && (
+                        <span className="text-amber-300 font-semibold">
+                          🚖 За межі Лісового масиву — відправляємо на таксі за тарифом перевізника
+                        </span>
+                      )}
+                      {orderType === "PICKUP" && (
+                        <span className="text-emerald-400 font-semibold">
+                          🛍️ Самовивіз: Проспект Лісовий, 11 • Безкоштовно (15–20 хв)
+                        </span>
+                      )}
+                    </p>
                   </div>
 
                   {errorMessage && (
@@ -262,25 +340,57 @@ export function CartDrawer() {
                           required
                           value={phone}
                           onChange={(e) => setPhone(e.target.value)}
-                          placeholder="+380 (97) 000-00-00"
+                          placeholder="+380 (93) 204-28-04"
                           className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
                         />
                       </div>
                     </div>
 
+                    {/* Address Inputs when Delivery is chosen */}
+                    {orderType !== "PICKUP" && (
+                      <div className="space-y-2 bg-[#0c0e12] p-3 rounded-xl border border-[#262b36] animate-fadeIn">
+                        <div>
+                          <label className="block text-[11px] font-bold text-orange-400 mb-1 flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            <span>Вулиця та номер будинку *</span>
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            value={streetAddress}
+                            onChange={(e) => setStreetAddress(e.target.value)}
+                            placeholder="напр., вул. Братиславська, 14-А"
+                            className="w-full bg-[#141720] border border-[#2e3444] rounded-lg px-3 py-1.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] text-stone-400 mb-1">
+                            Під&apos;їзд, поверх, квартира / код (необов&apos;язково)
+                          </label>
+                          <input
+                            type="text"
+                            value={aptDetails}
+                            onChange={(e) => setAptDetails(e.target.value)}
+                            placeholder="Під'їзд 2, поверх 5, кв. 42"
+                            className="w-full bg-[#141720] border border-[#2e3444] rounded-lg px-3 py-1.5 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
+                          />
+                        </div>
+                      </div>
+                    )}
+
                     <div>
                       <label className="block text-[11px] font-bold text-stone-300 mb-1">
-                        Коли заберете замовлення?
+                        Час отримання:
                       </label>
                       <div className="relative">
                         <Clock className="w-3.5 h-3.5 text-orange-400 absolute left-3 top-1/2 -translate-y-1/2" />
                         <select
-                          value={pickupTime}
-                          onChange={(e) => setPickupTime(e.target.value)}
+                          value={deliveryTime}
+                          onChange={(e) => setDeliveryTime(e.target.value)}
                           className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl pl-9 pr-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500"
                         >
-                          <option value="Якомога швидше (~15-20 хв)">🔥 Якомога швидше (~15-20 хв)</option>
-                          <option value="через 30 хвилин">через 30 хвилин</option>
+                          <option value="Якомога швидше (30-45 хв)">🔥 Якомога швидше (~30-45 хв)</option>
                           <option value="через 45 хвилин">через 45 хвилин</option>
                           <option value="через 1 годину">через 1 годину</option>
                           <option value="на 18:00">на 18:00</option>
@@ -296,13 +406,13 @@ export function CartDrawer() {
 
                     <div>
                       <label className="block text-[11px] font-bold text-stone-300 mb-1">
-                        Побажання до замовлення
+                        Коментар до замовлення
                       </label>
                       <input
                         type="text"
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
-                        placeholder="Напр., порізати гарячою, додати серветки..."
+                        placeholder="Напр., гострий соус окремо, без цибулі..."
                         className="w-full bg-[#0c0e12] border border-[#2b303c] rounded-xl px-3 py-2 text-xs text-white placeholder-stone-500 focus:outline-none focus:border-orange-500"
                       />
                     </div>
@@ -315,9 +425,27 @@ export function CartDrawer() {
           {/* Footer */}
           {!orderSuccess && items.length > 0 && (
             <div className="p-4 sm:p-5 border-t border-[#242832] bg-[#151820] space-y-3 pb-[calc(1.25rem+env(safe-area-inset-bottom,0px))]">
-              <div className="flex items-center justify-between text-base">
-                <span className="text-stone-300 font-bold">Разом на винос:</span>
-                <span className="text-2xl font-black text-orange-400">{totalPrice} ₴</span>
+              <div className="space-y-1 text-xs">
+                <div className="flex items-center justify-between text-stone-400">
+                  <span>Страви ({totalCount} шт):</span>
+                  <span>{itemsTotal} ₴</span>
+                </div>
+                {orderType === "DELIVERY_LISOVYI" && (
+                  <div className="flex items-center justify-between text-orange-400">
+                    <span>Доставка по Лісовому масиву:</span>
+                    <span>+70 ₴</span>
+                  </div>
+                )}
+                {orderType === "DELIVERY_TAXI" && (
+                  <div className="flex items-center justify-between text-amber-300 text-[11px]">
+                    <span>Доставка на таксі:</span>
+                    <span>за тарифом таксі</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between text-base pt-1 border-t border-[#262a34]">
+                  <span className="text-white font-black">Разом до сплати:</span>
+                  <span className="text-2xl font-black text-orange-400">{finalTotal} ₴</span>
+                </div>
               </div>
 
               <button
@@ -331,7 +459,11 @@ export function CartDrawer() {
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>Замовити на винос • {totalPrice} ₴</span>
+                    <span>
+                      {orderType === "PICKUP"
+                        ? `Замовити самовивіз • ${finalTotal} ₴`
+                        : `Замовити доставку • ${finalTotal} ₴`}
+                    </span>
                   </>
                 )}
               </button>

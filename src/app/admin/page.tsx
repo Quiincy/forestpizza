@@ -989,14 +989,20 @@ export default function AdminPage() {
                         </div>
                         <div>
                           <p className="text-stone-400 font-semibold mb-1">Отримання:</p>
-                          <p className="text-white">
-                            🏃 Самовивіз на винос
+                          <p className="text-white font-bold">
+                            {o.orderType === "DELIVERY_LISOVYI"
+                              ? "🛵 Доставка по Лісовому масиву (+70 ₴)"
+                              : o.orderType === "DELIVERY_TAXI"
+                              ? "🚖 Доставка на таксі за межі Лісового"
+                              : "🛍️ Самовивіз (на винос)"}
                           </p>
-                          {o.pickupTime && (
-                            <p className="text-orange-400 mt-1">⏰ Час видачі: {o.pickupTime}</p>
-                          )}
                           {o.address && (
-                            <p className="text-stone-300 mt-1">Адреса / точка: {o.address}</p>
+                            <p className="text-orange-300 font-medium mt-1">
+                              📍 Адреса: <b>{o.address}</b>
+                            </p>
+                          )}
+                          {o.pickupTime && (
+                            <p className="text-stone-300 mt-1">⏰ Час: {o.pickupTime}</p>
                           )}
                           {o.comment && (
                             <p className="text-stone-400/80 italic mt-1">

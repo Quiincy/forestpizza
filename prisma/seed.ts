@@ -3,27 +3,29 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("Seeding authentic Forest Pizza To Go menu (23 pizzas, 5 chebureks, 4 snacks, crusts & extras)...");
+  console.log("Seeding authentic Forest Pizza menu (23 pizzas, 5 chebureks, 4 snacks, and dedicated extras with delivery)...");
 
   // 1. Settings (matching the official menu board)
   const defaultSettings = [
     { key: "restaurant_name", value: "Forest Pizza", description: "Назва закладу" },
     { key: "restaurant_address", value: "м. Київ, Проспект Лісовий, 11", description: "Адреса точки видачі / самовивозу" },
-    { key: "restaurant_phone", value: "+38 093 204 28 04", description: "Телефон для замовлень на винос" },
+    { key: "restaurant_phone", value: "+38 093 204 28 04", description: "Телефон для замовлень та доставки" },
     { key: "restaurant_email", value: "forestpizza.kyiv@gmail.com", description: "Контактний email" },
     { key: "working_hours", value: "Щодня з 10:00 до 22:00", description: "Графік роботи" },
     { key: "instagram_url", value: "https://www.instagram.com/forest_pizza", description: "Посилання на Instagram (@forest_pizza)" },
     { key: "maps_url", value: "https://www.google.com/maps/place/Forest+Pizza/@50.4808836,30.6236834,17z", description: "Посилання на Google Maps" },
+    { key: "delivery_fee_lisovyi", value: "70", description: "Вартість доставки по Лісовому масиву (грн)" },
+    { key: "delivery_taxi_notice", value: "За межі Лісового масиву — за тарифом таксі", description: "Умови доставки за межі" },
+    { key: "glovo_partner", value: "true", description: "Офіційний партнер Glovo" },
     { key: "telegram_bot_token", value: "", description: "Токен Telegram-бота для сповіщень" },
     { key: "telegram_chat_id", value: "", description: "Chat ID адміністратора/групи для сповіщень" },
-    { key: "reservation_notice", value: "Замовлення на винос прийнято! Ваше замовлення буде готове за 15-20 хвилин за адресою: Проспект Лісовий, 11.", description: "Повідомлення клієнту після замовлення на винос" },
+    { key: "reservation_notice", value: "Замовлення прийнято! Самовивіз за адресою: Проспект Лісовий, 11 або очікуйте на доставку кур'єром.", description: "Повідомлення клієнту після замовлення" },
     { key: "pickup_time_default", value: "15-20 хвилин", description: "Середній час приготування" },
     { key: "brand_color", value: "#ff5500", description: "Фірмовий помаранчевий колір" },
     { key: "admin_password", value: "forest2026", description: "Пароль до панелі керування" },
   ];
 
   for (const s of defaultSettings) {
-    // Preserve custom telegram credentials & admin password if already configured
     const preserveValueKeys = ["telegram_bot_token", "telegram_chat_id", "admin_password"];
     await prisma.restaurantSetting.upsert({
       where: { key: s.key },
@@ -398,11 +400,11 @@ async function main() {
     await prisma.menuItem.create({ data: sn });
   }
 
-  // 7. Crusts & Extra Toppings (from ДОДАТКОВО box on Board 2)
+  // 7. Crusts & Extra Toppings (Dedicated high-craft cards with descriptions and studio photos)
   const extras = [
     {
       name: "Бортик Ковбасний",
-      description: "Фірмовий запечений бортик піци з мисливськими ковбасками (30 см — 65 грн / 40 см — 95 грн)",
+      description: "Запечений пухкий бортик із мисливськими ковбасками та сиром усередині тіста (30 см — 65 грн / 40 см — 95 грн)",
       price30: 65,
       price40: 95,
       badge: "До піци 🌭",
@@ -412,7 +414,7 @@ async function main() {
     },
     {
       name: "Бортик Сирний",
-      description: "Фірмовий запечений бортик піци з тягучим сиром (30 см — 65 грн / 40 см — 95 грн)",
+      description: "Фірмовий бортик із ніжною тягучою розплавленою моцарелою всередині (30 см — 65 грн / 40 см — 95 грн)",
       price30: 65,
       price40: 95,
       badge: "До піци 🧀",
@@ -422,37 +424,37 @@ async function main() {
     },
     {
       name: "Додатково: Овочі (30 г)",
-      description: "На вибір (30 г): ананас, кукурудза, гриби, цибуля, огірки мариновані, перець солодкий, перець чилі, перець халапеньйо, оливки, помідори",
+      description: "Свіжі та мариновані овочі до піци: ананас, кукурудза, гриби печериці, червона цибуля, мариновані огірки, солодкий перець, чилі, перець халапеньйо, оливки, томати",
       priceSingle: 30,
-      badge: "30 г",
-      imageUrl: "/images/pizzas/season.jpg",
+      badge: "30 г 🫑",
+      imageUrl: "/images/pizzas/extra-vegetables.jpg",
       categoryId: categoriesMap["extras"],
       order: 3,
     },
     {
       name: "Додатково: М'ясо (30 г)",
-      description: "На вибір (30 г): салямі, бекон, балик, мисливські ковбаски, курка копчена, куряче філе",
+      description: "М'ясні інгредієнти на вибір: пікантна салямі, копчений бекон, соковитий балик, мисливські ковбаски, копчена курка, куряче філе",
       priceSingle: 30,
-      badge: "30 г",
-      imageUrl: "/images/pizzas/4-meats.jpg",
+      badge: "30 г 🥓",
+      imageUrl: "/images/pizzas/extra-meat.jpg",
       categoryId: categoriesMap["extras"],
       order: 4,
     },
     {
       name: "Додатково: Сир (30 г)",
-      description: "На вибір (30 г): моцарелла, пармезан, чеддер, дор блю",
+      description: "Шляхетні сири до піци: тягуча моцарелла, витриманий пармезан, пікантний чеддер, блакитний сир дор блю",
       priceSingle: 40,
       badge: "30 г 🧀",
-      imageUrl: "/images/pizzas/4-cheeses.jpg",
+      imageUrl: "/images/pizzas/extra-cheese.jpg",
       categoryId: categoriesMap["extras"],
       order: 5,
     },
     {
       name: "Додатково: М'ясні кульки (30 г)",
-      description: "Соковиті запечені м'ясні кульки до піци (30 г)",
+      description: "Запечені пряні м'ясні кульки з яловичини та свинини за фірмовим рецептом",
       priceSingle: 40,
-      badge: "30 г",
-      imageUrl: "/images/pizzas/burger.jpg",
+      badge: "30 г 🥩",
+      imageUrl: "/images/pizzas/extra-meatballs.jpg",
       categoryId: categoriesMap["extras"],
       order: 6,
     },
@@ -462,7 +464,7 @@ async function main() {
     await prisma.menuItem.create({ data: ex });
   }
 
-  console.log("Database seeded successfully with 23 pizzas, 5 chebureks, 4 snacks, and 6 extras!");
+  console.log("Database seeded successfully with 23 pizzas, 5 chebureks, 4 snacks, and 6 dedicated extras!");
 }
 
 main()

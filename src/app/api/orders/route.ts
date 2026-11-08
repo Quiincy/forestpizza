@@ -15,22 +15,38 @@ export async function POST(req: Request) {
       );
     }
 
-    const calculatedTotal = items.reduce((sum: number, it: { price: number; quantity: number }) => {
+    const type = orderType || "PICKUP";
+    if (type !== "PICKUP" && (!address || !address.trim())) {
+      return NextResponse.json(
+        { error: "Будь ласка, вкажіть адресу доставки (вулицю та номер будинку)" },
+        { status: 400 }
+      );
+    }
+
+    const itemsSubtotal = items.reduce((sum: number, it: { price: number; quantity: number }) => {
       return sum + (it.price || 0) * (it.quantity || 1);
     }, 0);
 
+    const deliveryFee = type === "DELIVERY_LISOVYI" ? 70 : 0;
+    const finalTotal = itemsSubtotal + deliveryFee;
+
     const orderNumber = `FP-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const savedAddress =
+      type === "PICKUP"
+        ? "Самовивіз: Проспект Лісовий, 11"
+        : address.trim();
 
     const order = await prisma.order.create({
       data: {
         orderNumber,
         customerName: customerName.trim(),
         phone: phone.trim(),
-        orderType: "TAKEAWAY",
-        address: "Самовивіз: Лісовий просп., 11",
-        pickupTime: pickupTime ? pickupTime.trim() : "Якомога швидше (15-20 хв)",
+        orderType: type,
+        address: savedAddress,
+        pickupTime: pickupTime ? pickupTime.trim() : (type === "PICKUP" ? "Якомога швидше (15-20 хв)" : "30-45 хвилин"),
         itemsJson: JSON.stringify(items),
-        totalPrice: calculatedTotal,
+        totalPrice: finalTotal,
         comment: comment ? comment.trim() : null,
         status: "NEW",
       },
@@ -47,6 +63,7 @@ export async function POST(req: Request) {
         address: order.address,
         pickupTime: order.pickupTime,
         totalPrice: order.totalPrice,
+        deliveryFee,
         comment: order.comment,
         items,
       });
