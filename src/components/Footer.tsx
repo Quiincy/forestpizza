@@ -88,14 +88,6 @@ export function Footer({
                 </li>
                 <li>
                   <button
-                    onClick={() => scrollTo("takeaway")}
-                    className="hover:text-orange-400 transition-colors cursor-pointer"
-                  >
-                    🛍️ Замовлення на точний час
-                  </button>
-                </li>
-                <li>
-                  <button
                     onClick={() => scrollTo("location")}
                     className="hover:text-orange-400 transition-colors cursor-pointer"
                   >

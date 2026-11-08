@@ -4,7 +4,6 @@ import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { MenuSection } from "@/components/MenuSection";
-import { TakeawaySection } from "@/components/TakeawaySection";
 import { AboutSection } from "@/components/AboutSection";
 import { LocationSection } from "@/components/LocationSection";
 import { Footer } from "@/components/Footer";
@@ -69,12 +68,6 @@ export default async function HomePage() {
 
           {/* Menu */}
           <MenuSection categories={categories} />
-
-          {/* Takeaway Order Section */}
-          <TakeawaySection
-            takeawayNotice={settings.reservation_notice}
-            restaurantPhone={settings.restaurant_phone}
-          />
 
           {/* About */}
           <AboutSection />

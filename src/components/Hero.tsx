@@ -93,11 +93,11 @@ export function Hero({
                 </button>
 
                 <button
-                  onClick={() => scrollTo("takeaway")}
+                  onClick={() => setDeliveryModalOpen(true)}
                   className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#151820] hover:bg-[#1f2430] text-stone-200 hover:text-white font-bold text-sm sm:text-base px-5 py-3 rounded-xl border border-[#282e3b] hover:border-orange-500/50 transition-all cursor-pointer truncate"
                 >
                   <Bike className="w-4 h-4 text-orange-400 shrink-0" />
-                  <span className="truncate">Швидке замовлення</span>
+                  <span className="truncate">Доставка 70 ₴</span>
                 </button>
               </div>
 

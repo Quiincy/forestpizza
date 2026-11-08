@@ -63,12 +63,6 @@ export function Navbar({
                 <span>Доставка 70 ₴</span>
               </button>
               <button
-                onClick={() => scrollTo("takeaway")}
-                className="px-3 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
-              >
-                Замовлення на час
-              </button>
-              <button
                 onClick={() => scrollTo("about")}
                 className="px-3 xl:px-3.5 py-2 rounded-xl text-xs xl:text-sm font-bold text-stone-200 hover:text-white hover:bg-[#1e232f] transition-all whitespace-nowrap cursor-pointer"
               >
@@ -145,12 +139,6 @@ export function Navbar({
               >
                 <Bike className="w-4 h-4" />
                 <span>Умови доставки (Лісовий 70 ₴ / таксі)</span>
-              </button>
-              <button
-                onClick={() => scrollTo("takeaway")}
-                className="text-left px-3.5 py-2.5 text-sm font-bold text-stone-200 hover:bg-[#181c24] hover:text-orange-400 rounded-xl transition-colors cursor-pointer"
-              >
-                ⏰ Швидке замовлення на час
               </button>
               <button
                 onClick={() => scrollTo("about")}
